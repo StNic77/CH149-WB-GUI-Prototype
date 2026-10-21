@@ -1,0 +1,77 @@
+/* Application shell. Cabin interaction styles remain in index.html for now. */
+html { color-scheme: light; }
+body { background:#f1f4f7; }
+[hidden] { display:none!important; }
+button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible { outline:3px solid #bd691d;outline-offset:3px; }
+.skip-link { position:absolute;top:-80px;left:12px;z-index:10;background:white;padding:12px;color:#142a42; }
+.skip-link:focus { top:12px; }
+.app-header { min-height:86px;padding:16px 28px;background:#112c3a;border-bottom:1px solid #31505d; }
+.brand { display:flex;align-items:center;gap:15px; }
+.brand-mark { display:grid;place-items:center;width:47px;height:47px;border:1px solid #607d89;border-radius:12px;font-weight:750;font-size:17px;color:#bce0dc;letter-spacing:.05em; }
+.app-header h1 { font-size:18px;letter-spacing:.025em; }
+.app-header h1 span { font-weight:400;color:#b5cad2;letter-spacing:0; }
+.app-header p { margin-top:5px;font-size:12px; }
+.app-header .badge { border-color:#506e7b;background:#1c3b49;color:#d5e5eb; }
+.app-layout { display:grid;grid-template-columns:226px minmax(0,1fr);min-height:calc(100vh - 86px); }
+.workflow-nav { background:#173441;color:#d3e3e8;padding:30px 14px; }
+.nav-label { margin:0 14px 20px;font-size:10px;font-weight:700;letter-spacing:.18em;color:#98b3bf; }
+.workflow-nav button { display:flex;align-items:center;gap:12px;width:100%;margin:5px 0;padding:13px 11px;min-height:64px;border:1px solid transparent;border-radius:9px;background:transparent;color:#e0eaf0;text-align:left;font-size:13px;font-weight:650; }
+.workflow-nav button:hover { background:#224653; }
+.workflow-nav button[aria-current="page"] { background:#e2efed;color:#174f50;border-color:#e2efed; }
+.workflow-nav button small { display:block;margin-top:4px;font-weight:400;font-size:10px;color:#a9c0ca; }
+.workflow-nav button[aria-current="page"] small { color:#486c6e; }
+.step-number { font-size:11px;font-weight:650;opacity:.8; }
+.nav-divider { height:1px;background:#38535e;margin:24px 12px; }
+.nav-note { margin:40px 13px 0;font-size:11px;line-height:1.6;color:#b9cfd5; }
+.nav-note p { color:#9ab5bf;margin-top:8px; }
+.status-dot { display:inline-block;width:6px;height:6px;margin-right:7px;border-radius:50%;background:#8fc7bc; }
+.workspace-body { min-width:0;max-width:1800px;width:100%;margin:auto; }
+.workspace-intro { padding:32px 28px 24px;display:flex;justify-content:space-between;align-items:center;gap:24px; }
+.eyebrow { margin:0 0 9px;color:#47716e;font-size:10px;font-weight:750;letter-spacing:.16em; }
+.workspace-intro h2 { margin:0;font-size:clamp(23px,2.1vw,32px);font-weight:650;letter-spacing:-.035em;color:#183744; }
+.workspace-intro h2:focus { outline:none; }
+.workspace-intro p:last-child { margin:9px 0 0;color:#667b89;font-size:13px; }
+.workspace-state { flex-shrink:0;padding-left:18px;border-left:2px solid #b9ceca;font-size:12px;font-weight:650;color:#365f5e; }
+.workspace-state small { display:block;font-size:11px;color:#6a7d88;font-weight:400;margin-top:5px; }
+.workspace-state a { display:block;margin-top:9px;font-size:11px;color:#215c60; }
+.workspace-body .toolbar { margin:0 26px;border:1px solid #d5dee7;border-radius:10px;padding:13px 15px;gap:12px; }
+.toolbar strong { font-size:12px; }
+.config { font-size:12px;min-height:38px; }
+.config.active { background:#215c60;border-color:#215c60; }
+#cabinMain { padding:18px 26px;grid-template-columns:minmax(0,1fr) 310px;gap:16px; }
+#cabinMain>* { min-width:0; }
+.panel { box-shadow:0 3px 16px #17354106;border-color:#dae2e8; }
+.side { min-height:480px;max-height:920px; }
+.viewtabs { display:none; } /* Area navigation provides the same views without duplicate controls. */
+.viewer-head { padding:16px; }
+.viewer-head .quiet { margin-top:4px; }
+.photo-wrap { background:#e6ecef; }
+.photo-wrap.plan-view img { object-fit:contain; }
+.area-button { min-height:46px;font-size:11px; }
+.area-button small { display:none; }
+.area-nav { background:#fff; }
+.caption { font-size:11px;padding:10px 14px; }
+.smallbtn { min-height:32px; }
+.slot,.seat,.location-choice { min-height:42px; }
+.catalog-row select,#shelfAddSelect { max-width:100%;min-width:0; }
+.item-top { flex-wrap:wrap; }
+.item-name,.contents-row>span { overflow-wrap:anywhere; }
+.contents-row { gap:12px; }
+.axis-title { flex-wrap:wrap; }
+.workspace-footer { display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 28px 24px;font-size:10px;color:#6e818e; }
+.stage-preview { padding:0 28px 28px; }
+.stage-banner { display:flex;gap:14px;align-items:start;padding:18px 20px;border:1px solid #d7e3e5;border-radius:12px;background:#eaf1f2;margin-bottom:20px;color:#385865;font-size:13px; }
+.stage-banner b { display:block;margin-bottom:4px;color:#224955; }
+.stage-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px; }
+.design-card { padding:24px;border-radius:13px;background:white;border:1px solid #d9e2e8; }
+.design-card h3 { font-size:17px;margin:8px 0 10px;color:#234552;letter-spacing:-.02em; }
+.card-kicker { font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#66818d; }
+.design-card p { font-size:13px;line-height:1.65;color:#647b88;margin:0 0 20px; }
+.design-row { display:flex;align-items:baseline;justify-content:space-between;gap:15px;padding:12px 0;border-top:1px solid #e5ebef;font-size:12px;color:#405d6c; }
+.design-row span:last-child { text-align:right;font-size:11px;color:#74858f; }
+.stage-next { display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:20px;padding:18px 22px;background:#fff;border:1px solid #d9e2e8;border-radius:12px;font-size:12px;color:#58727e; }
+.stage-next button { padding:10px 16px;min-height:42px;border:0;border-radius:8px;background:#215c60;color:#fff;font-size:12px; }
+@media(min-width:1600px) { #cabinMain { grid-template-columns:minmax(0,1fr) 350px; } }
+@media(max-width:1190px) { .app-layout { grid-template-columns:190px minmax(0,1fr); } #cabinMain { grid-template-columns:minmax(0,1fr); } .side { max-height:none; } .workspace-state { display:none; } }
+@media(max-width:800px) { .app-header { padding:16px 18px; } .app-header .badge { display:none; } .app-layout { display:block; } .workflow-nav { display:flex;gap:6px;padding:9px 12px;overflow-x:auto; } .nav-label,.nav-divider,.nav-note,.workflow-nav small,.step-number { display:none!important; } .workflow-nav button { width:auto;min-height:42px;flex-shrink:0;margin:0;padding:9px 13px;font-size:12px; } .workspace-intro { padding:24px 18px 20px; } .workspace-body .toolbar { margin:0 16px; } #cabinMain { padding:16px; } .stage-preview { padding:0 16px 20px; } .stage-grid { grid-template-columns:1fr; } .stage-next { flex-wrap:wrap; } .workspace-footer { padding:8px 18px 22px; } }
+@media(max-width:420px) { .app-header h1 span { display:none; } .brand-mark { width:40px;height:40px; } .toolbar #configButtons { gap:5px!important; } .config { padding:7px 9px; } .photo-chip { max-width:calc(100% - 24px);font-size:9px; } .viewer-head { flex-wrap:wrap; } .design-card { padding:18px; } }

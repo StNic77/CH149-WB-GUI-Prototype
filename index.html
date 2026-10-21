@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CH-149-615 — Cabin workspace</title>
+
+<style>
+:root{--navy:#142a42;--blue:#2778b8;--teal:#26856e;--amber:#c48127;--ink:#243447;--muted:#708094;--line:#d5dee7;--bg:#edf2f6;--panel:#fff;--soft:#f7f9fb;--shadow:0 8px 24px #18324a12}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 "Segoe UI",Arial,sans-serif}button,select{font:inherit}button{cursor:pointer}header{background:var(--navy);color:white;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:20px}header h1{font-size:19px;margin:0 0 2px;font-weight:700}header p{margin:0;color:#bfd0df;font-size:12px}.badge{border:1px solid #60809e;border-radius:20px;padding:6px 11px;color:#d7e6f3;font-size:12px;white-space:nowrap}
+.toolbar{display:flex;align-items:center;gap:8px;padding:12px 18px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}.toolbar strong{margin-right:5px}.config{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:8px 13px}.config.active{background:var(--blue);border-color:var(--blue);color:white}.toolbar .grow{flex:1}.quiet{color:var(--muted);font-size:12px}
+main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap:14px;max-width:1700px;margin:auto}.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}.viewer-head{padding:12px 14px 8px;display:flex;justify-content:space-between;align-items:center;gap:10px}.viewer-head h2,.side h2{font-size:15px;margin:0}.viewtabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 10px}.viewtab{border:1px solid var(--line);background:var(--soft);border-radius:7px;padding:6px 9px;font-size:12px;color:var(--ink)}.viewtab.active{background:#e4eff8;border-color:#9bbdd8;color:#174d76;font-weight:650}.photo-wrap{height:min(54vh,550px);min-height:310px;background:#111b25;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.photo-wrap img{width:100%;height:100%;object-fit:contain}.photo-chip{position:absolute;left:12px;top:12px;color:#fff;background:#142a42dd;padding:5px 9px;border-radius:6px;font-size:11px}.hotspot{position:absolute;border:2px solid #59c4a3;background:#20846b45;border-radius:8px;color:#fff;text-shadow:0 1px 3px #000;font-size:11px;font-weight:700;padding:5px 8px;box-shadow:0 1px 7px #0006}.hotspot:hover,.hotspot.selected{background:#21876fce}.hotspot.cab{left:34%;top:25%;width:27%;height:54%}.hotspot.shelf{left:28%;top:35%;width:36%;height:32%}.hotspot.pta{left:35%;top:54%;width:35%;height:27%}.hotspot.ramp{right:10%;top:28%;width:30%;height:48%}.caption{padding:8px 13px;color:var(--muted);font-size:12px;min-height:34px}.axis{padding:12px 15px;border-top:1px solid var(--line)}.axis-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;gap:10px}.axis-title strong{font-size:13px}.axis-title span{font-size:11px;color:var(--muted)}.bayline{display:flex;height:44px;border:1px solid #aebdca;border-radius:7px;overflow:hidden;position:relative;background:#faf8eb}.bay{display:flex;align-items:center;justify-content:center;border-right:1px solid #bbc5cc;font-size:10px;color:#536273;position:relative}.bay:last-of-type{border:0}.bay.ramp{background:#e8edf2}.axis-places{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:6px;margin-top:9px}.drop{border:1px dashed #91a6b8;border-radius:7px;background:#f8fafc;color:#35495b;text-align:left;padding:7px 9px;font-size:11px;min-height:42px}.drop b{display:block;font-size:11px}.drop small{color:var(--muted);font-size:10px}.drop.over{border:2px solid var(--teal);background:#e3f5ef}.drop.selected{border:2px solid var(--blue);background:#e7f1fa}.split-note{font-size:11px;color:var(--muted);margin:9px 0 0}
+.side{display:flex;flex-direction:column;max-height:calc(100vh - 152px);min-height:600px}.side-head{padding:13px 14px;border-bottom:1px solid var(--line)}.side-head .sub{font-size:11px;color:var(--muted);margin-top:3px}.scroll{overflow:auto;padding:12px 13px;flex:1}.section-title{display:flex;justify-content:space-between;align-items:center;margin:0 0 8px;font-size:12px;font-weight:700;color:#526579;text-transform:uppercase;letter-spacing:.04em}.items{display:grid;gap:7px}.item{border:1px solid var(--line);border-radius:8px;background:#fff;padding:9px 10px;cursor:grab}.item:active{cursor:grabbing}.item.dragging{opacity:.45}.item-top{display:flex;justify-content:space-between;gap:8px;align-items:start}.item-name{font-size:13px;font-weight:650}.item-meta{font-size:11px;color:var(--muted);margin-top:4px}.tag{font-size:10px;background:#eef3f7;color:#53677a;border-radius:12px;padding:3px 7px;white-space:nowrap}.tag.fit{background:#fff3df;color:#8b5a16}.tag.load{background:#e6f4ef;color:#176b54}.actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.smallbtn{border:1px solid var(--line);background:#fff;border-radius:6px;padding:4px 7px;font-size:10px;color:#425569}.smallbtn:hover{background:#f1f5f8}.divider{border:0;border-top:1px solid var(--line);margin:13px 0}.catalog-row{display:flex;gap:6px}.catalog-row select{flex:1;min-width:0;border:1px solid var(--line);border-radius:7px;padding:7px;font-size:11px}.primary{border:0;border-radius:7px;background:var(--blue);color:white;padding:7px 10px;font-size:11px;font-weight:650}.secondary{border:1px solid var(--line);border-radius:7px;background:white;padding:7px 10px;font-size:11px}.empty{border:1px dashed var(--line);border-radius:8px;padding:12px;color:var(--muted);font-size:12px;text-align:center}.seat-list{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.seat{border:1px solid var(--line);background:#fafbfd;border-radius:7px;text-align:left;padding:7px;font-size:11px}.seat.on{border-color:#6fa6ce;background:#eaf4fb}.seat-menu{border:1px solid #9bbdd8;background:#f1f7fc;border-radius:8px;padding:9px;margin-top:8px}.seat-menu button{margin:3px}.footer-note{padding:10px 14px;border-top:1px solid var(--line);font-size:10px;color:var(--muted);background:#fafbfd}
+.viewer-detail{display:none;padding:10px 14px;border-top:1px solid var(--line);background:#fafcfd}.viewer-detail.show{display:block}.slot-buttons{display:flex;gap:6px;flex-wrap:wrap}.slot{border:1px solid var(--line);border-radius:7px;background:#fff;padding:7px 9px;font-size:11px;text-align:left}.slot small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.slot.active{border-color:var(--teal);background:#e8f6f1}.contents{margin-top:9px;font-size:12px}.contents-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e6ebf0}.patientbar{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#f1f7fc;border:1px solid #cfdeea;border-radius:8px;padding:8px;margin-top:7px;font-size:11px}
+.hotspot{display:none!important}.photo-wrap.plan-view{height:auto;min-height:0;aspect-ratio:1550/694}.photo-wrap.plan-view img{width:100%;height:100%;object-fit:fill}.plan-target{display:none;position:absolute;left:31%;top:35%;width:9%;height:11%;border:3px solid #ffc644;background:#ffc64430;border-radius:7px;color:#13263a;font-weight:800;font-size:clamp(9px,1vw,13px);text-shadow:0 1px 2px white,0 0 5px white;box-shadow:0 0 0 2px #142a4270;cursor:pointer}.plan-target::after{content:"";position:absolute;inset:-7px;border:1px dashed #fff;border-radius:10px;pointer-events:none}.plan-target.show{display:block}.plan-target:hover,.plan-target.selected{background:#ffc6449c;box-shadow:0 0 0 3px #142a42,0 0 16px #ffc644}.plan-unavailable{display:none;min-height:300px;align-items:center;justify-content:center;text-align:center;padding:30px;background:#f3f6f8;color:var(--muted)}.plan-unavailable.show{display:flex}.area-nav{padding:10px 13px 12px;border-top:1px solid var(--line);background:#f8fafc}.area-nav-title{font-size:11px;color:var(--muted);margin:0 0 7px}.area-buttons{display:flex;flex-wrap:wrap;gap:7px}.area-button{border:1px solid #9aafc0;background:#fff;border-radius:8px;color:#213c53;padding:8px 11px;text-align:left;font-size:12px;font-weight:650}.area-button:hover,.area-button.active{border-color:var(--blue);background:#eaf4fb;color:#154e77}.area-button small{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:2px}.all-locations{margin-top:10px;border:1px solid var(--line);border-radius:8px;background:#fff}.all-locations>summary{padding:9px 10px;cursor:pointer;font-size:12px;font-weight:700;color:#344c61}.location-groups{padding:0 9px 9px;display:grid;gap:6px}.location-group{border:1px solid #e2e8ed;border-radius:7px}.location-group>summary{padding:7px 9px;cursor:pointer;font-size:11px;font-weight:650}.location-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:5px;padding:0 7px 7px}.location-choice{border:1px solid var(--line);border-radius:6px;background:#fff;text-align:left;padding:7px 8px;color:var(--ink);font-size:11px}.location-choice:hover,.location-choice.active{border-color:var(--teal);background:#e8f6f1}.location-choice small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+@media(max-width:1050px){main{grid-template-columns:1fr}.side{max-height:unset;min-height:400px}.photo-wrap{height:48vh}}@media(max-width:650px){main{padding:8px}.toolbar{padding:9px}.toolbar strong{width:100%}.photo-wrap{min-height:240px}.axis-places{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<link rel="stylesheet" href="workspace.css">
+<link rel="stylesheet" href="plan-viewer.css">
+<link rel="stylesheet" href="floor-area.css">
+</head>
+<body>
+<a class="skip-link" href="#workspaceHeading">Skip to workspace</a>
+<header class="app-header"><div class="brand"><span class="brand-mark" aria-hidden="true">615</span><div><h1>CH-149 <span>/ Flight preparation</span></h1><p>Cabin workspace · development edition</p></div></div><span class="badge">Design prototype · session only</span></header>
+<div class="app-layout">
+<nav class="workflow-nav" aria-label="Flight preparation">
+  <p class="nav-label">WORKSPACE</p>
+  <button data-stage="aircraft"><span class="step-number">01</span><span>Aircraft<small>Starting data &amp; acceptance</small></span></button>
+  <button data-stage="cabin" aria-current="page"><span class="step-number">02</span><span>Cabin setup<small>Role, equipment &amp; people</small></span></button>
+  <button data-stage="balance"><span class="step-number">03</span><span>Fuel &amp; balance<small>Load review &amp; CG path</small></span></button>
+  <button data-stage="complete"><span class="step-number">04</span><span>Complete<small>Cross-check &amp; flight record</small></span></button>
+  <div class="nav-divider"></div>
+  <button data-stage="manage"><span class="step-number" aria-hidden="true">≡</span><span>Data management<small>Fleet &amp; configuration tools</small></span></button>
+  <div class="nav-note"><span class="status-dot"></span>Independent development<p>Reference app remains unchanged.</p></div>
+</nav>
+<div class="workspace-body">
+<section class="workspace-intro"><div><p class="eyebrow" id="workspaceEyebrow">02 / PREPARE THE CABIN</p><h2 id="workspaceHeading" tabindex="-1">A clear view of your aircraft.</h2><p id="workspaceDescription">Choose a role, explore the cabin and inspect its equipment.</p></div><div class="workspace-state"><span id="workflowStatus">Cabin interaction concept</span><small>Calculations are not connected</small><a href="review.html">Review &amp; identify the original plan →</a></div></section>
+<section id="stagePreview" class="stage-preview" hidden aria-labelledby="workspaceHeading"></section>
+<div id="cabinWorkspace">
+<div class="toolbar"><strong>Choose a Role Config</strong><div id="configButtons" style="display:flex;gap:8px;flex-wrap:wrap"></div><span class="grow"></span><span id="configSummary" class="quiet">No Role Config selected</span></div>
+<main id="cabinMain">
+  <section class="panel">
+    <div class="viewer-head"><div><h2 id="viewTitle">Starboard cabin · empty baseline</h2><div id="viewSub" class="quiet">Actual render with removable blue seats and loose equipment stripped out</div></div><span id="viewBadge" class="tag">BASE VIEW</span></div>
+    <div class="viewtabs" id="viewTabs"></div>
+    <div class="plan-tools" id="planTools" aria-label="Cabin plan controls"><button id="planZoomOut" type="button" aria-label="Zoom out">−</button><output id="planZoomValue" aria-live="polite">100%</output><button id="planZoomIn" type="button" aria-label="Zoom in">+</button><button id="planFit" type="button">Fit aircraft</button><button id="planWide" type="button" aria-pressed="false">Wide view</button><label><input id="seatToggle" type="checkbox">Seats</label><label><input id="bayToggle" type="checkbox">Bays · review</label><label><input id="planGuideToggle" type="checkbox">Alignment guides</label></div>
+    <p class="plan-help">Zoom for detail, then drag to pan. Keyboard: + / − to zoom, arrows to pan, Home to fit. View position stays fixed when changing Role Config.</p>
+    <div class="photo-wrap plan-view"><div class="plan-viewport is-plan" id="planViewport" role="region" aria-label="Cabin plan. Use zoom controls, then drag to pan. Keyboard plus, minus, arrows and Home." tabindex="0"><div class="plan-sheet" id="planSheet"><img id="cabinImage" src="images/unconfigured-baseline-v2.png" alt="Draft unconfigured top-down cabin baseline" draggable="false"><button class="plan-target" id="planCabinet" type="button" aria-label="Open SAR Equipment Storage Cabinet"><span>SAR CABINET</span></button><svg class="plan-guides" id="planGuides" aria-hidden="true" hidden></svg></div></div><div id="planUnavailable" class="plan-unavailable"><div><b>No matching plan image is available for this Role Config yet.</b><br>Choose an available standard configuration or use the location list below.</div></div><span class="photo-chip" id="photoChip">Draft unconfigured baseline</span></div>
+    <div class="caption" id="photoCaption">Annotated 2D layout used as a navigation reference. The highlighted cabinet opens the close-up render.</div>
+    <div id="cabinetZoneTools" class="cabinet-zone-tools" hidden><label><input type="checkbox" id="cabinetZoneReveal">Show selectable zones</label><span id="cabinetZoneStatus"></span><a href="cabinet-review.html" target="_blank" rel="noopener">Refine zone outlines</a></div>
+    <p class="seat-reference-notice" id="seatReferenceNotice" hidden></p>
+    <section id="bayPanel" class="bay-panel" aria-label="Bay inspection and mapping review" hidden>
+      <div class="bay-panel-heading"><strong>Cabin bays</strong><span id="bayMappingStatus" class="bay-review-status"></span></div>
+      <p class="bay-orientation">Nose left · starboard above / port below. Shaded bands show longitudinal regions; their edges do not define the floor or sidewalls.</p>
+      <div id="bayChoices" class="bay-choices" aria-label="Select a named bay"></div>
+      <div class="bay-inspector" role="status"><div><strong id="bayName">Bay 1</strong><p id="bayStations"></p></div><div class="bay-arm"><small>Configured arm</small><strong id="bayArm"></strong></div></div>
+      <p id="baySelectionNote"></p>
+      <details class="bay-review"><summary>Identify shared station joints</summary><p id="bayMarkSummary"></p><div class="bay-review-actions"><button id="bayMarkForward" type="button" aria-pressed="false">Mark forward joint · X4875</button><button id="bayMarkAft" type="button" aria-pressed="false">Mark aft joint · X11393</button><button id="bayFinishMarks" type="button" hidden>Finish marking</button><button id="bayResetMarks" type="button">Reset this plan’s marks</button></div><p id="bayReviewHelp" role="status">One shared pair controls all aligned configurations. Save it to the project to share between browsers.</p></details>
+      <details class="bay-source"><summary>Data sources</summary><p>Arms: Active Dev config v29, AC_BAY_ARMS, verified 21 October 2026, with one explicit user decision: Bay 6 uses 10,875 mm; the unchanged reference snapshot has 10,884 mm. Boundaries: supplied passenger and crew schematics (nose-down), rotated in presentation to nose-left. Source publication, revision and applicability remain unconfirmed.</p><p>The initial X4875 and X11393 lines use the existing visual cockpit-seam and ramp-joint landmarks as candidates only. Marked positions remain a review proposal. No arm is derived from a click.</p></details>
+    </section>
+    <section class="seat-panel" id="seatPanel" aria-label="Seat positions and installation" hidden>
+      <div class="seat-panel-head"><strong>Seat positions</strong><span id="seatStateLabel"></span></div>
+      <div class="seat-location-tools"><button type="button" class="secondary" id="seatLocateC3">Locate C3 on the plan</button><button type="button" class="secondary" id="seatFinishLocate" hidden>Finish locating C3</button><span id="seatLocationStatus" role="status"></span></div>
+      <p class="quiet">Select a marker or position below. Filled markers mean installed; outlined markers mean available. Mutually excluded seats are hidden on the plan. Amber dashed markers mean installed seats folded up for a basket. Marker positions show seat-arm references, not measured seat outlines.</p>
+      <p class="quiet">Shared seating spaces: C5 or P13/P14 · C6 or P7/P8. A passenger pair can be installed together. Occupants must be cleared before replacing their seats.</p>
+      <p id="seatInstalledCount"></p><div id="seatMenu"></div><p id="seatEditMessage" role="status"></p>
+      <h3>Passenger positions · 18</h3><div class="seat-list" id="seatList"></div>
+      <details class="crew-seat-positions"><summary>Crew positions · 6</summary><div class="seat-list" id="crewSeatList"></div></details>
+      <p class="quiet">Seats blocked by installed equipment are hidden on the plan and unavailable below: cabinet P4–P6; PTA cot P15–P18. Basket positions allow installed seats folded up and unoccupied: starboard P9/P10, port P18. The port basket and PTA cot cannot be installed together. Removing the blocking equipment restores the relevant availability. Other equipment and crew dependencies remain to be reviewed.</p>
+    </section>
+    <div class="area-nav"><p class="area-nav-title" id="areaNavTitle">Open an area · the cabinet is highlighted in the plan</p><div class="area-buttons" id="areaButtons"></div><details class="all-locations"><summary>Browse all app locations</summary><div class="location-groups" id="locationGroups"></div></details></div>
+    <div class="viewer-detail" id="viewerDetail"><div class="section-title"><span id="detailTitle">Select a shelf / position</span><span id="detailArm"></span></div><div class="slot-buttons" id="detailSlots"></div><div class="contents" id="detailContents"></div></div>
+    <div class="axis">
+      <div class="axis-title"><strong>Cabin position strip · schematic</strong><span>Try a sample move between named locations</span></div>
+      <div class="bayline" aria-label="Cabin bay axis"><div class="bay" style="flex:1">BAY 1</div><div class="bay" style="flex:1">BAY 2</div><div class="bay" style="flex:1">BAY 3</div><div class="bay" style="flex:1">BAY 4</div><div class="bay" style="flex:1">BAY 5</div><div class="bay" style="flex:.5">5.5</div><div class="bay" style="flex:1.018">BAY 6</div><div class="bay ramp" style="flex:3">RAMP · rises aft</div></div>
+      <div class="axis-places" id="dropTargets"></div>
+      <p class="split-note">A shelf item can have its own visual slot while retaining the shelf’s W&amp;B arm. No free-drag coordinates alter the app calculation.</p>
+    </div>
+  </section>
+  <aside class="panel side">
+    <div class="side-head"><h2 id="sideTitle">Aircraft contents</h2><div class="sub" id="sideSub">Choose a preset to populate the cabin, then move or adjust items.</div></div>
+    <div class="scroll">
+      <div class="section-title"><span>On aircraft</span><span id="itemCount" class="tag">0 items</span></div>
+      <div id="loadedItems" class="items"></div>
+      <div id="otherItemsWrap"></div>
+      <div id="patientLoads"></div>
+      <hr class="divider">
+      <div class="section-title"><span>Add equipment</span><span class="tag">from app catalogue</span></div>
+      <div class="catalog-row"><select id="catalog"></select><button class="primary" id="addEquipment">Add</button></div>
+      <p class="quiet">New items enter the cabin as a listed load. Drag them to an approved location or open that location’s render.</p>
+    </div>
+    <div class="footer-note">Config snapshot v<span id="version"></span>. Demonstrates interaction only: it does not write to the app or calculate/certify W&amp;B.</div>
+  </aside>
+</main>
+</div>
+<footer class="workspace-footer"><span>CH-149-615 <span aria-hidden="true">/</span> Interface development</span><span>No W&amp;B calculation or certification · changes reset on reload</span></footer>
+</div>
+</div>
+<script src="config-data.js"></script>
+<script src="prototype-rules.js"></script>
+<script src="plan-registration.js"></script>
+<script src="bay-data.js"></script>
+<script src="bay-review-draft.js"></script>
+<script src="bay-layer.js"></script>
+<script src="seat-rules.js"></script>
+<script src="seat-editor.js"></script>
+<script src="floor-area.js"></script>
+<script src="cabinet-regions.js"></script>
+<script src="cabinet-zones.js"></script>
+<script src="forward-shelf-definition.js"></script>
+<script src="forward-shelf-regions.js"></script>
+<script src="ramp-shelf-definition.js"></script>
+<script src="ramp-shelf-regions.js"></script>
+<script src="port-overhead-definition.js"></script>
+<script src="port-overhead-regions.js"></script>
+<script src="stbd-overhead-definition.js"></script>
+<script src="stbd-overhead-regions.js"></script>
+<script src="shelf-zones.js"></script>
+<link rel="stylesheet" href="basket-editor.css">
+<script src="basket-editor.js"></script>
+<link rel="stylesheet" href="pta-editor.css">
+<script src="pta-editor.js"></script>
+<link rel="stylesheet" href="stokes-editor.css">
+<script src="stokes-editor.js"></script>
+<link rel="stylesheet" href="live-cabin.css">
+<script src="live-cabin.js"></script>
+<link rel="stylesheet" href="ramp-area.css">
+<script src="ramp-area.js"></script>
+<script src="floor-equipment.js"></script>
+<script src="casevac-editor.js"></script>
+<script src="plan-viewer.js"></script>
+<script>
+const D=window.CH149_DATA;
+const IM={plan:'images/SAR_3_Pax_clean.png',cabinet:'images/SAR Cabinet.png',forward:'images/Bay 1 Shelves and Sensor WS.png',pta:'images/PTA View Port.png',ramp:'images/Rear Shelves.png',stbd:'images/Team member View STBD.png'};
+const VIEWS=[['plan','2D cabin plan'],['cabinet','SAR Cabinet'],['forward','Port Fwd shelves'],['pta','Port Aft View'],['ramp','Rear shelves'],['stbd','Starboard Aft View']];
+const PLAN_IMAGES={SAR3:'images/SAR_3_Pax_clean.png',SAR10:'images/SAR_10_Pax_clean.png',CASEVAC:'images/CASEVAC_clean.png',TRANSPORT:'images/Transport_clean.png'};
+const LOC=[
+ {id:'CABIN_PORT_STOW',label:'Basket · Port',type:'basket',arm:D.stowage.CABIN_PORT_STOW.arm,view:'stbd'},
+ {id:'CABIN_STBD_STOW',label:'Basket · Stbd',type:'basket',arm:D.stowage.CABIN_STBD_STOW.arm,view:'stbd'},
+ {id:'CABIN_DEPLOYED',label:'Stokes · Cabin B3/4',type:'litter',arm:D.stowage.CABIN_DEPLOYED.arm,view:'pta'},
+ {id:'RAMP_STOW',label:'Stokes · Ramp Stbd',type:'litter',arm:D.stowage.RAMP_STOW.arm,view:'ramp'},
+ {id:'PTA_COT_AREA',label:'PTA cot area',type:'patient',arm:D.stowage.PTA_COT_AREA.arm,view:'pta'},
+ {id:'PORT_FWD_SHELF_TOP',label:'Port Fwd shelf · Top',type:'shelf',arm:D.stowage.PORT_FWD_SHELF_TOP.arm,view:'forward'},
+ {id:'PORT_FWD_SHELF_MID',label:'Port Fwd shelf · Middle',type:'shelf',arm:D.stowage.PORT_FWD_SHELF_MID.arm,view:'forward'},
+ {id:'PORT_FWD_SHELF_BOT',label:'Port Fwd shelf · Bottom',type:'shelf',arm:D.stowage.PORT_FWD_SHELF_BOT.arm,view:'forward'},
+ {id:'PORT_FWD_SHELF__FLOOR',label:'Port Fwd shelf · Floor',type:'shelf',arm:D.stowage.PORT_FWD_SHELF__FLOOR.arm,view:'forward'},
+ ...['OVERHEAD_PORT','OVERHEAD_STBD','INT_LIFE_RAFT_B3_STBD_F','INT_LIFE_RAFT_B4_STBD_A'].map(id=>({id,label:D.stowage[id].name,type:'storage',arm:D.stowage[id].arm,view:id==='OVERHEAD_PORT'?'pta':'stbd'})),
+ ...['SAR_CABINET_FWD_TOP','SAR_CABINET_FWD_BTM','SAR_CABINET_UPPER','SAR_CABINET_TOP','LOCKBOX_TOP','LOCKBOX_BTM','SAR_CABINET_MIDDLE','SAR_CABINET_BOTTOM','CABINET_TOP_SURFACE'].map(id=>({id,label:D.stowage[id].name.replace('SAR Cabinet ','').replace('Lockbox ',''),type:'cabinet',arm:D.stowage[id].arm,view:'cabinet'})),
+ ...['RAMP_PORT_FWD','RAMP_PORT_AFT','RAMP_STBD_FWD','RAMP_STBD_AFT'].map(id=>({id,label:D.stowage[id].name,type:'shelf',arm:D.stowage[id].arm,view:'ramp'}))
+];
+const state={preset:'',mission:new Set(),roleFit:new Set(),items:[],patients:{},seats:new Set(),occupants:{},view:'plan',selectedLoc:null,selectedSeat:null};
+const byId=id=>D.missionEquip[id]||D.roleFit[id]||{};
+function missionObject(key){const it=D.missionEquip[key];if(!it)return null;return {key,name:it.name||key,kind:it.isBasket?'basket':window.CabinStokes.isLitter(key)?'litter':'gear',mass:(it.unitWeight??it.w??0)*(it.defaultQuantity??1),loc:state.moved?.[key]?.loc||it.stow||'',source:'mission',quantity:it.defaultQuantity??1};}
+function fitObject(key){const it=D.roleFit[key];if(!it)return null;return {key,name:it.name||key,kind:'fit',mass:it.w||0,loc:key==='RF_SAR_EQUIPMENT_CSH_PATIENT_TREATMENT_SYSTEM'?'PTA_COT_AREA':Object.keys(D.stowage).find(id=>D.stowage[id].roleFitKey===key)||'',source:'role'};}
+function recalculateItems(){
+ const out=[];for(const k of state.mission){const o=missionObject(k);if(!o)continue;const override=state.moved[k];if(override){o.loc=override.loc;o.key=override.key||o.key;o.name=override.name||o.name;}out.push(o)}
+ for(const k of state.roleFit){const o=fitObject(k);if(o)out.push(o)}
+ state.items=out;
+}
+function applyPreset(key){
+ const proposedPreset=key&&D.presets[key];
+ if(proposedPreset){const proposedSeats=new Set([...(proposedPreset.seats?.crew||[]),...(proposedPreset.seats?.pax||[]),...Object.keys(D.crewSeats).filter(id=>D.crewSeats[id].alwaysInstalled)]);const conflicts=window.CH149_SEAT_RULES.issues(proposedSeats,{roleFit:new Set(proposedPreset.roleFitOn||[]),mission:new Set(proposedPreset.missionOn||[]),occupants:Object.fromEntries((proposedPreset.occupants||[]).map(id=>[id,true]))});if(conflicts.length){renderConfigButtons();document.querySelector('#configSummary').textContent=`Cannot apply ${proposedPreset.name}: ${conflicts.join('; ')}.`;return false;}}
+ state.preset=key||'';state.view='plan';state.mission=new Set();state.roleFit=new Set();state.moved={};state.patients={};
+ const p=key&&D.presets[key];
+ if(p){for(const k of p.missionOn||[])if(D.missionEquip[k]&&D.missionEquip[k].group!=='Stowage')state.mission.add(k);for(const k of p.roleFitOn||[])if(D.roleFit[k])state.roleFit.add(k);state.seats=new Set([...(p.seats?.crew||[]),...(p.seats?.pax||[])]);state.occupants={};for(const s of p.occupants||[])state.occupants[s]=p.occupantRoles?.[s]||'OCCUPIED';}
+ else {state.seats=new Set([...Object.entries(D.crewSeats).filter(([,s])=>s.alwaysInstalled).map(([k])=>k),...Object.entries(D.paxSeats).filter(([,s])=>s.normallyInstalled).map(([k])=>k)]);state.occupants={};}
+ window.CabinPresetRules.apply(key,state);state.selectedSeat=null;document.querySelector('#seatEditMessage').textContent='';recalculateItems();render();
+}
+function findKey(fragment){return [...state.mission].find(k=>k.includes(fragment));}
+function locFor(item){if(item.key==='RF_AIRCRAFT_SYSTEMS_SEA_TRAY')return {id:'SEA_TRAY_AREA',label:'B3/B4/B5 Centre',arm:D.roleFit[item.key].arm,view:'plan',type:'fit'};const linked=window.CabinBasket.resolvedLocation(state,item.key);if(linked)return linked;const loc=LOC.find(x=>x.id===item.loc);if(loc)return loc;const m=D.stowage[item.loc];if(m)return {id:item.loc,label:m.name,arm:m.arm,view:'cabinet',type:'generic'};return {id:item.loc,label:item.loc||'Unplaced',arm:byId(item.key).arm??null,view:'plan',type:'generic'};}
+function fmtKg(n){return Number(n||0).toFixed(1).replace(/\.0$/,'')+' kg'}
+function configName(){return state.preset?D.presets[state.preset]?.name||state.preset:'No preset'}
+function renderConfigButtons(){const host=document.querySelector('#configButtons');const configs=Object.entries(D.presets).filter(([,p])=>p.active!==false).sort((a,b)=>(a[1].displayOrder??999)-(b[1].displayOrder??999));host.innerHTML=`<button class="config ${state.preset?'':'active'}" data-preset="">No Role Config</button>`+configs.map(([key,p])=>`<button class="config ${state.preset===key?'active':''}" data-preset="${key}">${p.name||key}</button>`).join('');host.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>applyPreset(b.dataset.preset));}
+function renderViews(){document.querySelector('#viewTabs').innerHTML=VIEWS.map(([id,label])=>`<button class="viewtab ${state.view===id?'active':''}" data-viewtab="${id}">${label}</button>`).join('');document.querySelectorAll('[data-viewtab]').forEach(b=>b.onclick=()=>setView(b.dataset.viewtab));}
+const AREAS=[['cabinet','SAR Equipment Storage Cabinet','Open cabinet shelf view'],['forward','Port forward shelves','Open shelf view'],['pta','Port Aft View','Open port aft view'],['ramp','Ramp shelves','Open ramp close-up'],['stbd','Starboard Aft View','Open starboard aft view']];
+const LOCATION_GROUPS={cabinet:'SAR Equipment Storage Cabinet',forward:'Port forward shelves',pta:'Port Aft View',ramp:'Rear cabin & ramp',stbd:'Starboard Aft View'};
+function renderLocationGroups(){const host=document.querySelector('#locationGroups');host.innerHTML=Object.entries(LOCATION_GROUPS).map(([view,label])=>{const items=LOC.filter(l=>l.view===view);return `<details class="location-group"><summary>${label} · ${items.length} locations</summary><div class="location-choices">${items.map(l=>`<button class="location-choice ${state.selectedLoc===l.id?'active':''}" data-location="${l.id}" data-location-view="${view}">${l.label}<small>${l.arm} mm app arm</small></button>`).join('')}</div></details>`}).join('');host.querySelectorAll('[data-location]').forEach(b=>b.onclick=()=>{state.selectedLoc=b.dataset.location;setView(b.dataset.locationView)});}
+function renderAreaNav(){const host=document.querySelector('#areaButtons');host.innerHTML=(state.view==='plan'?AREAS:[['plan','2D cabin plan','Return to role-specific top-down plan'],...AREAS]).map(([id,label,sub])=>`<button class="area-button ${state.view===id?'active':''}" data-area="${id}">${label}<small>${sub}</small></button>`).join('');host.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>setView(b.dataset.area));document.querySelector('#areaNavTitle').textContent=state.view==='plan'?'Select a named cabin area or browse all locations below':'Switch area · select a shelf or zone below the close-up';renderLocationGroups();}
+function setView(id){state.view=id;const names={plan:['2D cabin plan','The selected Role Config determines this reference plan','2D PLAN'],cabinet:['SAR Equipment Storage Cabinet · close-up','Select a named app shelf location below the photo','DETAIL VIEW'],forward:['Port forward shelves · close-up','Select a named shelf below the photo','DETAIL VIEW'],pta:['Port Aft View','Choose a PTA, cabin Stokes or Port overhead location below','DETAIL VIEW'],ramp:['Rear ramp · shelves and raised ramp','Select a named ramp shelf or litter stow below','DETAIL VIEW'],stbd:['Starboard Aft View','Reference image includes example installed equipment','REFERENCE']};const n=names[id];const planSrc=state.preset?PLAN_IMAGES[state.preset]:'images/unconfigured-baseline-v2.png';const hasPlan=id!=='plan'||!!planSrc;const img=document.querySelector('#cabinImage');img.style.display=hasPlan?'':'none';if(hasPlan)img.src=id==='plan'?planSrc:IM[id];else img.removeAttribute('src');img.alt=n[0];document.querySelector('#planUnavailable').classList.toggle('show',id==='plan'&&!planSrc);document.querySelector('#viewTitle').textContent=n[0];document.querySelector('#viewSub').textContent=n[1];document.querySelector('#viewBadge').textContent=n[2];document.querySelector('#photoChip').textContent=id==='plan'?(state.preset?`${configName()} · clean plan reference`:'No Role Config · draft unconfigured baseline'):'Actual render · reference close-up';document.querySelector('#photoCaption').textContent=id==='plan'?(state.preset?'This clean plan follows the selected Role Config. Click a highlighted area or browse all app locations below.':'Draft baseline: C1/C2, P2/P3 and retained shelving. Removed areas contain inferred floor detail; review against the original plan.'):'Use the grouped location controls below the image to select an app location. The close-up is visual context; it does not define the W&B arm.';document.querySelector('.photo-wrap').classList.toggle('plan-view',id==='plan');const rolePreset=state.preset&&D.presets[state.preset];const cabinetKey='RF_SAR_EQUIPMENT_FWD_SAR_CABINET';const cabinetInstalled=state.roleFit.has(cabinetKey);document.querySelector('#planCabinet').classList.toggle('show',id==='plan'&&hasPlan&&cabinetInstalled);document.querySelectorAll('.hotspot').forEach(h=>h.style.display='none');renderViews();renderAreaNav();renderDetail();window.CabinPlanViewer.setView({view:id,preset:state.preset,hasPlan,cabinetInstalled});}
+function renderTargets(){document.querySelector('#dropTargets').innerHTML=LOC.filter(l=>['basket','litter','patient','shelf'].includes(l.type)).map(l=>`<button class="drop" data-dest="${l.id}"><b>${l.label}</b><small>W&amp;B arm ${l.arm} mm · drop here</small></button>`).join('');document.querySelectorAll('[data-dest]').forEach(b=>{b.ondragover=e=>{e.preventDefault();b.classList.add('over')};b.ondragleave=()=>b.classList.remove('over');b.ondrop=e=>{e.preventDefault();b.classList.remove('over');moveItem(e.dataTransfer.getData('text/plain'),b.dataset.dest)};b.onclick=()=>{const l=LOC.find(x=>x.id===b.dataset.dest);if(l?.view)setView(l.view);state.selectedLoc=l.id;renderDetail();if(l?.type==='patient')window.CabinPTA.open();else if(l?.type==='litter')window.CabinStokes.open(l.id==='RAMP_STOW'?'RAMP':'CABIN');};});}
+function itemCard(o,compact=false){const l=locFor(o);const badge=o.source==='role'?'Role-Fit':'Mission load';const key=o.source==='mission'?o.key:o.key;return `<article class="item" draggable="${o.source==='mission'}" data-item="${key}"><div class="item-top"><span class="item-name">${o.name}</span><span class="tag ${o.source==='role'?'fit':'load'}">${badge}</span></div><div class="item-meta">${fmtKg(o.mass)} · ${l.label} · arm ${l.arm??'—'} mm</div>${o.source==='mission'?`<div class="actions"><button class="smallbtn" data-move="${key}">Choose location</button><button class="smallbtn" data-remove="${key}">Remove</button>${o.kind==='litter'?`<button class="smallbtn" data-patient-litter="${key}">Add patient</button>`:''}</div>`:''}</article>`;}
+function renderItems(){
+ const mission=[...state.mission].map(missionObject).filter(Boolean);const fits=[...state.roleFit].map(fitObject).filter(Boolean);const all=[...mission,...fits];
+ document.querySelector('#itemCount').textContent=`${all.length} items`;const main=mission.filter(o=>o.kind==='basket'||o.kind==='litter'||o.key===window.CabinFloorEquipment.raftKey);
+ document.querySelector('#loadedItems').innerHTML=main.length?main.map(o=>itemCard(o)).join(''):'<div class="empty">No mission loads yet. Select a standard configuration or add an item below.</div>';
+ const remaining=mission.filter(o=>!main.some(m=>m.key===o.key));document.querySelector('#otherItemsWrap').innerHTML=remaining.length?`<details style="margin-top:9px"><summary class="section-title">Other configured equipment (${remaining.length})</summary><div class="items" style="margin-top:7px">${remaining.slice(0,24).map(o=>itemCard(o,true)).join('')}${remaining.length>24?`<div class="quiet">${remaining.length-24} more items in this standard configuration</div>`:''}</div></details>`:'';
+ const fitRelevant=fits.filter(o=>/SAR Equipment Storage Cabinet|Patient Treatment System/.test(o.name));
+ if(fitRelevant.length)document.querySelector('#loadedItems').insertAdjacentHTML('beforeend',fitRelevant.map(o=>itemCard(o,true)).join(''));
+ const extraFit=fits.filter(o=>o.key===window.CabinFloorEquipment.trayKey||window.CabinFloorEquipment.locations.some(id=>D.stowage[id].roleFitKey===o.key));document.querySelector('#loadedItems').insertAdjacentHTML('beforeend',extraFit.map(o=>itemCard(o,true)).join(''));const raftIssue=window.CabinFloorEquipment.raftIssue(state);if(raftIssue)document.querySelector('#loadedItems').insertAdjacentHTML('beforeend',`<p class="floor-reason" id="raftIssue">${raftIssue}</p>`);
+ const unresolved=mission.filter(o=>o.loc==='BASKET'&&locFor(o).arm===null);if(unresolved.length)document.querySelector('#loadedItems').insertAdjacentHTML('beforeend',`<div class="floor-reason" role="status" id="basketUnresolved">${unresolved.map(o=>o.name).join(', ')}: carrying basket needs selection. Equipment remains in the load; no location arm is assigned.</div>`);
+ document.querySelector('#patientLoads').innerHTML=Object.entries(state.patients).filter(([,v])=>v).map(([k])=>{const p=D.patientPositions[k];return `<div class="patientbar"><span>Patient · ${p.name} · ${fmtKg(p.weight)} @ ${p.arm} mm</span><button class="smallbtn" data-remove-patient="${k}">Remove</button></div>`}).join('');
+ document.querySelectorAll('[data-item]').forEach(el=>{el.ondragstart=e=>{el.classList.add('dragging');e.dataTransfer.setData('text/plain',el.dataset.item)};el.ondragend=()=>el.classList.remove('dragging')});
+ document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>removeItem(b.dataset.remove));
+ document.querySelectorAll('[data-remove],[data-move]').forEach(b=>{const key=b.dataset.remove||b.dataset.move;if(key==='ME_SAR_MISSION_EQUIP_STOKES_LITTER_CABIN'&&state.patients.STOKES_CABIN){b.disabled=true;b.title='Remove the Stokes patient first.';}});
+ document.querySelectorAll('[data-patient-litter]').forEach(b=>{const cabin=b.dataset.patientLitter==='ME_SAR_MISSION_EQUIP_STOKES_LITTER_CABIN';b.disabled=!cabin;b.textContent=cabin?(state.patients.STOKES_CABIN?'Remove patient':'Add patient'):'Deploy before adding patient';});
+ document.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>{const card=b.closest('.item');card.querySelector('[data-move-choices]')?.remove();const basket=D.missionEquip[b.dataset.move]?.isBasket,litter=window.CabinStokes.isLitter(b.dataset.move),raft=b.dataset.move===window.CabinFloorEquipment.raftKey;card.insertAdjacentHTML('beforeend',`<div class="actions" data-move-choices>${LOC.filter(l=>basket?l.type==='basket':litter?l.type==='litter':raft?window.CabinFloorEquipment.locations.includes(l.id):l.type==='basket'||l.type==='litter'||l.type==='shelf').slice(0,8).map(l=>`<button class="smallbtn" data-choose="${l.id}" data-key="${b.dataset.move}">${l.label}</button>`).join('')}</div>`);card.querySelectorAll('[data-choose]').forEach(x=>x.onclick=()=>moveItem(x.dataset.key,x.dataset.choose))});
+ document.querySelectorAll('[data-patient-litter]').forEach(b=>b.onclick=()=>{const litter=missionObject(b.dataset.patientLitter);const pos=litter?.loc==='CABIN_DEPLOYED'?'STOKES_CABIN':null;if(pos)togglePatient(pos);else alert('Move the Stokes litter to the approved cabin patient position first.')});
+ document.querySelectorAll('[data-remove-patient]').forEach(b=>b.onclick=()=>{if(b.dataset.removePatient==='PTA')window.CabinPTA.setPatient(state,false);else if(b.dataset.removePatient==='STOKES_CABIN')window.CabinStokes.setPatient(state,false);else delete state.patients[b.dataset.removePatient];renderItems();renderSeats();renderDetail();});
+}
+function moveItem(key,dest,{keepView=false}={}){const target=LOC.find(l=>l.id===dest);if(!target)return;const m=D.missionEquip[key];if(!m)return;let newKey=key;
+ if(m.isBasket){const result=window.CabinBasket.move(state,key,dest);if(!result.ok){alert(result.reason);return false;}}
+ else if(key===window.CabinFloorEquipment.raftKey){const result=window.CabinFloorEquipment.moveRaft(state,dest);if(!result.ok){alert(result.reason);return false;}}
+ else if(window.CabinStokes.isLitter(key)){const result=window.CabinStokes.move(state,key,dest);if(!result.ok){alert(result.reason);return false;}}
+ else {state.moved[key]={loc:dest};}
+ recalculateItems();if(target.view&&!keepView)setView(target.view);renderItems();renderTargets();renderSeats();renderDetail();return true;
+}
+function removeItem(key){if(D.missionEquip[key]?.isBasket)window.CabinBasket.remove(state,key);else if(window.CabinStokes.isLitter(key)){const result=window.CabinStokes.remove(state,key);if(!result.ok){alert(result.reason);return false;}}else{state.mission.delete(key);delete state.moved[key];}recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();return true;}
+function togglePatient(key){const pos=D.patientPositions[key];if(!pos){alert('That patient position is not in the app location catalogue.');return}if(key==='PTA'){const result=window.CabinPTA.setPatient(state,!state.patients.PTA);if(!result.ok){alert(result.reason);return;}}else if(key==='STOKES_CABIN'){const result=window.CabinStokes.setPatient(state,!state.patients.STOKES_CABIN);if(!result.ok){alert(result.reason);return;}}else if(pos.roleFitKey?.includes('CASEVAC_RACK')){const result=window.CabinCasevac.setPatient(state,key,!state.patients[key]);if(!result.ok){alert(result.reason);return;}}else state.patients[key]=!state.patients[key];renderItems();renderSeats();setView('pta');}
+function renderDetail(){window.CabinCabinetZones.setSelection(state.selectedLoc);window.CabinForwardShelves?.setSelection(state.selectedLoc);window.CabinRampShelves?.setSelection(state.selectedLoc);window.CabinPortOverhead?.setSelection(state.selectedLoc);window.CabinStbdOverhead?.setSelection(state.selectedLoc);const detail=document.querySelector('#viewerDetail'),slots=document.querySelector('#detailSlots'),title=document.querySelector('#detailTitle'),arm=document.querySelector('#detailArm'),contents=document.querySelector('#detailContents');let group=[];
+ if(state.view==='cabinet'){group=LOC.filter(l=>l.type==='cabinet');title.textContent='SAR Cabinet · select a zone';}
+ else if(state.view==='forward'){group=LOC.filter(l=>l.id.startsWith('PORT_FWD'));title.textContent='Port Forward Shelves · select a shelf';}
+ else if(state.view==='ramp'){group=LOC.filter(l=>l.id.startsWith('RAMP_')||l.id==='RAMP_STOW');title.textContent='Ramp · select shelf or litter stow';}
+ else if(state.view==='pta'){group=LOC.filter(l=>l.id==='PTA_COT_AREA'||l.id==='CABIN_DEPLOYED'||l.id==='OVERHEAD_PORT');title.textContent='Port Aft View · select a location';}
+ else if(state.view==='stbd'){group=LOC.filter(l=>l.view==='stbd');title.textContent='Starboard Aft View · select a location';}
+ else {detail.classList.remove('show');return}
+ detail.classList.add('show');
+ const l=group.find(x=>x.id===state.selectedLoc)||group[0];if(!l)return;state.selectedLoc=l.id;
+ slots.innerHTML=group.map(item=>`<button class="slot ${l.id===item.id?'active':''}" data-slot="${item.id}">${item.label}</button>`).join('');
+ slots.querySelectorAll('[data-slot]').forEach(b=>b.onclick=()=>{state.selectedLoc=b.dataset.slot;renderDetail();});
+ arm.textContent=`App arm ${l.arm} mm`;
+ const records=itemsAt(l.id),isPTA=l.id==='PTA_COT_AREA',patient=D.patientPositions.PTA;
+ contents.innerHTML=`<div class="contents-row"><span>${l.label}</span><b>Approved location</b></div>${records.length?records.map(o=>`<div class="contents-row"><span>${o.name}</span><b>${fmtKg(o.mass)}</b></div>`).join(''):'<div class="quiet" style="padding:6px 0">No configured item is listed at this location.</div>'}${isPTA&&state.patients.PTA?`<div class="contents-row" id="ptaDetailPatient"><span>PTA patient · ${patient.arm} mm</span><b>${fmtKg(patient.weight)}</b></div>`:''}<div class="actions">${isPTA?`<button class="smallbtn" id="inspectPTA">PTA cot options</button><button class="smallbtn" id="addPTA" ${!state.roleFit.has('RF_SAR_EQUIPMENT_CSH_PATIENT_TREATMENT_SYSTEM')?'disabled':''}>${state.patients.PTA?'Remove patient':'Add patient'}</button>`:`<select id="shelfAddSelect" style="border:1px solid var(--line);border-radius:6px;padding:5px;font-size:11px"><option value="">Add equipment to this location…</option>${[...state.mission].map(k=>D.missionEquip[k]).filter(Boolean).map(it=>`<option value="${Object.keys(D.missionEquip).find(k=>D.missionEquip[k]===it)}">${it.name}</option>`).join('')}</select><button class="smallbtn" id="shelfAdd">Place</button>`}${l.id==='CABIN_DEPLOYED'?'<button class="smallbtn" id="addStokesPatient">Add patient on Stokes</button>':''}</div>`;
+ document.querySelector('#shelfAdd')?.addEventListener('click',()=>{const k=document.querySelector('#shelfAddSelect').value;if(k)moveItem(k,l.id);});
+ if(['CABIN_DEPLOYED','RAMP_STOW'].includes(l.id)){
+  const actions=contents.querySelector('.actions'),cabin=l.id==='CABIN_DEPLOYED';
+  actions.innerHTML=`<button class="smallbtn" id="inspectStokes">Stokes litter options</button>${cabin?`<button class="smallbtn" id="addStokesPatient" ${state.mission.has('ME_SAR_MISSION_EQUIP_STOKES_LITTER_CABIN')?'':'disabled'}>${state.patients.STOKES_CABIN?'Remove patient':'Add patient'}</button>`:''}`;
+  if(cabin&&state.patients.STOKES_CABIN){const p=D.patientPositions.STOKES_CABIN;actions.insertAdjacentHTML('beforebegin',`<div class="contents-row" id="stokesDetailPatient"><span>Stokes patient · ${p.arm} mm</span><b>${fmtKg(p.weight)}</b></div>`);}
+  document.querySelector('#inspectStokes').onclick=()=>window.CabinStokes.open(cabin?'CABIN':'RAMP');
+ }
+ if(window.CabinFloorEquipment.locations.includes(l.id)){const actions=contents.querySelector('.actions');actions.innerHTML='<button class="smallbtn" id="inspectRaft">Life raft and stowage options</button>';document.querySelector('#inspectRaft').onclick=()=>window.CabinFloorEquipment.openRaft(l.id);}
+ document.querySelector('#inspectPTA')?.addEventListener('click',()=>window.CabinPTA.open());
+ document.querySelector('#addPTA')?.addEventListener('click',()=>togglePatient('PTA'));
+ document.querySelector('#addStokesPatient')?.addEventListener('click',()=>togglePatient('STOKES_CABIN'));
+}
+function itemsAt(id){return [...[...state.mission].map(missionObject),...[...state.roleFit].map(fitObject).filter(o=>o?.loc==='PTA_COT_AREA'||window.CabinFloorEquipment.locations.includes(o?.loc))].filter(o=>o&&locFor(o).id===id);}
+function renderSeats(){window.CabinSeatEditor.render();window.CabinBasket.render();window.CabinPTA.render();window.CabinStokes.render();}
+function renderCatalog(){const sel=document.querySelector('#catalog');const items=Object.entries(D.missionEquip).filter(([,it])=>it.group!=='Stowage'&&it.active!==false).sort((a,b)=>a[1].name.localeCompare(b[1].name));sel.innerHTML='<option value="">Select an equipment item…</option>'+items.map(([k,it])=>`<option value="${k}">${it.name}</option>`).join('');}
+document.querySelector('#addEquipment').onclick=()=>{const key=document.querySelector('#catalog').value;if(!key)return;const conflict=window.CH149_SEAT_RULES.equipmentConflictMessage(state,key);if(conflict){alert(conflict);return}if(D.missionEquip[key]?.isBasket){const result=window.CabinBasket.install(state,key.endsWith('_PORT')?'PORT':'STBD');if(!result.ok){alert(result.reason);return;}}else if(key===window.CabinFloorEquipment.raftKey){const id=D.missionEquip[key].stow,result=window.CabinFloorEquipment.installRaft(state,id);if(!result.ok){window.CabinFloorEquipment.openRaft(id);return;}}else if(window.CabinStokes.isLitter(key)){const result=window.CabinStokes.install(state,key.endsWith('_CABIN')?'CABIN':'RAMP');if(!result.ok){alert(result.reason);return;}}else state.mission.add(key);recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();};
+document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.config').forEach(x=>x.classList.toggle('active',x===b));applyPreset(b.dataset.preset)});
+document.querySelector('#planCabinet').onclick=()=>setView('cabinet');
+document.querySelectorAll('.hotspot').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+function render(){renderConfigButtons();document.querySelector('#configSummary').textContent=state.preset?`${configName()} · matching plan displayed`:'No Role Config · draft baseline displayed';document.querySelector('#sideTitle').textContent=state.preset?`${configName()} · loaded aircraft`:'Aircraft contents';document.querySelector('#sideSub').textContent=state.preset?'Standard setup applied. Drag a load to another approved location or select a detail render.':'Unconfigured baseline: C1/C2 and P2/P3 retained. Choose a Role Config to load a standard setup.';document.querySelector('#version').textContent=D.meta.configVersion;renderViews();setView(state.view);renderTargets();renderItems();renderSeats();renderCatalog();}
+window.CabinCabinetZones.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
+window.CabinForwardShelves.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
+window.CabinRampShelves.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
+window.CabinPortOverhead.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
+window.CabinStbdOverhead.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
+window.CabinSeatEditor.connect(()=>state);
+window.CabinBasket.connect({state:()=>state,refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
+window.CabinPTA.connect({state:()=>state,view:setView,select:id=>{state.selectedLoc=id;renderDetail();},refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
+window.CabinStokes.connect({state:()=>state,view:setView,select:id=>{state.selectedLoc=id;renderDetail();},refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
+window.CabinLive.connect({state:()=>state,view:setView,seat:id=>{state.selectedSeat=id;document.getElementById('seatToggle').checked=true;renderSeats();document.getElementById('seatMenu').scrollIntoView({block:'nearest'});},refresh:()=>{renderItems();renderSeats();}});
+window.CabinRampArea.connect({state:()=>state,view:setView});
+window.CabinFloorEquipment.connect({state:()=>state,view:setView,refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
+window.CabinCasevac.connect({state:()=>state,view:setView,refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
+window.CabinFloorArea.connect({state:()=>state,refresh:()=>{recalculateItems();renderItems();renderSeats();},seat:id=>{state.selectedSeat=id;document.getElementById('seatToggle').checked=true;renderSeats();document.getElementById('seatMenu').scrollIntoView({block:'nearest'});},view:setView,remove:removeItem,move:(key,dest)=>moveItem(key,dest,{keepView:true})});
+applyPreset('');
+</script>
+<script src="workspace.js"></script>
+</body>
+</html>
+
+
+
+

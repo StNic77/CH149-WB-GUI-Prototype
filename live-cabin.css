@@ -1,0 +1,25 @@
+.live-cabin-background,.live-cabin-items{position:absolute;inset:0;pointer-events:none}.live-cabin-background{z-index:1;background:#fff}.live-cabin-background img{position:absolute;max-width:none;height:auto;pointer-events:none}.live-cabin-items{z-index:5}
+.live-cabin-background[hidden],.live-cabin-items[hidden],.live-cabin-notice[hidden]{display:none}.live-cabin-active #cabinImage{opacity:0}
+.live-cabin-object{position:absolute;min-width:0;min-height:0;margin:0;padding:0;border:0;border-radius:0;background:transparent;pointer-events:auto;transform-origin:center;transition:left .32s ease,top .32s ease,width .18s ease,height .18s ease,transform .32s ease;overflow:visible;box-shadow:none}.live-cabin-object:not(button){pointer-events:none}.live-cabin-object svg{display:block;width:100%;height:100%;pointer-events:none}.live-cabin-object:hover,.live-cabin-object:focus-visible{outline:2px solid #1b786c;outline-offset:2px}.live-cabin-object.folded{outline:2px dashed #bd8429}.live-cabin-object.occupied:after{content:'+';position:absolute;right:0;top:0;border-radius:50%;width:15px;height:15px;background:#e4f6e8;color:#255e35;line-height:15px;font-size:13px;font-weight:800}
+.live-cabin-active .basket-symbol,.live-cabin-active .pta-symbol,.live-cabin-active .stokes-symbol{color:transparent;background:transparent;border-color:transparent;box-shadow:none}.live-cabin-active .basket-symbol:hover,.live-cabin-active .pta-symbol:hover,.live-cabin-active .stokes-symbol:hover{background:#1b786c25}.live-cabin-notice{padding:8px 14px;margin:0;background:#eef6f4;border-bottom:1px solid #d7e5e1;font-size:11px;color:#365c54}
+.placing-floor-cargo .live-cabin-object,.marking-station .live-cabin-object,.locating-seat .live-cabin-object,.inspecting-bays .live-cabin-object{pointer-events:none}
+.live-cabin-active #basketLayer,.live-cabin-active #ptaLayer,.live-cabin-active #stokesLayer,.live-cabin-active #planCabinet{display:none}
+.live-cabin-active .floor-space-cell,.live-cabin-active .floor-area-target{background:transparent;border-color:transparent}.live-cabin-active .floor-space-cell:hover,.live-cabin-active .floor-area-target:hover{outline:1px solid #39796e;outline-offset:-1px;background:#39796e18}
+@media(prefers-reduced-motion:reduce){.live-cabin-object{transition:none}}
+
+/* Centred, upright occupancy badges; icons and letters distinguish roles without colour alone. */
+.live-cabin-object.occupied:after{content:none}
+.live-occupancy-marker{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(var(--counter-rotation,0deg));display:flex;align-items:center;justify-content:center;gap:2px;min-width:24px;height:26px;padding:2px 4px;border:2px solid white;border-radius:8px;background:#225b78;color:white;box-shadow:0 1px 4px #0009;pointer-events:none;box-sizing:border-box}
+.live-cabin-object .live-occupancy-marker svg{width:12px;height:18px;fill:currentColor;overflow:visible}
+.live-occupancy-marker b{font:800 11px/1 system-ui}
+.live-occupancy-marker[data-occupancy=crew]{background:#225b78}
+.live-occupancy-marker[data-occupancy=passenger]{background:#286e4e}
+.live-occupancy-marker[data-occupancy=patient]{background:#803f61;min-width:32px}
+.live-cabin-object .live-occupancy-marker[data-occupancy=patient] svg{width:24px;height:18px}
+.live-occupancy-marker[data-occupancy=patient] path{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+
+
+.live-rack-patients{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;gap:3px;pointer-events:none}
+.live-rack-patients .live-occupancy-marker{position:relative;left:auto;top:auto;transform:none}
+.inspecting-bays .live-cabin-items{z-index:3}
+

@@ -1,0 +1,20 @@
+/* One inspectable ramp loading zone. Cargo calculations/entry are deferred. */
+(() => {
+ const data=window.CH149_DATA,layer=document.createElement('div');layer.id='rampAreaLayer';layer.className='ramp-area-layer';layer.hidden=true;document.getElementById('planSheet').append(layer);
+ const target=document.createElement('button');target.type='button';target.id='rampAreaTarget';target.dataset.rampZone='RAMP';target.className='floor-space-cell';target.setAttribute('aria-label','Select Ramp loading area');target.setAttribute('aria-controls','rampAreaPanel');layer.append(target);
+ const panel=document.createElement('section');panel.id='rampAreaPanel';panel.className='floor-area-panel';panel.hidden=true;panel.setAttribute('aria-label','Ramp loading area');document.getElementById('seatReferenceNotice').before(panel);
+ const openButton=document.createElement('button');openButton.type='button';openButton.id='rampAreaOpen';openButton.textContent='Ramp area';openButton.setAttribute('aria-controls','rampAreaPanel');document.getElementById('planTools').append(openButton);
+ let bridge,available=false,opened=false;
+ function open(){if(!available||!bridge)return;window.CabinFloorArea.close();window.CabinBasket.close();window.CabinPTA.close();window.CabinStokes.close();window.CabinFloorEquipment?.close();window.CabinCasevac?.close();opened=true;render();panel.scrollIntoView({block:'nearest'});}
+ function close(){opened=false;render();}
+ function render(){
+  if(!bridge)return;const m=window.CabinBayLayer?.getDisplayMapping();layer.hidden=!available||!m;openButton.hidden=!available;panel.hidden=!available||!opened;
+  if(!layer.hidden){const x=station=>m.forwardX+(station-4875)/6518*(m.aftX-m.forwardX);Object.assign(target.style,{left:x(data.ramp.hinge)/m.width*100+'%',width:(x(data.ramp.end)-x(data.ramp.hinge))/m.width*100+'%',top:(m.centerY-95*m.sourceScale)/m.height*100+'%',height:190*m.sourceScale/m.height*100+'%'});target.setAttribute('aria-expanded',String(opened));target.classList.toggle('selected',opened);}
+  if(panel.hidden)return;const state=bridge.state(),stowed=state.mission.has('ME_SAR_MISSION_EQUIP_STOKES_LITTER_RAMP'),deployed=state.mission.has('ME_SAR_MISSION_EQUIP_STOKES_LITTER_CABIN');
+  panel.innerHTML=`<div class="floor-area-heading"><div><h2>Ramp</h2><p>Single loading area</p></div><button type="button" class="secondary" id="rampAreaClose">Close</button></div><div class="floor-choices"><article class="floor-choice"><h3>Cargo</h3><p>Ramp cargo placement and loading limits will be added together.</p><button type="button" class="secondary" id="rampCargoAdd" disabled>Add ramp cargo</button></article><article class="floor-choice"><h3>Stokes litter</h3><p>${stowed?'Stowed on the starboard ramp':deployed?'Deployed in B3/B4 Centre':'Not installed'}. Stowed litter counts toward ramp loading.</p><button type="button" class="secondary" id="rampAreaStokes">Stokes litter options</button></article><article class="floor-choice"><h3>Ramp shelves</h3><p>Shelves have their own limits. Shelf loads do not count toward ramp loading.</p><button type="button" class="secondary" id="rampAreaShelves">Open ramp shelves</button></article></div>`;
+  panel.querySelector('#rampAreaClose').onclick=()=>{close();target.focus();};panel.querySelector('#rampAreaStokes').onclick=()=>{close();window.CabinStokes.open('RAMP');};panel.querySelector('#rampAreaShelves').onclick=()=>{close();bridge.view('ramp');};
+ }
+ target.onclick=open;openButton.onclick=open;
+ window.CabinRampArea={connect(value){bridge=value;},open,close,render,setView(value){available=value;if(!value)opened=false;render();},getState:()=>({available,opened,area:'RAMP',cargoEnabled:false})};
+})();
+

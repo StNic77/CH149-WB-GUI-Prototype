@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cabin image review — CH-149-615</title>
+<link rel="stylesheet" href="review.css">
+</head>
+<body>
+<header><a href="index.html">← Cabin workspace</a><span>CH-149-615 / Image review</span></header>
+<main>
+  <div class="intro"><div><p class="eyebrow">BUILD THE VISUAL BASELINE</p><h1>Point it out. Give it a name.</h1><p>Click the original SAR-3 plan to add a numbered marker. We can discuss each number together.</p></div><span class="source-tag">Original image · unchanged</span></div>
+  <div class="review-layout">
+    <section class="image-panel" aria-label="Original plan and markers">
+      <div class="image-tools"><label for="zoom">Image size</label><input id="zoom" type="range" min="100" max="300" step="25" value="100"><output id="zoomValue" for="zoom">100%</output><button id="addCenter" type="button">Add marker at centre</button></div>
+      <p class="image-help">Click an unmarked spot to add a marker. Select a number to edit it. Enlarge the image for detail.</p>
+      <div class="image-scroll" id="imageScroll"><div class="image-canvas" id="imageCanvas"><img id="reviewImage" src="images/SAR_3_Pax.png" alt="Original annotated SAR-3 Pax top-down cabin plan. Use Add marker at centre and the position controls as a keyboard alternative to clicking." draggable="false"><div id="markerLayer"></div></div></div>
+      <div class="image-foot">SAR-3 Pax · supplied annotated plan<span>Markers record visual locations only; they do not define W&amp;B arms.</span></div>
+    </section>
+    <aside class="review-panel" aria-label="Marker decisions">
+      <div class="panel-head"><h2>Review markers <span id="markerCount">0</span></h2><p id="saveStatus" role="status" aria-live="polite">Connecting to saved review…</p></div>
+      <div id="markerList" class="marker-list" aria-label="Select a marker"></div>
+      <div id="emptyReview" class="empty-review"><b>Start with one familiar item.</b><p>For example, mark the SAR cabinet, name it, then decide whether it belongs in the unconfigured view.</p></div>
+      <form id="markerEditor" hidden>
+        <h3 id="editorTitle">Marker</h3>
+        <label for="markerName">What is this?</label><input id="markerName" maxlength="100" placeholder="e.g. SAR equipment cabinet" autocomplete="off">
+        <label for="markerKind">This marker identifies</label><select id="markerKind"><option value="unknown">Not yet identified</option><option value="equipment">Equipment or seat</option><option value="structure">Structure or shelving</option><option value="location">A placement area / location</option></select>
+        <label for="markerDecision">In the unconfigured image</label><select id="markerDecision"><option value="unreviewed">Needs discussion</option><option value="keep">Keep visible</option><option value="remove">Remove from baseline image</option><option value="location">Keep as a selectable location</option></select>
+        <label for="markerNotes">Notes / what should happen here?</label><textarea id="markerNotes" rows="3" maxlength="1500" placeholder="Describe the item or a menu we should explore."></textarea>
+        <details class="position-controls"><summary>Adjust marker position</summary><p>Percent of the image from its left and top edges.</p><div><label for="markerX">Left (%)<input id="markerX" type="number" min="0" max="100" step="0.1"></label><label for="markerY">Top (%)<input id="markerY" type="number" min="0" max="100" step="0.1"></label></div></details>
+        <div class="editor-actions"><button type="button" id="deleteMarker">Delete this marker</button></div>
+      </form>
+      <div class="review-actions"><button id="undoReview" type="button" disabled>Undo last change</button><button id="retrySave" type="button" hidden>Retry save</button></div>
+      <p class="review-note">Decisions are saved in this prototype folder. Tell me “look at marker 1” and I can read its saved position and notes. This does not automatically send a chat message.</p>
+    </aside>
+  </div>
+</main>
+<script src="review.js"></script>
+</body>
+</html>

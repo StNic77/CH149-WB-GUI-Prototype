@@ -1,0 +1,32 @@
+{
+  "file": "../CH-149-615-WB - Active Dev/config.js",
+  "configVersion": 29,
+  "sha256": "82E6A0F2B444A3FC49A463DE28134CFB9D26A6B5E2E9D7D7E3EF0E848F2E00F0",
+  "refreshedAt": "2026-10-21T05:12:21.663Z",
+  "fields": [
+    "meta",
+    "stowage",
+    "missionEquip",
+    "roleFit",
+    "presets",
+    "crewSeats",
+    "paxSeats",
+    "patientPositions",
+    "bayArms",
+    "ramp",
+    "crewEquipmentPlacement"
+  ],
+  "scope": "Pinned reduced catalogue; no credentials, aircraft acceptance, fuel or whole-aircraft calculation integration.",
+  "prototypeOverrides": [
+    {
+      "bay": "BAY6",
+      "arm": 10875,
+      "sourceArm": 10884,
+      "decision": {
+        "by": "user",
+        "date": "2026-10-20",
+        "note": "Retain Bay 6 arm at 10875 mm despite its extra 18 mm of length. Station boundaries remain X10375–X11393."
+      }
+    }
+  ]
+}

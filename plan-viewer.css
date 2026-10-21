@@ -1,0 +1,100 @@
+.plan-tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:10px 14px;background:#f8fafb;border-top:1px solid #e1e8ed;border-bottom:1px solid #e1e8ed;font-size:12px}
+.plan-tools button{border:1px solid #bdced7;border-radius:6px;background:#fff;color:#284e5f;min-height:36px;padding:5px 11px;font-size:12px}
+.plan-tools button:disabled{opacity:.45;cursor:default}
+.plan-tools output{min-width:44px;text-align:center;font-variant-numeric:tabular-nums;color:#345b6b}
+.plan-tools label{display:flex;align-items:center;gap:6px;margin-left:auto;font-size:11px;color:#496a79}
+.plan-help{font-size:11px;color:#667f8d;margin:0;padding:8px 15px;border-bottom:1px solid #e1e8ed}
+#planTools[hidden]+.plan-help{display:none}
+.photo-wrap.plan-view{aspect-ratio:2560/1216;background:#fff;min-height:0!important}
+.photo-wrap.plan-view .plan-unavailable{position:absolute;inset:0;min-height:0}
+.plan-viewport{width:100%;height:100%;position:absolute;inset:0;overflow:hidden;isolation:isolate}
+.plan-sheet{position:absolute;inset:0;transform-origin:0 0;width:100%;height:100%;will-change:transform}
+.photo-wrap.plan-view #cabinImage{position:absolute;max-width:none;object-fit:initial;user-select:none;pointer-events:none}
+.photo-wrap:not(.plan-view) #cabinImage{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.photo-wrap .photo-chip{pointer-events:none;z-index:3;max-width:calc(100% - 24px)}
+.plan-viewport.can-pan{cursor:grab;touch-action:none}
+.plan-viewport.panning{cursor:grabbing}
+.plan-target{min-width:0;min-height:0;padding:0;border-width:2px;border-radius:4px;background:#ffc64432;box-shadow:0 0 0 1px #142a4280;text-shadow:none}
+.plan-target::after{display:none}
+.plan-target span{position:absolute;left:0;bottom:calc(100% + 4px);white-space:nowrap;padding:3px 6px;background:#ffe3a2;color:#233e4c;font-size:10px;border-radius:3px;line-height:1.25;text-shadow:none}
+.plan-target:focus-visible{outline-offset:4px}
+.plan-guides{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;color:#ab4836}
+.plan-guides path{fill:none;stroke:currentColor;stroke-width:2;stroke-dasharray:9 7;vector-effect:non-scaling-stroke;opacity:.75}
+.plan-guides text{fill:currentColor;font:24px "Segoe UI",sans-serif;paint-order:stroke;stroke:#fff;stroke-width:4px}
+#cabinMain.plan-expanded{grid-template-columns:minmax(0,1fr)}
+#cabinMain.plan-expanded>.side{display:none}
+@media(max-width:650px){.plan-tools label{margin-left:0}.plan-target span{font-size:9px}.plan-help{font-size:10px}}
+.bay-layer{position:absolute;inset:0;pointer-events:none;z-index:4}
+.inspecting-bays .bay-layer{z-index:8}
+.inspecting-bays .floor-area-layer{pointer-events:none}
+.inspecting-bays .floor-space-cell,.inspecting-bays .floor-area-target{pointer-events:none}
+.inspecting-bays .plan-guides{z-index:9}
+.live-cabin-active .plan-guides{z-index:7}
+.bay-layer[hidden],.bay-panel[hidden]{display:none}
+.bay-region{position:absolute;pointer-events:auto;border:1px dashed #9a6819;border-radius:0;background:#edb75716;padding:0;color:#6a4612;touch-action:inherit}
+.bay-region:nth-child(even){background:#edb75729}
+.bay-region:hover,.bay-region:focus-visible{background:#edb75765;outline:2px solid #80511a;outline-offset:-2px}
+.bay-region[aria-pressed=true]{background:#38a88c48;border:2px solid #166c5a;color:#155b4c}
+.bay-region span{position:absolute;top:100%;left:50%;transform:translateX(-50%);font-size:clamp(10px,1vw,13px);line-height:1.6;background:#fffdf6;padding:0 4px;border-radius:0 0 4px 4px;white-space:nowrap;font-weight:700}
+.bay-station{position:absolute;border-left:2px dashed #9a6819;pointer-events:none}
+.bay-station span{position:absolute;bottom:100%;left:4px;font-size:clamp(9px,.85vw,12px);font-weight:650;background:#fff8e9;white-space:nowrap;padding:2px 4px}
+.bay-station.aft span{left:auto;right:4px}
+.inspecting-bays #planCabinet{visibility:hidden}
+.marking-station,.marking-station .bay-region{cursor:crosshair}
+.marking-station .bay-layer{pointer-events:auto}
+.marking-station .bay-region{pointer-events:none}
+.marking-station::after{content:attr(data-marking);position:absolute;bottom:5px;left:8px;right:8px;z-index:6;pointer-events:none;background:#fff4dbea;color:#684310;border:1px solid #d4ad64;border-radius:5px;padding:5px 8px;font-size:11px;line-height:1.4}
+.bay-review-actions button[hidden]{display:none}
+.seat-layer{position:absolute;inset:0;z-index:5;pointer-events:none}
+.seat-layer[hidden],.seat-panel[hidden],.seat-reference-notice[hidden]{display:none}
+.seat-marker{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;width:clamp(16px,1.35vw,24px);height:clamp(16px,1.35vw,24px);padding:0;border:1px solid #17695d;border-radius:4px;background:#fff;color:#17695d;font-size:clamp(8px,.7vw,11px);font-weight:750;line-height:1;box-shadow:0 0 0 1px #ffffffa0;touch-action:inherit}
+.seat-marker.installed{background:#17695d;color:#fff}
+.seat-marker.space-used{border-style:dashed;color:#6f7f7a;background:#edf1ef}
+.seat-conflict-note{color:#78521c}
+.seat-marker[aria-pressed=true],.seat-marker:focus-visible{outline:2px solid #d87c10;outline-offset:2px;z-index:1}
+.marking-station .seat-layer{opacity:.25}.marking-station .seat-marker{pointer-events:none}
+.seat-panel{padding:14px 16px;background:#f6fbf9;border-top:1px solid #cee1d9;color:#345868;font-size:12px}
+.seat-panel-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+.seat-panel-head span{font-size:11px;color:#557b72}.seat-panel h3{font-size:12px;margin:16px 0 8px}
+.seat-panel .seat-list{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:7px}
+.seat-panel .seat{min-height:46px;cursor:pointer;color:#33505d;font-size:12px}
+.seat-panel .seat small{display:block;margin-top:3px;color:#607d79;font-size:10px}
+.seat-panel .seat[aria-pressed=true]{outline:2px solid #d87c10;outline-offset:1px}
+.seat-panel .seat-menu{background:#fff;border-color:#b8d4c8;margin:10px 0}
+.seat-panel .seat-menu p{font-size:12px;margin:6px 0}.seat-panel .secondary{min-height:38px;font-size:12px}
+.seat-panel button:disabled{opacity:.55;cursor:default}
+.crew-seat-positions{margin-top:14px}.crew-seat-positions summary{cursor:pointer;margin-bottom:9px}
+.seat-location-tools{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:10px 0}.seat-location-tools span{font-size:11px}
+.seat-location-tools button[hidden]{display:none}
+.locating-seat,.locating-seat .seat-marker{cursor:crosshair}
+.locating-seat .seat-layer{pointer-events:auto}.locating-seat .seat-marker{pointer-events:none}
+.locating-seat::after{content:'Locating C3 · click its position on the plan';position:absolute;bottom:5px;left:8px;z-index:6;pointer-events:none;background:#fff4dbea;padding:5px 8px;color:#684310;font-size:11px;border-radius:5px}
+.seat-reference-notice{margin:0;padding:9px 14px;background:#fff4df;color:#77521c;font-size:12px;border-top:1px solid #e3cb9e}
+#seatEditMessage:empty{display:none}
+@media(max-width:650px){.seat-marker{font-size:7px;width:12px;height:15px}.seat-panel{padding:11px}.seat-panel .seat-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cabinet-zone-layer{position:absolute;z-index:4;overflow:visible;pointer-events:none}
+.cabinet-zone-layer[hidden],.cabinet-zone-tools[hidden]{display:none}
+.cabinet-zone-layer polygon{pointer-events:auto;cursor:pointer;fill:transparent;stroke:transparent;stroke-width:2;vector-effect:non-scaling-stroke}
+.cabinet-zone-layer.reveal polygon{fill:#3bbaa41a;stroke:#97eed1}
+.cabinet-zone-layer polygon:hover,.cabinet-zone-layer polygon:focus-visible,.cabinet-zone-layer polygon.selected{fill:#edbe6038;stroke:#ffe1a0;outline:none}
+.cabinet-zone-layer text{font:700 40px "Segoe UI",sans-serif;fill:#fff;paint-order:stroke;stroke:#193a44;stroke-width:6px;pointer-events:none;visibility:hidden}
+.cabinet-zone-layer.reveal text,.cabinet-zone-layer text.selected,.cabinet-zone-layer polygon:hover+text,.cabinet-zone-layer polygon:focus-visible+text{visibility:visible}
+.cabinet-zone-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 13px;background:#f1f8f5;border-top:1px solid #cee1d8;font-size:11px;color:#416a64}
+.cabinet-zone-tools label{display:flex;align-items:center;gap:5px}.cabinet-zone-tools a{margin-left:auto;color:#246c61}
+.plan-viewport:not(.can-pan){touch-action:manipulation}
+.bay-panel{padding:14px 16px;border-top:1px solid #dfd4bb;background:#fffcf5;font-size:12px;color:#42596a}
+.bay-panel p{margin:7px 0;line-height:1.5}
+.bay-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#243e50}
+.bay-review-status{font-size:11px;color:#835615;background:#f8ead0;border-radius:5px;padding:4px 7px}
+.bay-orientation{font-size:11px;color:#687986}
+.bay-choices,.bay-review-actions{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.bay-choices button,.bay-review-actions button{border:1px solid #c6c8c2;background:white;border-radius:6px;padding:8px 10px;min-height:36px;color:#345366;font-size:12px}
+.bay-choices button[aria-pressed=true],.bay-review-actions button[aria-pressed=true]{border-color:#26856e;background:#e4f4ed;color:#155b4c}
+.bay-inspector{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 12px;background:white;border:1px solid #e0dfd7;border-radius:7px}
+.bay-inspector strong{color:#223d50;font-size:14px}.bay-inspector p{font-size:11px;margin:4px 0 0}
+.bay-arm{display:flex;flex-direction:column;text-align:right;white-space:nowrap}.bay-arm small{font-size:10px;margin-bottom:3px}
+.bay-review,.bay-source{border-top:1px solid #e4ddce;padding-top:9px;margin-top:10px}
+.bay-review summary,.bay-source summary{cursor:pointer;color:#53697b;font-size:11px}
+@media(max-width:650px){.bay-panel{padding:11px}.bay-choices{gap:5px}.bay-choices button{padding:7px 9px;min-height:40px}.bay-region span{font-size:9px;padding:0 2px}.bay-station span{font-size:9px}.bay-inspector{gap:6px}}
+
+.seat-marker.folded{background:#fff0d0;color:#704500;border:2px dashed #a96800}

@@ -1,0 +1,216 @@
+{
+  "schema": 1,
+  "source": "images/SAR_3_Pax.png",
+  "nextNumber": 24,
+  "selected": 23,
+  "updatedAt": "2026-10-19T23:58:57.096Z",
+  "markers": [
+    {
+      "number": 1,
+      "x": 0.37895114942528735,
+      "y": 0.40650285430627947,
+      "name": "SAR equipment Storage Cabinet Area",
+      "kind": "structure",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 2,
+      "x": 0.26544540229885055,
+      "y": 0.41126830479027054,
+      "name": "RH Pilot Seat (C1)",
+      "kind": "equipment",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 3,
+      "x": 0.26185344827586204,
+      "y": 0.5447009183420204,
+      "name": "LH Pilot Seat (C2)",
+      "kind": "equipment",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 4,
+      "x": 0.3444683908045977,
+      "y": 0.571705137751303,
+      "name": "Port Fwd Shelves Area",
+      "kind": "structure",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 5,
+      "x": 0.37535919540229884,
+      "y": 0.5605857532886572,
+      "name": "Sensor Workstation",
+      "kind": "equipment",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 6,
+      "x": 0.4040948275862069,
+      "y": 0.5558203028046662,
+      "name": "FE Seat (C4)",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 7,
+      "x": 0.28125,
+      "y": 0.4732191610821544,
+      "name": "Jump Seat (C3)",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 8,
+      "x": 0.475933908045977,
+      "y": 0.4335070737155622,
+      "name": "Sea Tray",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 9,
+      "x": 0.49748563218390807,
+      "y": 0.5558203028046662,
+      "name": "Crew Seat TL (C5)",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 10,
+      "x": 0.5463362068965517,
+      "y": 0.40332588731695207,
+      "name": "Crew Seat TM (C6)",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 11,
+      "x": 0.5858477011494253,
+      "y": 0.3858525688756515,
+      "name": "P1",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 12,
+      "x": 0.6224856321839081,
+      "y": 0.4049143708116158,
+      "name": "Rescue Basket (Stbd)",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 13,
+      "x": 0.5779454022988506,
+      "y": 0.5574087862993299,
+      "name": "PTA Cot System",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 14,
+      "x": 0.6655890804597702,
+      "y": 0.3858525688756515,
+      "name": "P2",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 15,
+      "x": 0.6655890804597702,
+      "y": 0.571705137751303,
+      "name": "P3",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 16,
+      "x": 0.7640086206896551,
+      "y": 0.40332588731695207,
+      "name": "Stokes Litter Ramp",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 17,
+      "x": 0.6986350574712644,
+      "y": 0.37949863489699676,
+      "name": "Ramp Are Shelve Stbd Fwd",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 18,
+      "x": 0.7381465517241379,
+      "y": 0.38744105237031523,
+      "name": "Ramp Area Shelf Stbd Aft",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 19,
+      "x": 0.6943247126436781,
+      "y": 0.5780590717299579,
+      "name": "Ramp Area Shelf Port Fwd",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 20,
+      "x": 0.7381465517241379,
+      "y": 0.5685281707619757,
+      "name": "Ramp area shelf Port aft",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 21,
+      "x": 0.6232040229885057,
+      "y": 0.6082402581285679,
+      "name": "Dive/O2 Bottle rack",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 22,
+      "x": 0.6239224137931034,
+      "y": 0.3493174484983867,
+      "name": "Stbd Overhead Stowage area",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    },
+    {
+      "number": 23,
+      "x": 0.5822557471264368,
+      "y": 0.6002978406552495,
+      "name": "Port Overhead stowage area",
+      "kind": "unknown",
+      "decision": "unreviewed",
+      "notes": ""
+    }
+  ]
+}
