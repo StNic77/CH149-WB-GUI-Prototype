@@ -1,0 +1,20 @@
+.image-menu{position:fixed;z-index:1000;display:flex;flex-direction:column;background:#fff;border:1px solid #8ea8b5;border-radius:12px;box-shadow:0 12px 38px #142a4250;color:#243e4b;font-size:13px;overflow:hidden}
+.image-menu[hidden]{display:none!important}.image-menu:focus{outline:2px solid #3a897b;outline-offset:2px}
+.image-menu-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#eaf3f4;padding:8px 10px;border-bottom:1px solid #c6d8dc;flex-shrink:0}
+#imageBreadcrumbs{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:12px}
+#imageBreadcrumbs button,#imageMenuClose{background:transparent;border:0;color:#205b70;cursor:pointer;padding:5px;font:inherit}#imageBreadcrumbs span{font-weight:650}#imageMenuClose{font-size:24px;line-height:1;min-width:32px;min-height:32px}
+#imageMenuBody{overflow:auto;overscroll-behavior:contain;min-height:0;padding:12px}#imageMenuBody>:not(.image-menu-current){display:none!important}
+#imageMenuBody>.floor-area-panel,#imageMenuBody>.viewer-detail{padding:0;border:0;background:#fff;margin:0}#imageMenuBody .viewer-detail.show{display:block}
+#imageMenuBody .floor-choices,#imageMenuBody .cargo-layout{display:block}#imageMenuBody .floor-choice{margin:8px 0;padding:10px}#imageMenuBody .floor-area-heading{margin-bottom:8px}#imageMenuBody .floor-area-heading h2{font-size:16px}
+#imageMenuBody .seat-menu{margin-top:0}#imageMenuBody .floor-area-heading>button{display:none}#imageMenuBody .floor-choice p{margin:5px 0}#imageMenuBody input,#imageMenuBody select{max-width:100%}
+#imageMenuBody .contents-row{gap:10px;flex-wrap:wrap}.image-layers{display:flex;align-items:center;flex-wrap:wrap;gap:8px 15px;margin-left:auto}.image-layers>strong{font-size:11px;color:#486773;text-transform:uppercase;letter-spacing:.05em}
+.image-layer{position:relative;display:flex;align-items:center;gap:3px}.plan-tools .image-layer label{margin:0;font-size:12px}.image-layer details summary{list-style:none;border:1px solid #a8bec6;border-radius:50%;width:17px;height:17px;text-align:center;line-height:15px;color:#446773;cursor:pointer;font-size:11px}.image-layer details p{position:absolute;top:100%;right:0;width:230px;max-width:80vw;padding:12px;background:#fff;border:1px solid #a8bec6;box-shadow:0 4px 15px #142a4222;z-index:40;font-size:12px}
+#imageFallback{margin-top:10px;font-size:12px}#imageFallback button{margin:6px}
+.floor-cells-hidden .floor-area-layer,.floor-cells-hidden #rampAreaLayer,.floor-cells-hidden #floorPreviewOutline,.floor-cells-hidden #floorSelectionOutline{visibility:hidden}
+.inspecting-bays .bay-region{pointer-events:none}.inspecting-bays .floor-area-layer{pointer-events:none}.inspecting-bays .floor-space-cell,.inspecting-bays .floor-area-target,.inspecting-bays .live-cabin-object{pointer-events:auto}
+.marking-station .floor-space-cell,.marking-station .floor-area-target,.marking-station .live-cabin-object{pointer-events:none}
+.inspecting-bays .live-cabin-items{z-index:5}.inspecting-bays .cargo-layer{z-index:7;opacity:1}.inspecting-bays .cargo-symbol,.inspecting-bays .ramp-area-layer .floor-space-cell{pointer-events:auto}
+.inspecting-bays #floorSelectionOutline:not([hidden]),.inspecting-bays #floorPreviewOutline:not([hidden]){display:block}
+#planShelfAccess{position:absolute;inset:0;z-index:6;pointer-events:none}#planShelfAccess[hidden]{display:none}#planShelfAccess button{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;font:10px 'Segoe UI',sans-serif;color:#164a52;background:#eaf7f2df;border:1px solid #397e73;border-radius:4px;padding:3px 5px}
+.marking-station #planShelfAccess,.placing-floor-cargo #planShelfAccess,.locating-seat #planShelfAccess{pointer-events:none}.marking-station #planShelfAccess button,.placing-floor-cargo #planShelfAccess button,.locating-seat #planShelfAccess button{pointer-events:none}
+@media(max-width:650px){.image-layers{margin-left:0;gap:9px}.image-menu button{min-height:36px}#imageMenuBody{padding:10px}.image-layer details p{left:-35px;right:auto}}

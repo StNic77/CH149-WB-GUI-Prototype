@@ -3,6 +3,7 @@ verification/*
 !verification/demo-check.cjs
 !verification/hosted-calibration-check.cjs
 !verification/cargo-layer-check.cjs
+!verification/image-workspace-check.cjs
 references/
 history/
 *.previous.json

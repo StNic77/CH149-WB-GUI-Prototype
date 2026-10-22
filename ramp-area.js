@@ -15,6 +15,6 @@
   const cargoAdd=panel.querySelector('#rampCargoAdd');cargoAdd.disabled=(state.floorLoads||[]).filter(row=>row.kind==='individual'&&row.installed!==false).length>=4;cargoAdd.onclick=()=>{close();window.CabinCargo.openCargoArea('RAMP');};
   panel.querySelector('#rampBayWeight').onclick=()=>{close();window.CabinCargo.openBay('RAMP');};panel.querySelector('#rampAreaClose').onclick=()=>{close();target.focus();};panel.querySelector('#rampAreaStokes').onclick=()=>{close();window.CabinStokes.open('RAMP');};panel.querySelector('#rampAreaShelves').onclick=()=>{close();bridge.view('ramp');};
  }
- target.onclick=open;openButton.onclick=open;
+ target.onclick=()=>window.CabinRampArea.open();openButton.onclick=()=>window.CabinRampArea.open();
  window.CabinRampArea={connect(value){bridge=value;},open,close,render,setView(value){available=value;if(!value)opened=false;render();},getState:()=>({available,opened,area:'RAMP',cargoEnabled:!!bridge&&(bridge.state().floorLoads||[]).filter(row=>row.kind==='individual'&&row.installed!==false).length<4})};
 })();

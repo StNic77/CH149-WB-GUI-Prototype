@@ -218,10 +218,12 @@ function renderDetail(){window.CabinCabinetZones.setSelection(state.selectedLoc)
  detail.classList.add('show');
  const l=group.find(x=>x.id===state.selectedLoc)||group[0];if(!l)return;state.selectedLoc=l.id;
  slots.innerHTML=group.map(item=>`<button class="slot ${l.id===item.id?'active':''}" data-slot="${item.id}">${item.label}</button>`).join('');
- slots.querySelectorAll('[data-slot]').forEach(b=>b.onclick=()=>{state.selectedLoc=b.dataset.slot;renderDetail();});
+ slots.querySelectorAll('[data-slot]').forEach(b=>b.onclick=()=>{state.selectedLoc=b.dataset.slot;renderDetail();window.CabinImageMenu?.showDetail(state.selectedLoc);});
  arm.textContent=`App arm ${l.arm} mm`;
  const records=itemsAt(l.id),isPTA=l.id==='PTA_COT_AREA',patient=D.patientPositions.PTA;
- contents.innerHTML=`<div class="contents-row"><span>${l.label}</span><b>Approved location</b></div>${records.length?records.map(o=>`<div class="contents-row"><span>${o.name}</span><b>${fmtKg(o.mass)}</b></div>`).join(''):'<div class="quiet" style="padding:6px 0">No configured item is listed at this location.</div>'}${isPTA&&state.patients.PTA?`<div class="contents-row" id="ptaDetailPatient"><span>PTA patient · ${patient.arm} mm</span><b>${fmtKg(patient.weight)}</b></div>`:''}<div class="actions">${isPTA?`<button class="smallbtn" id="inspectPTA">PTA cot options</button><button class="smallbtn" id="addPTA" ${!state.roleFit.has('RF_SAR_EQUIPMENT_CSH_PATIENT_TREATMENT_SYSTEM')?'disabled':''}>${state.patients.PTA?'Remove patient':'Add patient'}</button>`:`<select id="shelfAddSelect" style="border:1px solid var(--line);border-radius:6px;padding:5px;font-size:11px"><option value="">Add equipment to this location…</option>${[...state.mission].map(k=>D.missionEquip[k]).filter(Boolean).map(it=>`<option value="${Object.keys(D.missionEquip).find(k=>D.missionEquip[k]===it)}">${it.name}</option>`).join('')}</select><button class="smallbtn" id="shelfAdd">Place</button>`}${l.id==='CABIN_DEPLOYED'?'<button class="smallbtn" id="addStokesPatient">Add patient on Stokes</button>':''}</div>`;
+ contents.innerHTML=`<div class="contents-row"><span>${l.label}</span><b>Approved location</b></div>${records.length?records.map(o=>`<div class="contents-row"><span>${o.name}</span><b>${fmtKg(o.mass)}</b>${o.source==='mission'?`<div class="actions"><button class="smallbtn" data-local-remove="${o.key}">Remove</button><button class="smallbtn" data-local-move="${o.key}">Move</button></div>`:''}</div>`).join(''):'<div class="quiet" style="padding:6px 0">No configured item is listed at this location.</div>'}${isPTA&&state.patients.PTA?`<div class="contents-row" id="ptaDetailPatient"><span>PTA patient · ${patient.arm} mm</span><b>${fmtKg(patient.weight)}</b></div>`:''}<div class="actions">${isPTA?`<button class="smallbtn" id="inspectPTA">PTA cot options</button><button class="smallbtn" id="addPTA" ${!state.roleFit.has('RF_SAR_EQUIPMENT_CSH_PATIENT_TREATMENT_SYSTEM')?'disabled':''}>${state.patients.PTA?'Remove patient':'Add patient'}</button>`:`<select id="shelfAddSelect" style="border:1px solid var(--line);border-radius:6px;padding:5px;font-size:11px"><option value="">Add equipment to this location…</option>${[...state.mission].map(k=>D.missionEquip[k]).filter(Boolean).map(it=>`<option value="${Object.keys(D.missionEquip).find(k=>D.missionEquip[k]===it)}">${it.name}</option>`).join('')}</select><button class="smallbtn" id="shelfAdd">Place</button>`}${l.id==='CABIN_DEPLOYED'?'<button class="smallbtn" id="addStokesPatient">Add patient on Stokes</button>':''}</div>`;
+ for(const b of contents.querySelectorAll('[data-local-remove]'))b.onclick=()=>{removeItem(b.dataset.localRemove);renderDetail();};
+ for(const b of contents.querySelectorAll('[data-local-move]'))b.onclick=()=>{const key=b.dataset.localMove,row=b.closest('.contents-row');row.querySelector('[data-local-destination]')?.remove();const select=document.createElement('select');select.dataset.localDestination=key;const first=document.createElement('option');first.value='';first.textContent='Move to location…';select.append(first);for(const dest of LOC.filter(x=>['shelf','cabinet','storage'].includes(x.type)&&x.id!==l.id)){const option=document.createElement('option');option.value=dest.id;option.textContent=dest.label;select.append(option);}select.onchange=()=>{if(select.value){moveItem(key,select.value,{keepView:true});renderDetail();}};row.append(select);};
  document.querySelector('#shelfAdd')?.addEventListener('click',()=>{const k=document.querySelector('#shelfAddSelect').value;if(k)moveItem(k,l.id);});
  if(['CABIN_DEPLOYED','RAMP_STOW'].includes(l.id)){
   const actions=contents.querySelector('.actions'),cabin=l.id==='CABIN_DEPLOYED';
@@ -242,23 +244,26 @@ document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{document.qu
 document.querySelector('#planCabinet').onclick=()=>setView('cabinet');
 document.querySelectorAll('.hotspot').forEach(b=>b.onclick=()=>setView(b.dataset.view));
 function render(){renderConfigButtons();document.querySelector('#configSummary').textContent=state.preset?`${configName()} · matching plan displayed`:'No Role Config · draft baseline displayed';document.querySelector('#sideTitle').textContent=state.preset?`${configName()} · loaded aircraft`:'Aircraft contents';document.querySelector('#sideSub').textContent=state.preset?'Standard setup applied. Drag a load to another approved location or select a detail render.':'Unconfigured baseline: C1/C2 and P2/P3 retained. Choose a Role Config to load a standard setup.';document.querySelector('#version').textContent=D.meta.configVersion;renderViews();setView(state.view);renderTargets();renderItems();renderSeats();renderCatalog();}
-window.CabinCabinetZones.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
-window.CabinForwardShelves.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
-window.CabinRampShelves.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
-window.CabinPortOverhead.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
-window.CabinStbdOverhead.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();}});
+window.CabinCabinetZones.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();window.CabinImageMenu?.showDetail(id);}});
+window.CabinForwardShelves.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();window.CabinImageMenu?.showDetail(id);}});
+window.CabinRampShelves.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();window.CabinImageMenu?.showDetail(id);}});
+window.CabinPortOverhead.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();window.CabinImageMenu?.showDetail(id);}});
+window.CabinStbdOverhead.connect({getSelection:()=>state.selectedLoc,select:id=>{state.selectedLoc=id;renderDetail();window.CabinImageMenu?.showDetail(id);}});
 window.CabinSeatEditor.connect(()=>state);
 window.CabinBasket.connect({state:()=>state,refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
 window.CabinPTA.connect({state:()=>state,view:setView,select:id=>{state.selectedLoc=id;renderDetail();},refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
 window.CabinStokes.connect({state:()=>state,view:setView,select:id=>{state.selectedLoc=id;renderDetail();},refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
-window.CabinLive.connect({state:()=>state,view:setView,seat:id=>{state.selectedSeat=id;document.getElementById('seatToggle').checked=true;renderSeats();document.getElementById('seatMenu').scrollIntoView({block:'nearest'});},refresh:()=>{renderItems();renderSeats();}});
+window.CabinLive.connect({state:()=>state,view:setView,seat:id=>{window.CabinSeatEditor.select(id);},refresh:()=>{renderItems();renderSeats();}});
 window.CabinRampArea.connect({state:()=>state,view:setView});
 window.CabinFloorEquipment.connect({state:()=>state,view:setView,refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
 window.CabinCasevac.connect({state:()=>state,view:setView,refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
 window.CabinCargo.connect({state:()=>state,view:setView,refresh:()=>{recalculateItems();renderItems();renderSeats();window.CabinFloorArea.render();}});
-window.CabinFloorArea.connect({state:()=>state,refresh:()=>{recalculateItems();renderItems();renderSeats();},seat:id=>{state.selectedSeat=id;document.getElementById('seatToggle').checked=true;renderSeats();document.getElementById('seatMenu').scrollIntoView({block:'nearest'});},view:setView,remove:removeItem,move:(key,dest)=>moveItem(key,dest,{keepView:true})});
+window.CabinFloorArea.connect({state:()=>state,refresh:()=>{recalculateItems();renderItems();renderSeats();},seat:id=>{window.CabinSeatEditor.select(id);},view:setView,remove:removeItem,move:(key,dest)=>moveItem(key,dest,{keepView:true})});
 applyPreset('');
 </script>
+<link rel="stylesheet" href="image-workspace.css">
+<script>window.CabinImageState=()=>state;</script>
+<script src="image-workspace.js"></script>
 <script src="workspace.js"></script>
 </body>
 </html>

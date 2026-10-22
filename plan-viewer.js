@@ -66,7 +66,7 @@
     window.CabinRampArea?.setView(isPlan && hasPlan && !!activeAsset);
     window.CabinFloorEquipment?.setView(view);
     window.CabinCasevac?.setView(view);
-    window.CabinCargo?.setView(isPlan && hasPlan && !!activeAsset);
+    window.CabinCargo?.setView(isPlan && hasPlan && !!activeAsset);window.CabinImageMenu?.onView();
     paint();
   }
   const guide = registration.guides;

@@ -43,9 +43,9 @@
     pointMarker.hidden=!open||cargoKind!=='individual'||!cargoPointChosen;pointMarker.style.left=`${x(selectedSpace.forward+fraction*(selectedSpace.aft-selectedSpace.forward))/m.width*100}%`;pointMarker.style.top=`${(m.centerY+(-125+(selectedSpace.lane+lateral)*250/3)*m.sourceScale)/m.height*100}%`;
   }
   function rememberDraft(){const form=panel.querySelector('#areaLoadForm');if(form)cargoDraft={weight:form.elements.weight.value,name:form.elements.name.value,arm:form.elements.arm?.value||''};}
-  function startCargo(){cargoKind='individual';placingCargo=true;cargoPointChosen=false;placementHelp.textContent='Cargo placement · click its floor position · Escape cancels';window.CabinBayLayer?.finishMarking();window.CabinSeatEditor?.finishLocating();render();document.getElementById('planViewport').scrollIntoView({block:'center'});}
-  function cancelCargo(){const pending=relocation;relocation=null;placingCargo=false;cargoPointChosen=false;cargoKind=null;cargoDraft={};render();pending?.cancel();}
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&(cargoKind||relocation)){cancelCargo();}});
+  function startCargo(hideMenu=false){if(hideMenu)window.CabinImageMenu?.suspend();cargoKind='individual';placingCargo=true;cargoPointChosen=false;placementHelp.textContent='Cargo placement · click its floor position · Escape cancels';window.CabinBayLayer?.finishMarking();window.CabinSeatEditor?.finishLocating();render();document.getElementById('planViewport').scrollIntoView({block:'center'});}
+  function cancelCargo(){const pending=relocation;relocation=null;placingCargo=false;cargoPointChosen=false;cargoKind=null;cargoDraft={};render();pending?.cancel();window.CabinImageMenu?.resume();}
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&(cargoKind||relocation)){event.preventDefault();event.stopImmediatePropagation();cancelCargo();}});
   function openArea(space=selectedSpace,event){
     if(!available||!bridge)return;
     if(!placingCargo)window.CabinCargo?.close();
@@ -58,9 +58,9 @@
     const m=window.CabinBayLayer.getDisplayMapping(),rect=document.getElementById('planSheet').getBoundingClientRect();
     if(choosing&&event&&event.detail!==0&&rect.width&&rect.height){const x=(event.clientX-rect.left)/rect.width*m.width,station=4875+(x-m.forwardX)/(m.aftX-m.forwardX)*6518,y=(event.clientY-rect.top)/rect.height*m.height;fraction=Math.max(0,Math.min(1,(station-space.forward)/(space.aft-space.forward)));lateral=Math.max(0,Math.min(1,((y-m.centerY)/m.sourceScale+125)/(250/3)-space.lane));}
     else {fraction=.5;lateral=.5;}
-    if(choosing&&relocation){const pending=relocation;relocation=null;placingCargo=false;cargoPointChosen=false;open=false;render();pending.pick({area:space.id,floorPoint:{bay:space.bay,side:space.side,fraction,lateral},estimatedArm:estimatedArm()});return;}
+    if(choosing&&relocation){const pending=relocation;relocation=null;placingCargo=false;cargoPointChosen=false;open=false;render();pending.pick({area:space.id,floorPoint:{bay:space.bay,side:space.side,fraction,lateral},estimatedArm:estimatedArm()});window.CabinImageMenu?.resume();return;}
     open=true;message='';placingCargo=false;cargoPointChosen=choosing;
-    if(!choosing){cargoKind=null;cargoDraft={};}render();
+    if(!choosing){cargoKind=null;cargoDraft={};}render();window.CabinImageMenu?.showLocation();
   }
   target.onclick=event=>openArea(spaces.find(space=>space.id===area.id),event);
   openButton.onclick=()=>openArea();
@@ -78,7 +78,9 @@
   function ptaChoices(){if(!['BAY5_PORT','BAY55_PORT'].includes(selectedSpace.id))return '';const state=bridge.state(),on=state.roleFit.has(area.cot),cot=data.roleFit[area.cot];return card('PTA cot',`${on?'Installed'+(state.patients.PTA?' · patient present':' · no patient'):'Not installed'} · ${kg(cot.w)} · ${arm(cot.arm)}<br>Spans B5 Port, B5.5 Port and part of B6 Port.`,button('areaPTAOptions','PTA cot options'));}
   function stokesChoices(){if(!['BAY3_CENTRE','BAY4_CENTRE'].includes(selectedSpace.id))return '';const state=bridge.state(),cabin=state.mission.has('ME_SAR_MISSION_EQUIP_STOKES_LITTER_CABIN'),ramp=state.mission.has('ME_SAR_MISSION_EQUIP_STOKES_LITTER_RAMP');return card('Stokes litter · cabin position',`${cabin?'Deployed here'+(state.patients.STOKES_CABIN?' · patient present':''):ramp?'Currently stowed on ramp':'Not installed'}<br>Spans B3 Centre and B4 Centre; compatible with seats and PTA cot.`,button('areaStokesOptions','Stokes litter options'));}
   function extraEquipmentChoices(){const state=bridge.state(),editor=window.CabinFloorEquipment;let out='';if(['BAY1_STBD','BAY2_STBD'].includes(selectedSpace.id)){const key='RF_SAR_EQUIPMENT_FWD_SAR_CABINET',on=state.roleFit.has(key),item=data.roleFit[key];out+=card('SAR Cabinet',`${on?'Installed':'Not installed'} · spans B1 and B2 Stbd · ${kg(item.w)} · ${arm(item.arm)}<br>Mutually exclusive with P4, P5 and P6.`,on?button('areaCabinetOpen','Open cabinet view'):button('areaCabinetInstall','Install SAR Cabinet',rules.equipmentConflictMessage(state,key)));}if(['BAY3_CENTRE','BAY4_CENTRE','BAY5_CENTRE'].includes(selectedSpace.id))out+=card('Sea Tray',`${state.roleFit.has(editor.trayKey)?'Installed':'Not installed'} · blue mat spanning B3, B4 and B5 Centre.`,button('areaSeaTrayOptions','Sea Tray options'));if(['BAY3_STBD','BAY4_STBD'].includes(selectedSpace.id)){const id=selectedSpace.id==='BAY3_STBD'?editor.locations[0]:editor.locations[1],here=state.mission.has(editor.raftKey)&&editor.raftLocation(state)===id;out+=card('Internal life raft',`${here?'Raft installed here':'Raft not installed here'} · stowage ${editor.fittingOn(state,id)?'installed':'required'}.`,button('areaRaftOptions','Life raft options'));}return out;}
+  function casevacChoices(){return (window.CabinCasevac?.positions||[]).filter(id=>{const rack=data.roleFit[window.CabinCasevac.key(id)];return rack.arm>=selectedSpace.forward&&rack.arm<selectedSpace.aft&&(id.endsWith('PORT')?selectedSpace.side==='Port':selectedSpace.side==='Stbd');}).map(id=>{const rack=data.roleFit[window.CabinCasevac.key(id)],on=bridge.state().roleFit.has(window.CabinCasevac.key(id));return card('CASEVAC rack · '+id.replace('_',' '),`${on?'Installed':'Available'} · ${kg(rack.w)} · ${arm(rack.arm)}<br>${id.startsWith('FWD')?'Three patient tiers':'Middle and bottom patient tiers'}. This is the rack arm reference; full footprint and clearance rules await review.`,button('areaRack'+id,on?'Rack and patient options':'Install / inspect rack'));}).join('');}
   function bindLoadActions(state){
+    for(const id of window.CabinCasevac?.positions||[])panel.querySelector('#areaRack'+id)?.addEventListener('click',()=>window.CabinCasevac.open(id));
     panel.querySelector('#areaIndividualCargo').onclick=()=>{cargoDraft={};startCargo();};
     const bayEntry=(state.floorLoads||[]).find(row=>row.installed!==false&&row.kind==='bay'&&spaces.find(space=>space.id===row.area)?.bay===selectedSpace.bay);
     if(bayEntry)panel.querySelector('#areaBayCargo').textContent='Edit bay weight';
@@ -102,7 +104,7 @@
   function render(){
     renderTarget();panel.hidden=!available||!open||!bridge;if(panel.hidden)return;
     panel.setAttribute('aria-label',selectedSpace.name);
-    if(selectedSpace.id!==area.id){const state=bridge.state(),bay=selectedBay();panel.innerHTML=`<div class="floor-area-heading"><div><h2>${selectedSpace.name}</h2><p>Choose what belongs in this floor space. Cargo placement starts only when you choose Cargo.</p></div><button type="button" class="secondary" id="areaClose">Close</button></div><div class="floor-choices">${containerChoices()}${ptaChoices()}${stokesChoices()}${extraEquipmentChoices()}${seatChoices(state)}${card('Cargo','Choose a cargo position, then enter its weight.',button('areaIndividualCargo','Add cargo'))}${card('Bay weight',`${bay.name} · use the configured bay arm: ${arm(bay.arm)}.`,button('areaBayCargo','Enter bay weight'))}</div><p class="floor-load-note">Other equipment choices for this space have not been mapped yet. The B6 Port pilot includes seat, cot and basket options.</p>${loadNote()}<div id="areaCargoForm"></div>${loadRecords(state)}<p id="areaMessage" role="status">${esc(message)}</p>`;bindLoadActions(state);return;}
+    if(selectedSpace.id!==area.id){const state=bridge.state(),bay=selectedBay();panel.innerHTML=`<div class="floor-area-heading"><div><h2>${selectedSpace.name}</h2><p>Choose what belongs in this floor space. Cargo placement starts only when you choose Cargo.</p></div><button type="button" class="secondary" id="areaClose">Close</button></div><div class="floor-choices">${containerChoices()}${ptaChoices()}${stokesChoices()}${extraEquipmentChoices()}${casevacChoices()}${seatChoices(state)}${card('Cargo','Choose a cargo position, then enter its weight.',button('areaIndividualCargo','Add cargo'))}${card('Bay weight',`${bay.name} · use the configured bay arm: ${arm(bay.arm)}.`,button('areaBayCargo','Enter bay weight'))}</div><p class="floor-load-note">Other equipment choices for this space have not been mapped yet. The B6 Port pilot includes seat, cot and basket options.</p>${loadNote()}<div id="areaCargoForm"></div>${loadRecords(state)}<p id="areaMessage" role="status">${esc(message)}</p>`;bindLoadActions(state);return;}
     const state=bridge.state(),seat=data.paxSeats[area.seat],installed=state.seats.has(area.seat),occupied=state.occupants[area.seat];
     const cot=data.roleFit[area.cot],cotOn=state.roleFit.has(area.cot),basketOn=state.mission.has(area.basket),otherBasket=state.mission.has(area.otherBasket);
     const basket=data.missionEquip[area.basket],basketArm=data.stowage[basket.stow].arm;
@@ -117,7 +119,7 @@
     const bay=selectedBay();
     panel.innerHTML=`<div class="floor-area-heading"><div><h2>${area.name}</h2><p>Floor space · includes seat position P18. Choose what belongs here; equipment keeps its own defined position and arm.</p></div><button type="button" class="secondary" id="areaClose" aria-label="Close B6 Port menu">Close</button></div>
       <div class="floor-choices">
-      ${card('P18 seat',`${installed?folded?'Installed · folded up':'Installed':'Not installed'}${occupied?' · '+esc(occupied):''} · ${kg(seat.wSeat)} · seat arm ${arm(seat.arm)}`,seatButtons)}
+      ${card('P18 seat',`${installed?folded?'Installed · folded up':'Installed':'Not installed'}${occupied?' · '+esc(occupied):''} · ${kg(seat.wSeat)} · seat arm ${arm(seat.arm)}`,button('areaP18Options','P18 seat options')+seatButtons)}
       ${card('PTA cot',`${cotOn?'Installed':'Not installed'} · ${kg(cot.w)} · ${arm(cot.arm)}<br>Uses the wider PTA area: excludes P15–P18 and the port basket.`,cotButtons)}
       ${card('Rescue basket · port',`${basketOn?'Installed at port':otherBasket?'Currently at starboard':'Not installed'} · ${kg(basket.unitWeight)} · port arm ${arm(basketArm)}<br>P18 may stay installed, folded up and unoccupied.`,basketButtons)}
       ${card('Cargo','Choose a cargo position, then enter its weight.',button('areaIndividualCargo','Add cargo'))}
@@ -127,6 +129,7 @@
       ${loadRecords(state)}
       <p id="areaMessage" role="status">${esc(message)}</p><p class="floor-reference-note">The picture remains a reference image. This menu and the seat markers show current installation state.</p>`;
     panel.querySelector('#areaClose').onclick=()=>{open=false;cargoKind=null;render();target.focus();};
+    panel.querySelector('#areaP18Options').onclick=()=>bridge.seat(area.seat);
     panel.querySelector('#areaSeatToggle').onclick=()=>{
       if(state.seats.has(area.seat)){if(state.occupants[area.seat])return;state.seats.delete(area.seat);notify('P18 seat removed.');}
       else {const result=rules.install(state,area.seat,catalogue);if(!result.ok){message=result.reason;render();return;}notify(`P18 installed${rules.occupancyBlockers(state,area.seat).length?' · folded up; no occupant allowed':''}.`);}
@@ -141,7 +144,7 @@
       if(state.mission.has(area.basket)){bridge.remove(area.basket);notify('Port basket removed.');return;}
       const conflict=rules.equipmentConflictMessage(state,area.basket);if(conflict){message=conflict;render();return;}
       if(state.mission.has(area.otherBasket))bridge.move(area.otherBasket,'CABIN_PORT_STOW');else {const result=window.CabinBasket.install(state,'PORT');if(!result.ok){message=result.reason;render();return;}}
-      notify('Basket installed at port. P18 may remain installed, folded up and unoccupied.');
+      notify('Basket installed at port. P18 may remain installed, folded up and unoccupied.');window.CabinBasket.open('PORT');
     };
     panel.querySelector('#areaBasketMove')?.addEventListener('click',()=>{
       const conflict=rules.equipmentConflictMessage(state,area.otherBasket);if(conflict){message=conflict;render();return;}
@@ -154,7 +157,7 @@
     if(!cargoKind){container.innerHTML='';return;}
     const bay=selectedBay();
     container.innerHTML=`<form id="areaLoadForm"><h3>${cargoKind==='bay'?`${bay.name} load`:'Individual cargo'}</h3><label>Weight (kg)<input name="weight" type="number" min="0.001" step="any" value="${esc(cargoDraft.weight||'')}" required></label>${cargoKind==='bay'?`<p>Configured arm: <strong>${arm(bay.arm)}</strong></p>`:`<p>${cargoPointChosen?`Estimated arm from selected floor point: <strong id="areaEstimatedArm">${arm(estimatedArm())}</strong>`:'Choose the cargo position on the floor to estimate its arm.'}</p><button type="button" class="secondary" id="areaChooseCargoPoint">${cargoPointChosen?'Change cargo position':'Choose cargo position'}</button><details id="areaKnownArm"><summary>Use a known arm instead</summary><label>Known arm (mm)<input name="arm" type="number" min="0" step="any" value="${esc(cargoDraft.arm||'')}" placeholder="Leave blank to use the estimate"></label></details>`}<details><summary>Description (optional)</summary><label>Description<input name="name" maxlength="80" value="${esc(cargoDraft.name||'')}" placeholder="${cargoKind==='bay'?bay.name+' load':selectedSpace.name+' cargo'}"></label></details><div class="floor-actions"><button type="submit" class="secondary">Add load record</button><button type="button" class="secondary" id="areaCancelLoad">Cancel</button></div><p id="areaLoadError" role="status"></p></form>`;
-    container.querySelector('#areaCancelLoad').onclick=cancelCargo;container.querySelector('#areaChooseCargoPoint')?.addEventListener('click',()=>{rememberDraft();startCargo();});
+    container.querySelector('#areaCancelLoad').onclick=cancelCargo;container.querySelector('#areaChooseCargoPoint')?.addEventListener('click',()=>{rememberDraft();startCargo(true);});
     container.querySelector('form').onsubmit=event=>{
       event.preventDefault();const form=event.currentTarget,state=bridge.state(),name=form.elements.name.value.trim()||(cargoKind==='bay'?bay.name+' load':selectedSpace.name+' cargo'),weight=Number(form.elements.weight.value),override=cargoKind==='individual'&&form.elements.arm.value.trim()!=='',value=cargoKind==='bay'?bay.arm:override?Number(form.elements.arm.value):estimatedArm();
       if(cargoKind==='individual'&&!override&&!cargoPointChosen){container.querySelector('#areaLoadError').textContent='Choose a cargo position on the floor first.';return;}
@@ -163,6 +166,6 @@
     };
     if(!placingCargo)container.querySelector('input')?.focus();
   }
-  window.CabinFloorArea={connect(value){bridge=value;},render,renderTarget,estimateForSpace,open:openArea,openById(id){const space=spaces.find(s=>s.id===id);if(space)openArea(space);},beginRelocation(callbacks){cancelCargo();relocation=callbacks;open=false;placingCargo=true;window.CabinBayLayer?.finishMarking();window.CabinSeatEditor?.finishLocating();placementHelp.textContent='Move cargo · click its new floor position · Escape cancels';render();document.getElementById('planViewport').scrollIntoView({block:'center'});},close(){open=false;cancelCargo();},getSelection:()=>({space:selectedSpace.id,estimatedArm:estimatedArm(),fraction,lateral,placingCargo,cargoPointChosen}),setView(value){if(relocation)cancelCargo();available=value;placingCargo=false;cargoPointChosen=false;cargoKind=null;cargoDraft={};placementHelp.hidden=true;document.getElementById('planViewport').classList.remove('placing-floor-cargo');render();}};
+  window.CabinFloorArea={connect(value){bridge=value;},render,renderTarget,estimateForSpace,open:openArea,openById(id){const space=spaces.find(s=>s.id===id);if(space)openArea(space);},beginRelocation(callbacks){cancelCargo();window.CabinImageMenu?.suspend();relocation=callbacks;open=false;placingCargo=true;window.CabinBayLayer?.finishMarking();window.CabinSeatEditor?.finishLocating();placementHelp.textContent='Move cargo · click its new floor position · Escape cancels';render();document.getElementById('planViewport').scrollIntoView({block:'center'});},close(){open=false;cancelCargo();},getSelection:()=>({space:selectedSpace.id,estimatedArm:estimatedArm(),fraction,lateral,placingCargo,cargoPointChosen}),setView(value){if(relocation)cancelCargo();available=value;placingCargo=false;cargoPointChosen=false;cargoKind=null;cargoDraft={};placementHelp.hidden=true;document.getElementById('planViewport').classList.remove('placing-floor-cargo');render();}};
 })();
 

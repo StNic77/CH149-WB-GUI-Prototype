@@ -2,6 +2,8 @@
 
 An interactive cabin workspace for demonstrating aircraft configuration, equipment placement and people/patient handling.
 
+This development branch explores image-first floating menus. See [IMAGE_FIRST_WORKSPACE.md](IMAGE_FIRST_WORKSPACE.md) for the agreed interaction, working coverage and remaining location/clearance mapping. The previous demo is preserved on `main` at `30805a4`.
+
 ## Run the demo
 
 Install Node.js 18 or newer, download this repository, then double-click **START_DEMO.cmd** on Windows. Open **http://127.0.0.1:61448** in a browser. Keep the server window open. If that port is already in use, use the running prototype or choose another port with `node preview-server.cjs 61449`.

@@ -59,7 +59,7 @@
     return new Set(preset?[...(preset.seats?.crew||[]),...(preset.seats?.pax||[]),...Object.keys(data.crewSeats).filter(id=>all[id].alwaysInstalled)]:Object.keys(all).filter(id=>all[id].alwaysInstalled||all[id].normallyInstalled));
   }
   function changed(state) {const expected=expectedSeats(state);return expected.size!==state.seats.size||[...expected].some(id=>!state.seats.has(id));}
-  function select(id) {if(!all[id]||rules.blockers(getState(),id).length)return;getState().selectedSeat=id;render();}
+  function select(id) {if(!all[id]||rules.blockers(getState(),id).length)return;getState().selectedSeat=id;render();window.CabinImageMenu?.showSeat(id);}
   function list(ids) {
     const state=getState();
     return ids.map(id=>{const conflicts=rules.conflicts(state.seats,id),blocked=rules.blockers(state,id),restricted=rules.occupancyBlockers(state,id);return `<button type="button" class="seat ${state.seats.has(id)?'on':''}" data-seat="${id}" ${blocked.length?'disabled':''} aria-pressed="${state.selectedSeat===id}"><b>${esc(id)}</b> · ${esc(all[id].name.replace(new RegExp('^'+id+'\\s*'),''))}<small>${blocked.length?`Unavailable · ${esc(blocked.map(item=>item.name).join(' + '))} installed`:restricted.length?`${state.seats.has(id)?'Installed · folded up':'Seat can be installed'} · no occupant (${esc(restricted.map(item=>item.name).join(' + '))})`:state.seats.has(id)?'Installed':conflicts.length?`Space used by ${conflicts.join(', ')}`:'Available position'}${state.occupants[id]?' · occupied':''}</small></button>`;}).join('');
@@ -165,5 +165,5 @@
   viewport.addEventListener('pointermove',event=>{if(touch?.pointer===event.pointerId&&Math.hypot(event.clientX-touch.x,event.clientY-touch.y)>=7)touch.moved=true;});
   viewport.addEventListener('pointerup',event=>{if(touch?.pointer===event.pointerId&&!touch.moved){if(locating){locatePoint(event);suppressLocateClick=true;}else if(touch.id)select(touch.id);}touch=null;});
   viewport.addEventListener('pointercancel',()=>{touch=null;});
-  window.CabinSeatEditor={connect(reader){getState=reader;},render,renderLayer,getC3Point:c3Point,finishLocating,setView(value){finishLocating();available=value;render();}};
+  window.CabinSeatEditor={select,connect(reader){getState=reader;},render,renderLayer,getC3Point:c3Point,finishLocating,setView(value){finishLocating();available=value;render();}};
 })();

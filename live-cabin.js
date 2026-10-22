@@ -70,7 +70,7 @@
    const description=(o.label||o.id)+(o.occupied?' · patient present':'');node.setAttribute('aria-label',description);node.title=description;node.onclick=o.action||null;node.classList.toggle('folded',!!o.folded);node.classList.toggle('occupied',!!occupancy);
    // Explicit depth is independent of installation order / retained DOM nodes.
    // Mat below fixtures, seats and equipment; the internal raft stays on top.
-   node.style.zIndex=o.id==='sea-tray'?'0':o.id.startsWith('rack-')?'1':o.id==='cabinet'?'2':o.id.startsWith('seat-')?'3':o.id==='life-raft'?'5':'4';
+   node.style.zIndex=o.id==='sea-tray'?'0':o.id.startsWith('rack-')?'1':o.id==='cabinet'?'2':o.id.startsWith('seat-')?(o.folded?'6':'3'):o.id==='life-raft'?'5':'4';
    Object.assign(node.style,{left:percent(o.x,reg.width),top:percent(o.y,reg.height),width:percent(o.w,reg.width),height:percent(o.h,reg.height),transform:`translate(-50%,-50%) rotate(${o.rotation||0}deg)`});
   }
  }
