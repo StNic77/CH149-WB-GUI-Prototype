@@ -23,6 +23,8 @@ See [DEMO_GUIDE.md](DEMO_GUIDE.md) for a walkthrough.
 - Shared cabin/bay alignment across No Role Config, SAR-3, SAR-10, Transport and CASEVAC.
 - Selectable floor cells and a single ramp area, explicit cargo point selection and estimated cabin cargo arms; ramp cargo with an entered arm.
 - Bays Review station annotations alternate above/below the plan, from X4875 through the ramp endpoint X14393.
+- **Mark ramp aft edge · X14393** adjusts only the ramp's image boundary across all configurations. It does not move cabin joints or change station values or loading arms. Finish marking saves through the local preview; hosted/file adjustments can be exported and imported into the local preview for publication.
+- The approved ramp edge is embedded in `station-calibration.js` at common image X2351.266647702848 (display pixels). It loads without browser storage or a calibration fetch; the aircraft station remains X14393. The approved cabin joints are unchanged.
 - Independent Cargo layer and all-load inspector: four cargo slots, one weight per cabin bay plus the ramp, individual edits/moves/removal, and cargo/bay-only weight, moment and CG subtotals using the pinned reference helpers.
 - Live equipment layers for seats, basket, PTA cot, Stokes, Sea Tray, internal raft and CASEVAC racks.
 - Seat alternatives, folded-seat occupancy rules, crew/passenger markers and cot/litter patients.

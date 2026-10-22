@@ -9,6 +9,7 @@
   const viewport = document.getElementById('planViewport');
   const status = document.getElementById('bayMappingStatus');
   const reviewHelp = document.getElementById('bayReviewHelp');
+  const rampMarkButton=document.createElement('button');rampMarkButton.id='bayMarkRampAft';rampMarkButton.type='button';rampMarkButton.textContent='Mark ramp aft edge · X14393';rampMarkButton.setAttribute('aria-pressed','false');document.querySelector('.bay-review-actions').insertBefore(rampMarkButton,document.getElementById('bayFinishMarks'));
   let asset = null, available = false, selected = 'BAY1', marking = null, suppressTouchClick = false;
   // Candidate landmarks only; do not promote these to aircraft station calibration.
   // Review marks use source-image x coordinates, never W&B arms.
@@ -22,7 +23,7 @@
   const exportButton=document.createElement('button');exportButton.type='button';exportButton.id='bayExportShared';exportButton.textContent='Export calibration';document.querySelector('.bay-review-actions').append(exportButton);
   const importButton=document.createElement('button');importButton.type='button';importButton.id='bayImportShared';importButton.textContent='Import calibration';document.querySelector('.bay-review-actions').append(importButton);
   const importFile=document.createElement('input');importFile.type='file';importFile.accept='.json,application/json';importFile.hidden=true;importFile.id='bayImportFile';document.querySelector('.bay-review').append(importFile);
-  const validShared=value=>value?.schema===1&&JSON.stringify(value.plane)==='[2560,1216]'&&Number.isFinite(value.forward)&&Number.isFinite(value.aft)&&value.forward>=0&&value.forward<value.aft&&value.aft<=2560;
+  const validShared=value=>value?.schema===1&&JSON.stringify(value.plane)==='[2560,1216]'&&Number.isFinite(value.forward)&&Number.isFinite(value.aft)&&value.forward>=0&&value.forward<value.aft&&value.aft<=2560&&(value.rampAft===undefined||(Number.isFinite(value.rampAft)&&value.rampAft>value.aft&&value.rampAft<=2560));
   const builtIn=window.CH149_STATION_CALIBRATION;
   if(validShared(builtIn)){shared={...builtIn,plane:[...builtIn.plane]};persistence.textContent='Built-in calibration loaded · all configurations use the approved joints.';}
   try{const saved=JSON.parse(localStorage.getItem(sharedKey));if(validShared(saved)){if(!shared)shared=saved;else if(saved.forward!==shared.forward||saved.aft!==shared.aft)localStorage.setItem(sharedKey+'.previous',JSON.stringify(saved));}}catch{}
@@ -39,7 +40,7 @@
     if(next.forward!==undefined && next.aft!==undefined && next.forward>=next.aft)continue;
     if(Object.keys(next).length)marks[key]=next;
   }
-  function fromSource(key,mark){const spec=registration.assets[key];return {schema:1,plane:[2560,1216],forward:spec.x+mark.forward*spec.scale,aft:spec.x+mark.aft*spec.scale,source:key};}
+  function fromSource(key,mark){const spec=registration.assets[key];return {schema:1,plane:[2560,1216],forward:spec.x+mark.forward*spec.scale,aft:spec.x+mark.aft*spec.scale,source:key,...(shared?.rampAft!==undefined?{rampAft:shared.rampAft}:{})};}
   // Migrate the user's last-reviewed baseline without discarding the five older
   // source-specific records. Project persistence requires the explicit save below.
   if(!shared&&marks.BASELINE?.forward!==undefined&&marks.BASELINE?.aft!==undefined)shared=fromSource('BASELINE',marks.BASELINE);
@@ -49,7 +50,7 @@
     catch{projectReady=false;
       // Static hosts have no local save API. Resolve the published calibration
       // relative to the app folder, including GitHub Pages repository subpaths.
-      try{const response=await fetch(new URL('station-calibration.json',document.baseURI),{cache:'no-store'});if(!response.ok)throw Error();saved=await response.json();if(!validShared(saved))throw Error();if(validShared(builtIn)&&(saved.revision||0)<=(builtIn.revision||0)&&(saved.forward!==builtIn.forward||saved.aft!==builtIn.aft))throw Error();publishedReady=true;}
+      try{const response=await fetch(new URL('station-calibration.json',document.baseURI),{cache:'no-store'});if(!response.ok)throw Error();saved=await response.json();if(!validShared(saved))throw Error();if(validShared(builtIn)&&(saved.revision||0)<=(builtIn.revision||0)&&(saved.forward!==builtIn.forward||saved.aft!==builtIn.aft||saved.rampAft!==builtIn.rampAft))throw Error();publishedReady=true;}
       catch{publishedReady=false;saveButton.disabled=true;persistence.textContent=validShared(builtIn)?'Built-in calibration retained · no matching published calibration or save service is available. Export deliberate adjustments to transfer them.':location.protocol==='file:'?'Opened directly as a file: marks stay in this browser. Use Export calibration, then Import calibration in the local web preview to save to the project.':'Browser marks retained. The saved project alignment could not be loaded.';return;}
     }
     saveButton.disabled=!projectReady;saveButton.title=projectReady?'':'Hosted demo: export adjustments and import them in the local preview to publish an updated calibration.';
@@ -67,7 +68,7 @@
     try{const legacyRecords={};for(const [key,mark] of Object.entries(marks))legacyRecords[key]={file:registration.assets[key].file,size:registration.assets[key].size,...mark};
       const response=await fetch('/api/station-calibration',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...shared,expectedRevision:projectRevision,legacyRecords})});
       if(response.status===409){persistence.textContent='Another browser saved newer joints. Your browser draft is retained; reload the project calibration before saving.';return;}
-      if(!response.ok)throw Error();shared=await response.json();projectRevision=shared.revision;dirty=false;saveMarks();persistence.textContent='Shared calibration saved to the project · all configurations use the same joints. Previous per-plan marks are backed up.';
+      if(!response.ok)throw Error();const saved=await response.json();if(!validShared(saved)||saved.rampAft!==shared.rampAft)throw Error();shared=saved;projectRevision=shared.revision;dirty=false;saveMarks();persistence.textContent='Shared calibration saved to the project · all configurations use the same joints and ramp edge. Previous per-plan marks are backed up.';
     }catch{persistence.textContent='Project save failed. Your browser marks are retained; keep this page open and try again.';}finally{saveButton.disabled=false;}
   }
   saveButton.onclick=saveProject;
@@ -88,7 +89,7 @@
         const clean={};for(const end of ['forward','aft'])if(record[end]!==undefined){if(!Number.isFinite(record[end])||record[end]<0||record[end]>spec.size[0])throw Error();clean[end]=record[end];}
         if(clean.forward!==undefined&&clean.aft!==undefined&&clean.forward>=clean.aft)throw Error();imported[key]=clean;
       }
-      shared={schema:1,plane:[2560,1216],forward:value.forward,aft:value.aft,source:value.source};Object.assign(marks,imported);dirty=true;saveMarks();markMode(null);draw();window.CabinSeatEditor?.renderLayer();
+      shared={schema:1,plane:[2560,1216],forward:value.forward,aft:value.aft,source:value.source,...(value.rampAft!==undefined?{rampAft:value.rampAft}:shared?.rampAft>value.aft?{rampAft:shared.rampAft}:{})};Object.assign(marks,imported);dirty=true;saveMarks();markMode(null);draw();window.CabinSeatEditor?.renderLayer();
       persistence.textContent='Calibration imported. Saving the shared pair and original marks to the project…';await saveProject();
     }catch{persistence.textContent='This file is not a valid calibration export. Existing marks were kept.';}finally{importFile.value='';}
   };
@@ -119,10 +120,12 @@
     marking = value;
     document.getElementById('bayMarkForward').setAttribute('aria-pressed', String(value === 'forward'));
     document.getElementById('bayMarkAft').setAttribute('aria-pressed', String(value === 'aft'));
+    rampMarkButton.setAttribute('aria-pressed',String(value==='rampAft'));
     viewport.classList.toggle('marking-station', !!value);
     viewport.dataset.marking = value ? `Marking ${value==='forward'?'forward joint X4875':'aft joint X11393'} · click anywhere on the plan, including beyond the dashed lines` : '';
     document.getElementById('bayFinishMarks').hidden = !value;
     reviewHelp.textContent = value ? `Click anywhere at the ${value === 'forward' ? 'forward joint X4875' : 'aft joint X11393'} position, including beyond the current dashed lines. Click again to adjust, then Finish marking. Drag to pan when zoomed; Escape finishes marking.` : 'Mark either joint here to adjust the shared alignment in every configuration. Finish marking saves it to the project. Existing browser marks are retained.';
+    if(value==='rampAft'){viewport.dataset.marking='Marking ramp aft edge · X14393 · cabin joints stay fixed';reviewHelp.textContent='Click the aft edge of the ramp, then Finish marking. This moves only the ramp edge on the picture in all configurations. X14393 and all loading arms stay unchanged.';}
   }
   function inspect() {
     const bay = data.bays.find(bay => bay.id === selected);
@@ -144,7 +147,7 @@
     status.textContent = shared ? 'Shared joints locked across all configurations' : reviewedBoth ? 'Joints marked · mapping awaiting review' : a.inherited ? 'Baseline boundaries shared · check against this view' : 'Draft placement · joints awaiting identification';
     document.getElementById('bayMarkSummary').textContent = `X4875: ${a.forwardMarked ? 'marked' : a.inherited ? 'from marked baseline' : 'candidate cockpit seam'} · X11393: ${a.aftMarked ? 'marked' : a.inherited ? 'from marked baseline' : 'candidate ramp joint'}`;
     // Uniform longitudinal interpolation is a presentation proposal, not measured aircraft geometry.
-    const xAt = station => shared ? shared.forward+(station-4875)/6518*(shared.aft-shared.forward) : asset.x + (a.forward + (station - 4875) / 6518 * (a.aft - a.forward)) * asset.scale;
+    const xAt = station => station===window.CH149_DATA.ramp.end&&shared?.rampAft!==undefined ? shared.rampAft : shared ? shared.forward+(station-4875)/6518*(shared.aft-shared.forward) : asset.x + (a.forward + (station - 4875) / 6518 * (a.aft - a.forward)) * asset.scale;
     // A display band, not a sidewall/usable-floor polygon or a lateral calibration.
     const top = registration.height / 2 - 125 * asset.scale;
     const height = 250 * asset.scale;
@@ -178,6 +181,7 @@
   toggle.onchange = draw;
   document.getElementById('bayMarkForward').onclick = () => markMode(marking === 'forward' ? null : 'forward');
   document.getElementById('bayMarkAft').onclick = () => markMode(marking === 'aft' ? null : 'aft');
+  rampMarkButton.onclick=()=>markMode(marking==='rampAft'?null:'rampAft');
   document.getElementById('bayFinishMarks').onclick = () => {markMode(null);if(dirty)saveProject();};
   const restoreButton=document.getElementById('bayResetMarks');restoreButton.textContent="Use this plan’s saved pair";
   restoreButton.onclick = () => {if(!asset)return;const key=anchors().key,mark=marks[key];if(mark?.forward===undefined||mark?.aft===undefined){persistence.textContent='This plan has no complete saved pair. Mark both joints to establish one.';return;}shared=fromSource(key,mark);dirty=true;saveMarks();markMode(null);draw();window.CabinSeatEditor?.renderLayer();persistence.textContent='Saved pair applied to all configurations in this browser. Save shared calibration to project to share it with other browsers.';};
@@ -194,6 +198,15 @@
     const sourceX = (event.clientX-bounds.left) / bounds.width * asset.size[0];
     if (sourceX < 0 || sourceX > asset.size[0]) {reviewHelp.textContent='Choose a point within the source plan.';return;}
     const a = anchors();
+    const commonX=asset.x+sourceX*asset.scale;
+    if(marking==='rampAft'){
+      const hinge=shared?.aft??asset.x+a.aft*asset.scale;
+      if(commonX<=hinge||commonX>registration.width){reviewHelp.textContent='Choose the ramp edge aft (right) of the hinge, within the image.';return;}
+      if(!shared)shared=fromSource(a.key,{forward:a.forward,aft:a.aft});
+      shared={...shared,rampAft:commonX};dirty=true;const saved=saveMarks();draw();
+      reviewHelp.textContent=`Ramp aft edge placed${saved?' and saved in this browser':''}. Cabin joints, X14393 and loading arms are unchanged. Click again to adjust, then Finish marking.`;return;
+    }
+    if(marking==='aft'&&shared?.rampAft!==undefined&&commonX>=shared.rampAft){reviewHelp.textContent='The hinge must remain forward (left) of the marked ramp edge. The joint was not changed.';return;}
     if ((marking === 'forward' && sourceX >= a.aft) || (marking === 'aft' && sourceX <= a.forward)) {
       reviewHelp.textContent='The forward joint must be noseward (left) of the aft joint. The mark was not changed.';return;
     }
@@ -232,7 +245,7 @@
     getDisplayMapping() {
       if(!available||!asset)return null;
       const a=anchors();return {forwardX:shared?.forward??asset.x+a.forward*asset.scale,aftX:shared?.aft??asset.x+a.aft*asset.scale,
-        width:registration.width,height:registration.height,centerY:registration.height/2,sourceScale:asset.scale};
+        rampAftX:shared?.rampAft??((shared?.aft??asset.x+a.aft*asset.scale)+(window.CH149_DATA.ramp.end-11393)/6518*((shared?.aft??asset.x+a.aft*asset.scale)-(shared?.forward??asset.x+a.forward*asset.scale))),width:registration.width,height:registration.height,centerY:registration.height/2,sourceScale:asset.scale};
     },
     getState:() => ({selected,enabled:toggle.checked,marking,marks:JSON.parse(JSON.stringify(marks)),shared,projectRevision,projectReady,publishedReady,mappingStatus:shared?'shared-visual-calibration':'awaiting-review'})
   };

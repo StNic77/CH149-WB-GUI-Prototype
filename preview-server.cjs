@@ -44,6 +44,8 @@ return http.createServer((req, res) => {
         const data=JSON.parse(body),keys=['BASELINE','SAR3','SAR10','TRANSPORT','CASEVAC'];
         if(data.schema!==1||JSON.stringify(data.plane)!=='[2560,1216]'||!Number.isFinite(data.forward)||!Number.isFinite(data.aft)||data.forward<0||data.aft>2560||data.forward>=data.aft||!keys.includes(data.source)){json(400,{error:'Invalid calibration'});return;}
         const previous=current();if(data.expectedRevision!==(previous?.revision||0)){json(409,{error:'A newer calibration is saved. Reload it before saving.'});return;}
+        const rampAft=data.rampAft??previous?.rampAft;
+        if(rampAft!==undefined&&(!Number.isFinite(rampAft)||rampAft<=data.aft||rampAft>2560)){json(400,{error:'Invalid ramp edge'});return;}
         const legacyRecords={};
         for(const [key,record] of Object.entries(data.legacyRecords||{})){
           if(!keys.includes(key)||!Array.isArray(record.size)||record.size.length!==2||!record.size.every(n=>Number.isFinite(n)&&n>0&&n<=10000)||typeof record.file!=='string'||!/^images\/[\w .-]+\.png$/.test(record.file))continue;
@@ -52,8 +54,10 @@ return http.createServer((req, res) => {
           legacyRecords[key]=clean;
         }
         const clean={schema:1,plane:[2560,1216],forward:data.forward,aft:data.aft,source:data.source,legacyRecords,revision:(previous?.revision||0)+1,updatedAt:new Date().toISOString()};
+        if(rampAft!==undefined)clean.rampAft=rampAft;
         if(previous)fs.writeFileSync(stationFile+'.previous.json',JSON.stringify(previous,null,2));
         const scriptFile=stationFile.replace(/\.json$/i,'')+'.js',embedded={schema:clean.schema,plane:clean.plane,forward:clean.forward,aft:clean.aft,source:clean.source,revision:clean.revision};
+        if(rampAft!==undefined)embedded.rampAft=rampAft;
         fs.writeFileSync(scriptFile+'.tmp','/* Approved shared display calibration; kept in sync by the preview save service. */\nwindow.CH149_STATION_CALIBRATION = '+JSON.stringify(embedded,null,2)+';\n');
         fs.writeFileSync(stationFile+'.tmp',JSON.stringify(clean,null,2));fs.renameSync(scriptFile+'.tmp',scriptFile);fs.renameSync(stationFile+'.tmp',stationFile);json(200,clean);
       }catch{json(400,{error:'Could not save calibration'});}});return;
