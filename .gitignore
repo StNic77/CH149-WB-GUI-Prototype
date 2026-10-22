@@ -1,6 +1,7 @@
 node_modules/
 verification/*
 !verification/demo-check.cjs
+!verification/hosted-calibration-check.cjs
 references/
 history/
 *.previous.json

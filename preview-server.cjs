@@ -53,7 +53,9 @@ return http.createServer((req, res) => {
         }
         const clean={schema:1,plane:[2560,1216],forward:data.forward,aft:data.aft,source:data.source,legacyRecords,revision:(previous?.revision||0)+1,updatedAt:new Date().toISOString()};
         if(previous)fs.writeFileSync(stationFile+'.previous.json',JSON.stringify(previous,null,2));
-        fs.writeFileSync(stationFile+'.tmp',JSON.stringify(clean,null,2));fs.renameSync(stationFile+'.tmp',stationFile);json(200,clean);
+        const scriptFile=stationFile.replace(/\.json$/i,'')+'.js',embedded={schema:clean.schema,plane:clean.plane,forward:clean.forward,aft:clean.aft,source:clean.source,revision:clean.revision};
+        fs.writeFileSync(scriptFile+'.tmp','/* Approved shared display calibration; kept in sync by the preview save service. */\nwindow.CH149_STATION_CALIBRATION = '+JSON.stringify(embedded,null,2)+';\n');
+        fs.writeFileSync(stationFile+'.tmp',JSON.stringify(clean,null,2));fs.renameSync(scriptFile+'.tmp',scriptFile);fs.renameSync(stationFile+'.tmp',stationFile);json(200,clean);
       }catch{json(400,{error:'Could not save calibration'});}});return;
     }
     if (name === '/api/review-markers') {

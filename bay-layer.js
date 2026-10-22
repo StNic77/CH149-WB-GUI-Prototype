@@ -15,7 +15,7 @@
   const marks = {};
   const storageKey = 'ch149-cabin-prototype.station-review.v1';
   const sharedKey='ch149-cabin-prototype.shared-stations.v1';
-  let shared=null,projectRevision=0,projectReady=false,dirty=false;
+  let shared=null,projectRevision=0,projectReady=false,publishedReady=false,dirty=false;
   const saveButton=document.createElement('button');saveButton.type='button';saveButton.id='baySaveShared';saveButton.textContent='Save shared calibration to project';
   document.querySelector('.bay-review-actions').append(saveButton);
   const persistence=document.createElement('p');persistence.id='bayPersistenceStatus';persistence.setAttribute('role','status');document.querySelector('.bay-review').append(persistence);
@@ -23,7 +23,9 @@
   const importButton=document.createElement('button');importButton.type='button';importButton.id='bayImportShared';importButton.textContent='Import calibration';document.querySelector('.bay-review-actions').append(importButton);
   const importFile=document.createElement('input');importFile.type='file';importFile.accept='.json,application/json';importFile.hidden=true;importFile.id='bayImportFile';document.querySelector('.bay-review').append(importFile);
   const validShared=value=>value?.schema===1&&JSON.stringify(value.plane)==='[2560,1216]'&&Number.isFinite(value.forward)&&Number.isFinite(value.aft)&&value.forward>=0&&value.forward<value.aft&&value.aft<=2560;
-  try{const saved=JSON.parse(localStorage.getItem(sharedKey));if(validShared(saved))shared=saved;}catch{}
+  const builtIn=window.CH149_STATION_CALIBRATION;
+  if(validShared(builtIn)){shared={...builtIn,plane:[...builtIn.plane]};persistence.textContent='Built-in calibration loaded · all configurations use the approved joints.';}
+  try{const saved=JSON.parse(localStorage.getItem(sharedKey));if(validShared(saved)){if(!shared)shared=saved;else if(saved.forward!==shared.forward||saved.aft!==shared.aft)localStorage.setItem(sharedKey+'.previous',JSON.stringify(saved));}}catch{}
   // Validate saved marks against the exact source identity and dimensions. Keep
   // review storage separate from configuration edits and the 23 original markers.
   let stored = null;
@@ -42,16 +44,25 @@
   // source-specific records. Project persistence requires the explicit save below.
   if(!shared&&marks.BASELINE?.forward!==undefined&&marks.BASELINE?.aft!==undefined)shared=fromSource('BASELINE',marks.BASELINE);
   async function loadProject(){
-    try{const response=await fetch('/api/station-calibration',{cache:'no-store'});if(!response.ok)throw Error();const saved=await response.json();projectReady=true;
-      if(saved&&!validShared(saved))throw Error();
-      if(saved&&!dirty&&!marking){shared=saved;projectRevision=saved.revision;try{localStorage.setItem(sharedKey,JSON.stringify(shared));}catch{}persistence.textContent='Shared calibration loaded from the project · all configurations locked to the same joints.';draw();window.CabinSeatEditor?.renderLayer();}
-      else if(!saved)persistence.textContent='Browser marks retained. Save shared calibration to project to use the corrected No Role Config pair in every browser.';
-    }catch{projectReady=false;persistence.textContent=location.protocol==='file:'?'Opened directly as a file: marks stay in this browser. Use Export calibration, then Import calibration in the local web preview to save to the project.':'Browser marks retained. Project save is unavailable until the updated preview server is running.';}
+    let saved=null;
+    try{const response=await fetch('/api/station-calibration',{cache:'no-store'});if(!response.ok)throw Error();saved=await response.json();if(saved&&!validShared(saved))throw Error();projectReady=true;publishedReady=false;}
+    catch{projectReady=false;
+      // Static hosts have no local save API. Resolve the published calibration
+      // relative to the app folder, including GitHub Pages repository subpaths.
+      try{const response=await fetch(new URL('station-calibration.json',document.baseURI),{cache:'no-store'});if(!response.ok)throw Error();saved=await response.json();if(!validShared(saved))throw Error();if(validShared(builtIn)&&(saved.revision||0)<=(builtIn.revision||0)&&(saved.forward!==builtIn.forward||saved.aft!==builtIn.aft))throw Error();publishedReady=true;}
+      catch{publishedReady=false;saveButton.disabled=true;persistence.textContent=validShared(builtIn)?'Built-in calibration retained · no matching published calibration or save service is available. Export deliberate adjustments to transfer them.':location.protocol==='file:'?'Opened directly as a file: marks stay in this browser. Use Export calibration, then Import calibration in the local web preview to save to the project.':'Browser marks retained. The saved project alignment could not be loaded.';return;}
+    }
+    saveButton.disabled=!projectReady;saveButton.title=projectReady?'':'Hosted demo: export adjustments and import them in the local preview to publish an updated calibration.';
+    if(saved&&!dirty&&!marking){
+      try{if(shared&&(shared.forward!==saved.forward||shared.aft!==saved.aft))localStorage.setItem(sharedKey+'.previous',JSON.stringify(shared));}catch{}
+      shared=saved;projectRevision=saved.revision||0;try{localStorage.setItem(sharedKey,JSON.stringify(shared));}catch{}
+      persistence.textContent=publishedReady?'Published calibration loaded · all configurations use the saved joints. Changes can be exported; this hosted demo cannot save to the project.':'Shared calibration loaded from the project · all configurations locked to the same joints.';draw();window.CabinSeatEditor?.renderLayer();
+    }else if(!saved)persistence.textContent='Browser marks retained. Save shared calibration to project to use the corrected No Role Config pair in every browser.';
   }
   async function saveProject(){
     if(!shared||!validShared(shared)){persistence.textContent='Mark both joints first, then save the shared calibration.';return;}
     if(!projectReady)await loadProject();
-    if(!projectReady){persistence.textContent=location.protocol==='file:'?'This file page keeps marks in this browser. Use Export calibration, then import it into the local web preview to save to the project.':'Project save is unavailable. Your browser marks are retained; keep this page open and check the preview server.';return;}
+    if(!projectReady){persistence.textContent=publishedReady?'Hosted demo: adjustments are kept in this browser. Export calibration and import it in the local preview to save and publish an updated pair.':location.protocol==='file:'?'This file page keeps marks in this browser. Use Export calibration, then import it into the local web preview to save to the project.':'Project save is unavailable. Your browser marks are retained; keep this page open and check the preview server.';return;}
     saveButton.disabled=true;
     try{const legacyRecords={};for(const [key,mark] of Object.entries(marks))legacyRecords[key]={file:registration.assets[key].file,size:registration.assets[key].size,...mark};
       const response=await fetch('/api/station-calibration',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...shared,expectedRevision:projectRevision,legacyRecords})});
@@ -184,7 +195,9 @@
       reviewHelp.textContent='The forward joint must be noseward (left) of the aft joint. The mark was not changed.';return;
     }
     marks[a.key] = {...marks[a.key], [marking]:sourceX};
-    shared=fromSource(a.key,{forward:marking==='forward'?sourceX:a.forward,aft:marking==='aft'?sourceX:a.aft});dirty=true;
+    const next=fromSource(a.key,{forward:marking==='forward'?sourceX:a.forward,aft:marking==='aft'?sourceX:a.aft});
+    // Preserve the untouched joint exactly, avoiding source/common-plane roundoff.
+    if(shared){const other=marking==='forward'?'aft':'forward';next[other]=shared[other];}shared=next;dirty=true;
     const saved=saveMarks();draw();
     reviewHelp.textContent=`${marking==='aft'?'Aft':'Forward'} joint placed${saved?' and saved in this browser':''}. Click again anywhere on the plan to adjust it, then Finish marking.${saved?'':' Browser storage is unavailable; keep this page open.'}`;
   }
@@ -218,7 +231,7 @@
       const a=anchors();return {forwardX:shared?.forward??asset.x+a.forward*asset.scale,aftX:shared?.aft??asset.x+a.aft*asset.scale,
         width:registration.width,height:registration.height,centerY:registration.height/2,sourceScale:asset.scale};
     },
-    getState:() => ({selected,enabled:toggle.checked,marking,marks:JSON.parse(JSON.stringify(marks)),shared,projectRevision,mappingStatus:shared?'shared-visual-calibration':'awaiting-review'})
+    getState:() => ({selected,enabled:toggle.checked,marking,marks:JSON.parse(JSON.stringify(marks)),shared,projectRevision,projectReady,publishedReady,mappingStatus:shared?'shared-visual-calibration':'awaiting-review'})
   };
   loadProject();
 })();

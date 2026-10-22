@@ -14,6 +14,8 @@ npm start
 
 The preview server uses only built-in Node modules. It does not require npm dependencies to run. No external account is needed for the demo.
 
+The approved joint coordinates are embedded in `station-calibration.js`, giving every role the same baseline without browser storage or a network request. GitHub Pages can also read `station-calibration.json` relative to the app folder, while the local preview uses its save service. Deliberate local calibration saves update both files. Hosted adjustments can be exported and imported in the local preview before republishing; a hosted page cannot write repository files.
+
 See [DEMO_GUIDE.md](DEMO_GUIDE.md) for a walkthrough.
 
 ## Included interactions
