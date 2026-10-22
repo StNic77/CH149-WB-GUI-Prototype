@@ -157,11 +157,14 @@
       button.onclick = () => { selected = bay.id; inspect(); };
       layer.append(button);
     }
-    for (const [station,x,position] of [[4875,xAt(4875),'forward'],[11393,xAt(11393),'aft']]) {
+    const stations=[...new Set(data.bays.filter(bay=>bay.forward!==undefined).flatMap(bay=>[bay.forward,bay.aft]).concat(window.CH149_DATA.ramp.end))].sort((a,b)=>a-b);
+    for (const [index,station] of stations.entries()) {
+      const x=xAt(station),position=station===4875?'forward':station===11393?'aft':'boundary';
       const guide = document.createElement('div'); guide.className = `bay-station ${position}`;
+      guide.classList.add(index%2?'station-bottom':'station-top');guide.dataset.station=station;
       guide.style.left = percent(x,registration.width); guide.style.top = percent(top-70,registration.height);
       guide.style.height = percent(height+140,registration.height);
-      const label = document.createElement('span'); label.textContent = `X${station}${a[position+'Marked'] ? ' · marked' : a.inherited ? ' · baseline' : ' ?'}`;
+      const label = document.createElement('span'); label.textContent = `X${station}`; guide.title = position==='boundary' ? `Station X${station}` : a[position+'Marked'] ? 'Confirmed joint' : a.inherited ? 'Baseline joint' : 'Joint awaiting confirmation';
       guide.append(label); layer.append(guide);
     }
     inspect();

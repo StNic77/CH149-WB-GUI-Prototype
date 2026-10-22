@@ -18,7 +18,9 @@ The user clarified that the aircraft supports **four individual cargo entries**.
 - Cargo is a separate, initially visible checkbox beside Seats and Live equipment. Individual cargo uses a single-box icon; bay/ramp weights use grouped boxes. Numbered symbols open their own record. Symbols are offset to avoid collisions; this is selection layout, not a change in physical location or load arm. The full Cargo & bay loads list supplies another path to every record.
 - The inspector supports names, weights, location changes, entered arms or existing floor-point arm estimates for individual cargo, and fixed configured arms for bay/ramp weights. Individual point movement reuses floor-area.js placement mode; Escape cancels. Existing known-arm overrides remain explicit.
 - A selected floor cell still lists its own loads, now with Edit / move and a link to all custom loads. Existing entries remain when adding either type or switching role/view/stage. Hiding Cargo changes the view only and also preserves unsaved inspector fields.
-- Ramp exposes aggregate bay-weight entry at the configured REAR arm, 12893 mm. Individual ramp cargo point placement remains disabled pending its loading geometry/limits work.
+- Ramp supports individual cargo within the same four aircraft slots, plus its separate aggregate bay-weight entry. Individual cargo uses an editable entered arm initialized to the configured REAR arm, 12893 mm; moving from a cabin estimate to the ramp switches to entered arm. Precise ramp point placement and loading-limit enforcement remain pending. Confirmed ramp bounds are X11393–X14393.
+
+Bays Review labels all eight cabin boundaries and the aft ramp endpoint, alternating above and below the image: X4875, X5875, X6875, X7875, X8875, X9875, X10375, X11393 and X14393. The approved station calibration is unchanged.
 
 ## Calculation integrity
 
@@ -46,7 +48,8 @@ verification/cargo-layer-check.cjs passes at desktop, tablet portrait, tablet la
 6. The fifth cargo entry is rejected, bay duplicates are rejected, and four cargo plus all eight bay/ramp entries coexist (12 active records).
 7. Total weight, moment and load CG equal independent expected sums after additions, edits, moves and removal. Pinned helper bodies match the reference source when available; protected source/data/image hashes remain unchanged.
 8. View/stage/role navigation and Seats/Live equipment toggles preserve custom loads and symbols. Failed edits are atomic and stale counters cannot cause ID collisions.
-9. Resizing a 12-entry desktop setup to phone width reflows the symbols without overlap or horizontal page overflow. Hiding/restoring Cargo preserves unsaved inspector fields.
+9. Ramp cargo defaults to 12893 mm, accepts an entered arm, shares the four-slot cap and coexists with the ramp bay weight. Cabin/ramp relocation switches arm modes safely; new bay drafts retain the correct type. All nine station annotations use alternating top/bottom positions.
+10. Resizing a 12-entry desktop setup to phone width reflows the symbols without overlap or horizontal page overflow. Hiding/restoring Cargo preserves unsaved inspector fields.
 
 The portable npm test (existing demo, hosted/file calibration, cargo) passes. Existing floor-area-check.cjs and floor-cargo-arm-check.cjs pass their four-size scopes. Screenshots cargo-layer-preview.png and cargo-loads-preview.png were visually inspected. Touch testing is browser emulation, not physical-device validation.
 
