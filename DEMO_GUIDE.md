@@ -11,6 +11,10 @@ Start with **No Role Config** to build a setup, or select a standard role.
 7. Open the shelf and overhead close-ups and select their reviewed compartments.
 8. Enable **Bays review** to inspect boundaries. Review lines appear over equipment. Turn review off to return to floor/item editing.
 
+Use **Cargo** to show/hide installed cargo and bay-weight symbols independently of Seats and Live equipment. Single boxes represent individual cargo; grouped boxes represent bay/ramp weight. Click a symbol or **Cargo & bay loads** to edit, relocate or remove a specific entry. Four individual cargo entries are available; each cabin bay and the single ramp area can also have its own weight entry. Selecting another cell in a bay opens that bay's existing weight rather than replacing it. A ramp weight can be entered from the Ramp menu; individual ramp cargo placement and full ramp-limit validation remain unfinished.
+
+The inspector's totals are cargo/bay-only weight, moment and load CG, not an aircraft result. Symbols may be offset for selection when entries overlap; their assigned positions/arms remain unchanged. Hiding the layer leaves all records and contributions intact.
+
 Live equipment pictures follow edits. Turning **Live equipment** off shows the original role reference. Session edits reset on refresh or applying a role; custom floor load records currently survive role switching within a session.
 
 This is a graphical prototype for discussion, not operational loading approval. Whole-aircraft calculations, full fit/clearance validation and session save/restore are unfinished. In particular, CASEVAC rack controls validate patient dependency; complete rack-versus-other-equipment footprint rules remain to be reviewed. Aft top tiers are deliberately omitted; the possible overhead-stowage explanation is not confirmed.

@@ -114,6 +114,7 @@
     window.CabinRampArea?.render();
     window.CabinFloorEquipment?.render();
     window.CabinCasevac?.render();
+    window.CabinCargo?.render();
     layer.replaceChildren();
     if(!getState){layer.hidden=true;return;}
     const mapping=window.CabinBayLayer.getDisplayMapping();

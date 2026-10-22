@@ -22,6 +22,7 @@ See [DEMO_GUIDE.md](DEMO_GUIDE.md) for a walkthrough.
 
 - Shared cabin/bay alignment across No Role Config, SAR-3, SAR-10, Transport and CASEVAC.
 - Selectable floor cells and a single ramp area, explicit cargo point selection and estimated cabin cargo arms.
+- Independent Cargo layer and all-load inspector: four cargo slots, one weight per cabin bay plus the ramp, individual edits/moves/removal, and cargo/bay-only weight, moment and CG subtotals using the pinned reference helpers.
 - Live equipment layers for seats, basket, PTA cot, Stokes, Sea Tray, internal raft and CASEVAC racks.
 - Seat alternatives, folded-seat occupancy rules, crew/passenger markers and cot/litter patients.
 - CASEVAC rack controls: three forward patient tiers, two aft tiers and occupied-rack removal protection.
@@ -32,6 +33,8 @@ Transport and CASEVAC start without Sea Tray. Their internal rafts start with th
 ## Scope
 
 This is a demonstration prototype, not operational weight-and-balance software. Full aircraft calculations, loading/clearance validation, fuel/reporting and configuration save/restore are unfinished. Equipment and patient edits are session state and reset on refresh. Full CASEVAC rack footprint conflicts are not yet validated. Original role renders remain reference imagery; dynamic crops are approximate visual layers.
+
+Cargo symbols and their visibility do not change installation or calculated contribution. Custom loads survive navigation and role switching within the session, but reset on refresh. The displayed load CG includes only individual cargo and bay/ramp entries, not the aircraft or its other loads. See [CARGO_DEVELOPMENT_REPORT.md](CARGO_DEVELOPMENT_REPORT.md).
 
 The bundled catalogue, original reference images and saved shared calibration are included. The separate reference application is not required to run this prototype and is not modified by it. Data refresh tooling is for the original development workspace only.
 

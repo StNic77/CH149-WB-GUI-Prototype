@@ -91,19 +91,20 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
   </aside>
 </main>
 </div>
-<footer class="workspace-footer"><span>CH-149-615 <span aria-hidden="true">/</span> Interface development</span><span>No W&amp;B calculation or certification · changes reset on reload</span></footer>
+<footer class="workspace-footer"><span>CH-149-615 <span aria-hidden="true">/</span> Interface development</span><span>No aircraft W&amp;B calculation or certification · changes reset on reload</span></footer>
 </div>
 </div>
 <script src="config-data.js"></script>
 <script src="prototype-rules.js"></script>
 <script src="plan-registration.js"></script>
 <script src="bay-data.js"></script>
+<script src="load-math.js"></script>
 <script src="bay-review-draft.js"></script>
 <script src="station-calibration.js"></script>
 <script src="bay-layer.js?v=embedded-calibration-1"></script>
 <script src="seat-rules.js"></script>
-<script src="seat-editor.js"></script>
-<script src="floor-area.js"></script>
+<script src="seat-editor.js?v=cargo-layer-1"></script>
+<script src="floor-area.js?v=cargo-layer-1"></script>
 <script src="cabinet-regions.js"></script>
 <script src="cabinet-zones.js"></script>
 <script src="forward-shelf-definition.js"></script>
@@ -124,10 +125,12 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <link rel="stylesheet" href="live-cabin.css">
 <script src="live-cabin.js"></script>
 <link rel="stylesheet" href="ramp-area.css">
-<script src="ramp-area.js"></script>
+<script src="ramp-area.js?v=cargo-layer-1"></script>
 <script src="floor-equipment.js"></script>
 <script src="casevac-editor.js"></script>
-<script src="plan-viewer.js"></script>
+<link rel="stylesheet" href="cargo-layer.css">
+<script src="cargo-layer.js"></script>
+<script src="plan-viewer.js?v=cargo-layer-1"></script>
 <script>
 const D=window.CH149_DATA;
 const IM={plan:'images/SAR_3_Pax_clean.png',cabinet:'images/SAR Cabinet.png',forward:'images/Bay 1 Shelves and Sensor WS.png',pta:'images/PTA View Port.png',ramp:'images/Rear Shelves.png',stbd:'images/Team member View STBD.png'};
@@ -147,7 +150,7 @@ const LOC=[
  ...['SAR_CABINET_FWD_TOP','SAR_CABINET_FWD_BTM','SAR_CABINET_UPPER','SAR_CABINET_TOP','LOCKBOX_TOP','LOCKBOX_BTM','SAR_CABINET_MIDDLE','SAR_CABINET_BOTTOM','CABINET_TOP_SURFACE'].map(id=>({id,label:D.stowage[id].name.replace('SAR Cabinet ','').replace('Lockbox ',''),type:'cabinet',arm:D.stowage[id].arm,view:'cabinet'})),
  ...['RAMP_PORT_FWD','RAMP_PORT_AFT','RAMP_STBD_FWD','RAMP_STBD_AFT'].map(id=>({id,label:D.stowage[id].name,type:'shelf',arm:D.stowage[id].arm,view:'ramp'}))
 ];
-const state={preset:'',mission:new Set(),roleFit:new Set(),items:[],patients:{},seats:new Set(),occupants:{},view:'plan',selectedLoc:null,selectedSeat:null};
+const state={preset:'',mission:new Set(),roleFit:new Set(),items:[],patients:{},seats:new Set(),occupants:{},view:'plan',selectedLoc:null,selectedSeat:null,floorLoads:[],nextFloorLoadId:0};
 const byId=id=>D.missionEquip[id]||D.roleFit[id]||{};
 function missionObject(key){const it=D.missionEquip[key];if(!it)return null;return {key,name:it.name||key,kind:it.isBasket?'basket':window.CabinStokes.isLitter(key)?'litter':'gear',mass:(it.unitWeight??it.w??0)*(it.defaultQuantity??1),loc:state.moved?.[key]?.loc||it.stow||'',source:'mission',quantity:it.defaultQuantity??1};}
 function fitObject(key){const it=D.roleFit[key];if(!it)return null;return {key,name:it.name||key,kind:'fit',mass:it.w||0,loc:key==='RF_SAR_EQUIPMENT_CSH_PATIENT_TREATMENT_SYSTEM'?'PTA_COT_AREA':Object.keys(D.stowage).find(id=>D.stowage[id].roleFitKey===key)||'',source:'role'};}
@@ -252,13 +255,10 @@ window.CabinLive.connect({state:()=>state,view:setView,seat:id=>{state.selectedS
 window.CabinRampArea.connect({state:()=>state,view:setView});
 window.CabinFloorEquipment.connect({state:()=>state,view:setView,refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
 window.CabinCasevac.connect({state:()=>state,view:setView,refresh:()=>{recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();}});
+window.CabinCargo.connect({state:()=>state,view:setView,refresh:()=>{recalculateItems();renderItems();renderSeats();window.CabinFloorArea.render();}});
 window.CabinFloorArea.connect({state:()=>state,refresh:()=>{recalculateItems();renderItems();renderSeats();},seat:id=>{state.selectedSeat=id;document.getElementById('seatToggle').checked=true;renderSeats();document.getElementById('seatMenu').scrollIntoView({block:'nearest'});},view:setView,remove:removeItem,move:(key,dest)=>moveItem(key,dest,{keepView:true})});
 applyPreset('');
 </script>
 <script src="workspace.js"></script>
 </body>
 </html>
-
-
-
-

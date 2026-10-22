@@ -2,6 +2,7 @@ node_modules/
 verification/*
 !verification/demo-check.cjs
 !verification/hosted-calibration-check.cjs
+!verification/cargo-layer-check.cjs
 references/
 history/
 *.previous.json
