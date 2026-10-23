@@ -20,6 +20,7 @@ window.CH149_SEAT_RULES = (() => {
   function equipmentOverlaps(state,key){return equipmentPairs.flatMap(pair=>pair.includes(key)?pair.filter(other=>other!==key&&equipment.some(item=>item.key===other&&state[item.set]?.has(other))):[]);}
   function equipmentConflictMessage(state,key) {const overlaps=equipmentOverlaps(state,key);if(overlaps.length)return `The port basket and PTA cot cannot be installed together. Remove or relocate the conflicting equipment first.`;const ids=equipmentConflicts(state,key),item=equipment.find(item=>item.key===key);if(!ids.length)return '';return item?.mode==='occupancy'?`Clear occupants from ${ids.join(', ')} before placing the ${item.name.toLowerCase()}. Seats can stay installed, folded up.`:`Remove seats ${ids.join(', ')} before placing this equipment.`;}
   function assignOccupant(state,id,kind) {
+    if(['C1','C2'].includes(id)&&kind!=='Crew')return {ok:false,reason:'C1 and C2 are crew positions; passengers cannot be assigned here.'};
     if(!state.seats.has(id))return {ok:false,reason:'Install the seat before assigning an occupant.'};
     const blocked=occupancyBlockers(state,id);if(blocked.length)return {ok:false,reason:`${id} cannot be occupied while ${blocked.map(item=>item.name).join(' and ')} is installed.`};
     state.occupants[id]=kind;return {ok:true};

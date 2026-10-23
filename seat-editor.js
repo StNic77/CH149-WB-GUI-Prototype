@@ -71,6 +71,7 @@
     const plan=rules.installationPlan(state,id);
     if(plan.blockedBy.length){container.innerHTML=`<p class="quiet">${esc(id)} is unavailable while ${esc(plan.blockedBy.map(item=>item.name).join(' and '))} is installed.</p>`;return;}
     container.innerHTML=`<div class="seat-menu"><strong>${esc(id)} · ${esc(seat.name.replace(new RegExp('^'+id+'\\s*'),''))}</strong><p>${installed?'Installed':'Available position'} · seat ${seat.wSeat} kg · seat arm ${seat.arm.toLocaleString('en-CA')} mm</p>${seat.occupantArm!==undefined&&seat.occupantArm!==seat.arm?`<p>Occupant arm ${seat.occupantArm.toLocaleString('en-CA')} mm</p>`:''}${fixed?'<p>This seat is permanently installed.</p>':occupied?'<p>This position is occupied. Clear its occupant before removing the seat.</p>':''}${occupied?`<p>Occupant: ${esc(state.occupants[id])}</p>`:''}<div class="actions"><button type="button" class="secondary" id="toggleSeat" ${fixed||installed&&occupied?'disabled':''}>${installed?'Remove seat':'Install seat'}</button>${occupied?'<button type="button" class="secondary" id="clearSeatOccupant">Clear occupant</button>':''}${installed?'<button type="button" class="secondary" id="addPax">Add passenger</button><button type="button" class="secondary" id="addCrew">Assign crew</button>':''}</div></div>`;
+    if(['C1','C2'].includes(id))container.querySelector('#addPax')?.remove();
     const restricted=rules.occupancyBlockers(state,id);
     if(restricted.length){const note=document.createElement('p');note.className='seat-conflict-note';note.textContent=`${restricted.map(item=>item.name).join(' and ')} uses this space. The seat may stay installed, folded up, but cannot be occupied.`;container.querySelector('.seat-menu').append(note);for(const button of container.querySelectorAll('#addPax,#addCrew'))button.disabled=true;}
     document.getElementById('toggleSeat').onclick=()=>{
@@ -154,6 +155,7 @@
     notice.textContent='Seat setup modified. The plan image shows its reference configuration; seat markers and the position list show your current installation state.';
     renderMenu();renderLayer();
     window.CabinFloorArea?.render();
+    window.CabinAircraftSummary?.render();
   }
   toggle.onchange=()=>{if(!toggle.checked)finishLocating();render();};
   let touch=null;

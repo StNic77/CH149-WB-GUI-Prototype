@@ -42,5 +42,5 @@
   search.oninput=()=>{const query=search.value.trim().toLowerCase();for(const details of available.querySelectorAll('details')){let count=0;for(const b of details.querySelectorAll('[data-shelf-item]')){b.hidden=!!query&&!b.dataset.search.includes(query);if(!b.hidden)count++;}details.hidden=!count;details.open=!!query||oldOpen.has(details.dataset.shelfGroup);}};
   container.append(available,text('p','Other catalogue items may require placement review; automatic fit and capacity checks are not yet available.'));
  }
- window.CabinShelfEditor={render};
+ window.CabinShelfEditor={render,focus(location,key){selection.set(location,key);}};
 })();

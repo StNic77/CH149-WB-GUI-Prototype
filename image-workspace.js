@@ -86,7 +86,7 @@
  function renderAccess(){const m=window.CabinBayLayer.getDisplayMapping();shelfLayer.hidden=state().view!=='plan'||!m;if(!m)return;
   for(const b of shelfLayer.children){const forward=b.dataset.shelfAccess==='forward',x=forward?m.forwardX+(5375-4875)/6518*(m.aftX-m.forwardX):m.aftX+(m.rampAftX-m.aftX)*.48,y=m.centerY+(b.dataset.shelfAccess==='rampStbd'?-115:115)*m.sourceScale;b.style.left=x/m.width*100+'%';b.style.top=y/m.height*100+'%';}
  }
- window.CabinImageMenu={showSeat,showLocation,showDetail,close,show,setAnchor(x,y){anchor={x,y};},retarget(panel,root,label){if(!host.hidden&&current===panel&&root!==area)show(panel,root,label);},renderAccess,onView(){close();back.hidden=state().view==='plan';renderAccess();},suspend(){placementHidden=!host.hidden;host.hidden=true;},resume(){if(placementHidden&&current){host.hidden=false;placementHidden=false;schedule();}},getState:()=>({open:!host.hidden,current,area,item})};
+ window.CabinImageMenu={showSeat,showLocation,showDetail,close,show,anchorAtElement(element){if(element){const r=element.getBoundingClientRect();lastPoint={x:r.left+r.width/2,y:r.top+r.height/2};lastTrigger=element;}},setAnchor(x,y){anchor={x,y};},retarget(panel,root,label){if(!host.hidden&&current===panel&&root!==area)show(panel,root,label);},renderAccess,onView(){close();back.hidden=state().view==='plan';renderAccess();},suspend(){placementHidden=!host.hidden;host.hidden=true;},resume(){if(placementHidden&&current){host.hidden=false;placementHidden=false;schedule();}},getState:()=>({open:!host.hidden,current,area,item})};
  back.hidden=state().view==='plan';
  renderAccess();
 })();

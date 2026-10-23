@@ -37,6 +37,20 @@ The location menus expose mapped options, not every eligible item in the operati
 
 Seat assignments retain the existing prototype's occupant category. Named people, entered person weights, full quantity editing and the full operational calculation/limit/reporting engine are not introduced by this presentation change. Cargo/bay subtotals retain the pinned reference helpers; whole-aircraft W&B parity remains a separate integration and comparison task.
 
+## Live aircraft sidebar — first pass (23 October 2026)
+
+Six collapsible sections correspond to Acceptance Info; Role Selected / grouped Role Fit; grouped Mission Equipment; Crew, Pax, Patients and Seating; Fuel; and Load Planning. All start collapsed, show compact live counts/status, and retain their expansion state while editing.
+
+Role Fit grouping uses the explicit group or the same group prefixes as Active Dev's accounting UI. Mission grouping uses the local catalogue. Changes are compared with the selected role's initial setup, including the prototype's confirmed role overrides. Added/removed equipment and moved mission items are identified; removed standard items remain visible and link back to installation controls. Supported rows open the existing image editors. Unsupported equipment editors, aircraft acceptance and fuel editing remain unconnected, rather than presenting working controls for those functions. Cargo totals are only the existing cargo/bay subtotal.
+
+C1 and C2 expose crew assignment only. The seat rule also rejects passenger assignment without mutating occupants. The sidebar reads the same local aircraft state and configuration snapshot; it adds no live custodian-file connection and no separate loading data store.
+
+## Deferred visual request — ramp-stowed Stokes (23 October 2026)
+
+Parked at the user's request; do not implement yet. The orange Stokes litter visible in the supplied `Team member View STBD.png` is a reference for a conditional layer in the Ramp Shelves view (`Rear Shelves.png`). Show it only when the existing Stokes state is ramp-stowed; omit it when cabin-deployed or not installed. Use the same authoritative installation state as the 2D plan, with no duplicate litter or change to weights/arms. The viewpoints differ, so perspective, scale and shelf/seat occlusion need visual review rather than a direct unadjusted crop. The existing Starboard Aft reference view should also be considered when later making detail imagery reflect installation state. No imagery or live display behaviour changes are included now.
+
+Reference attachments: `C:/Users/sstni/Desktop/Rear Shelves.png` and `C:/Users/sstni/Desktop/Team member View STBD.png`; corresponding images are already present in the prototype's images folder.
+
 ## Verification
 
 Portable checks cover presets; approved embedded joints/ramp edge; cargo identity, slot limits, atomic edits and totals; image-local P18/basket flows and occupant guards; direct folded-seat selection; cabinet and shelf selection; CASEVAC installation from No Role Config; layer visibility; and menu bounds at desktop, iPad portrait/landscape, and phone portrait/landscape sizes. The refinement check also covers fixed-seat assignment, BMS removal/reinstallation, role-normal stowage priority, preserved loads on returning to 2D, draggable cargo markers and visible primary actions. Original catalogue data, calibration files, baseline imagery and the reference calculation file are protected by the existing cargo regression check.

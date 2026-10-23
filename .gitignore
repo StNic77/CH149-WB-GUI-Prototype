@@ -5,6 +5,7 @@ verification/*
 !verification/cargo-layer-check.cjs
 !verification/image-workspace-check.cjs
 !verification/refinement-check.cjs
+!verification/aircraft-summary-check.cjs
 references/
 history/
 *.previous.json
