@@ -18,3 +18,8 @@
 #cargoEditForm label{display:grid;gap:4px;font-size:12px}
 #cargoEditForm input,#cargoEditForm select{box-sizing:border-box;max-width:100%;width:100%;min-height:38px;padding:7px;border:1px solid #9db4b4;border-radius:5px;background:white;color:#294650}
 @media(max-width:650px){.cargo-layout{grid-template-columns:1fr}}
+.cargo-symbol[data-limit-status=ok]{background:#e0f5e6;border-color:#21733d;color:#155a2d}
+.cargo-symbol[data-limit-status=caution]{background:#ffe3e3;border-color:#b3212c;color:#8d1420}
+.cargo-symbol[data-limit-status=unreviewed]{background:#edf1f4;border-color:#71808d;color:#425360}
+.cargo-limit-alert{padding:9px 11px;margin:8px 0;border:1px solid #a7b8c2;border-radius:7px;background:#f1f5f7;font-size:12px;line-height:1.5}
+.cargo-limit-alert p{margin:4px 0!important}.cargo-limit-alert[data-limit-status=caution]{border:2px solid #b3212c;color:#8d1420;background:#fff0f0}.cargo-limit-alert[data-limit-status=ok]{border-color:#21733d;color:#155a2d;background:#eaf7ee}

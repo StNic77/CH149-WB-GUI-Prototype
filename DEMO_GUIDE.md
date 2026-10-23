@@ -18,3 +18,5 @@ The inspector's totals are cargo/bay-only weight, moment and load CG, not an air
 Live equipment pictures follow edits. Turning **Live equipment** off shows the original role reference. Session edits reset on refresh or applying a role; custom floor load records currently survive role switching within a session.
 
 This is a graphical prototype for discussion, not operational loading approval. Whole-aircraft calculations, full fit/clearance validation and session save/restore are unfinished. In particular, CASEVAC rack controls validate patient dependency; complete rack-versus-other-equipment footprint rules remain to be reviewed. Aft top tiers are deliberately omitted; the possible overhead-stowage explanation is not confirmed.
+
+Cargo uses reusable slots **1–4**; removing a load frees its slot. Bay weights use bay names. Ramp symbols are green when the current ramp checks pass and red with an exclamation mark when combined loading raises a caution; grey cabin symbols have no connected limit check yet. Select a symbol to see the issue at the top of its menu. **Load Planning** has a **Remove** button beside each cargo or bay-weight entry.
