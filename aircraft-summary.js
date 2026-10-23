@@ -58,6 +58,8 @@
   const loads=(s.floorLoads||[]).filter(x=>x.installed!==false),total=window.CabinCargo.totals(s),planning=section(root,'planning','Load Planning',`${loads.filter(x=>x.kind==='individual').length} cargo · ${loads.filter(x=>x.kind==='bay').length} bay weights${loads.length?' · '+weight(total.w):''}`);
   for(const load of loads)row(planning,load.name,`${load.kind==='bay'?'Bay weight':'Cargo'} · ${weight(load.weight)} · ${load.arm} mm`,()=>{setView('plan');imageTarget(`[data-cargo-id="${load.id}"]`);window.CabinCargo.open(load.id);});
   if(!loads.length)planning.append(text('p','No cargo or bay weights entered. Select a floor cell or the ramp to add a load.'));else planning.append(text('p',`Cargo/bay subtotal: ${weight(total.w)}. Aircraft, equipment, people and fuel are not included.`));
+  const ramp=window.CabinRampLimits.assess(s),rampRow=row(planning,'Ramp loading',`${weight(ramp.weight)} · ${ramp.moment.toFixed(1)} kg·m${ramp.warnings.length?' · '+ramp.warnings.join(' '):' · Within current checks'}`,()=>{setView('plan');imageTarget('#rampAreaTarget');window.CabinRampArea.open();});rampRow.dataset.rampSummary='true';
+  if(ramp.warnings.length)planning.querySelector('summary small').textContent+=' · Ramp warning';
   root.scrollTop=scroll;
  }
  window.CabinAircraftSummary={render,standard};render();

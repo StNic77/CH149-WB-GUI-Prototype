@@ -14,13 +14,13 @@
  const get=(state,id)=>(state.floorLoads||[]).find(row=>String(row.id)===String(id));
  function validate(input){
   const space=findSpace(input.area),weight=Number(input.weight);if(!space||!['individual','bay'].includes(input.kind))return {ok:false,reason:'Choose a cabin floor cell and load type.'};
-  if(space.id==='RAMP'&&input.kind==='individual'&&input.armSource==='floor-estimate')return {ok:false,reason:'Use an entered arm for ramp cargo; precise ramp point estimates are not connected.'};
   if(!Number.isFinite(weight)||weight<=0)return {ok:false,reason:'Enter a positive finite weight.'};
   let point=null;
   if(input.floorPoint){const p=input.floorPoint;if(p.bay!==space.bay||p.side!==space.side||!Number.isFinite(p.fraction)||p.fraction<0||p.fraction>1||!Number.isFinite(p.lateral)||p.lateral<0||p.lateral>1)return {ok:false,reason:'Choose a valid floor position in this cell.'};point={bay:p.bay,side:p.side,fraction:p.fraction,lateral:p.lateral};}
   const armSource=input.kind==='bay'?'configured-bay':input.armSource==='floor-estimate'?'floor-estimate':'entered';
   const arm=input.kind==='bay'?findBay(space).arm:armSource==='floor-estimate'?window.CabinFloorArea.estimateForSpace(space.id,point?.fraction??.5):Number(input.arm);
   if(!Number.isFinite(arm)||arm<0)return {ok:false,reason:'Enter a valid finite arm.'};
+  const ramp=window.CabinRampLimits.limits;if(space.id==='RAMP'&&(arm<ramp.hinge||arm>ramp.end))return {ok:false,reason:`Ramp cargo arm must be ${ramp.hinge}–${ramp.end} mm.`};
   return {ok:true,value:{area:space.id,kind:input.kind,name:String(input.name||'').trim().slice(0,80)||(input.kind==='bay'?findBay(space).name+' load':space.name+' cargo'),weight,arm,armSource,floorPoint:input.kind==='bay'?null:point,installed:input.installed!==false}};
  }
  function capacityIssue(state,entry,except){const active=rows(state).filter(row=>String(row.id)!==String(except));if(entry.installed!==false&&entry.kind==='individual'&&active.filter(row=>row.kind==='individual').length>=4)return 'The aircraft has four individual cargo entries already. Edit or remove one before adding another.';if(entry.installed!==false&&entry.kind==='bay'&&active.some(row=>row.kind==='bay'&&findSpace(row.area)?.bay===findSpace(entry.area)?.bay))return 'This bay already has a weight entry. Select that entry to edit it.';return '';}
@@ -45,13 +45,16 @@
   const form=panel.querySelector('#cargoEditForm');if(!form)return;
   let previousArea=entry.area;
   const syncArm=()=>{const space=findSpace(form.elements.area.value),ramp=space.id==='RAMP',source=form.elements.armSource;
-   if(source){source.querySelector('[value="floor-estimate"]').disabled=ramp;if(ramp){source.value='entered';if(previousArea!=='RAMP')form.elements.arm.value=findBay(space).arm;}}
+   if(source&&ramp&&previousArea!=='RAMP'&&source.value==='entered')form.elements.arm.value=findBay(space).arm;
    const estimated=entry.kind==='bay'||source?.value==='floor-estimate';form.elements.arm.readOnly=estimated;
    if(estimated)form.elements.arm.value=entry.kind==='bay'?findBay(space).arm:window.CabinFloorArea.estimateForSpace(space.id,space.id===entry.area?entry.floorPoint?.fraction??.5:.5);
-   const reposition=panel.querySelector('#cargoReposition');if(reposition)reposition.hidden=ramp;previousArea=space.id;
+   previousArea=space.id;
   };
-  syncArm();
-  form.elements.area.onchange=syncArm;if(form.elements.armSource)form.elements.armSource.onchange=syncArm;
+  const rampStatus=document.createElement('div');rampStatus.id='cargoRampStatus';form.append(rampStatus);
+  const previewRamp=()=>{const check=validate({...entry,...draft(form,entry)});rampStatus.innerHTML=check.ok?window.CabinRampLimits.markup(state,check.value,entry.id):window.CabinRampLimits.markup(state);if(!check.ok&&form.elements.area.value==='RAMP'){const note=document.createElement('p');note.className='floor-reason';note.textContent=check.reason;rampStatus.prepend(note);}};
+  syncArm();previewRamp();
+  form.addEventListener('input',previewRamp);
+  form.elements.area.onchange=()=>{syncArm();previewRamp();};if(form.elements.armSource)form.elements.armSource.onchange=()=>{syncArm();previewRamp();};
   form.onsubmit=event=>{event.preventDefault();const patch=draft(form,entry),result=entry.id===null?add(state,{...patch,kind:entry.kind}):update(state,entry.id,patch);if(result.ok){selected=String(result.entry.id);addingBayArea=null;}changed(result,'Load saved. Other entries are unchanged.');if(result.ok&&entry.id===null){close();window.CabinImageMenu?.close();}};
   panel.querySelector('#cargoRemove').onclick=()=>{if(entry.id===null){addingBayArea=null;render();return;}const result=remove(state,entry.id);if(result.ok)selected=null;changed(result,'Load removed. Other entries are unchanged.');};
   panel.querySelector('#cargoReposition')?.addEventListener('click',()=>{if(entry.id===null){message='Save this load before choosing a floor point.';panel.querySelector('#cargoMessage').textContent=message;return;}const patch=draft(form,entry),check=validate({...entry,...patch});if(!check.ok){message=check.reason;panel.querySelector('#cargoMessage').textContent=message;return;}beginMove(entry,patch);});
@@ -60,7 +63,7 @@
   if(!bridge)return;const state=bridge.state(),entries=rows(state),mapping=window.CabinBayLayer?.getDisplayMapping();layer.hidden=!available||!toggle.checked||!mapping;
   const occupied=[],sheet=document.getElementById('planSheet'),planeWidth=sheet.clientWidth||window.innerWidth,planeHeight=sheet.clientHeight||planeWidth*1216/2560;
   function place(node,x,y){const w=node.offsetWidth||54,h=node.offsetHeight||32,baseX=x/mapping.width*planeWidth,baseY=y/mapping.height*planeHeight;for(let ring=0;ring<=12;ring++){for(let dx=-ring;dx<=ring;dx++)for(let dy=-ring;dy<=ring;dy++){if(ring&&Math.abs(dx)!==ring&&Math.abs(dy)!==ring)continue;const cx=Math.max(w/2+2,Math.min(planeWidth-w/2-2,baseX+dx*(w+5))),cy=Math.max(h/2+2,Math.min(planeHeight-h/2-2,baseY+dy*(h+5))),rect={x:cx-w/2,y:cy-h/2,w,h};if(occupied.some(a=>rect.x<a.x+a.w+3&&rect.x+rect.w+3>a.x&&rect.y<a.y+a.h+3&&rect.y+rect.h+3>a.y))continue;occupied.push(rect);return [cx-baseX,cy-baseY];}}return [0,0];}
-  if(!layer.hidden){const keep=new Set(),groups=new Map();for(const entry of entries){const space=findSpace(entry.area);if(!space)continue;const point=entry.floorPoint,fraction=point?.fraction??.5,lateral=point?.lateral??.5,station=space.id==='RAMP'?findBay(space).arm:space.forward+fraction*(space.aft-space.forward),x=space.id==='RAMP'?(mapping.aftX+mapping.rampAftX)/2:mapping.forwardX+(station-4875)/6518*(mapping.aftX-mapping.forwardX),y=mapping.centerY+(-125+(space.lane+lateral)*250/3)*mapping.sourceScale,key=x.toFixed(1)+':'+y.toFixed(1);if(!groups.has(key))groups.set(key,[]);groups.get(key).push({entry,x,y});}
+  if(!layer.hidden){const keep=new Set(),groups=new Map();for(const entry of entries){const space=findSpace(entry.area);if(!space)continue;const point=entry.floorPoint,fraction=point?.fraction??.5,lateral=point?.lateral??.5,station=space.id==='RAMP'?findBay(space).arm:space.forward+fraction*(space.aft-space.forward),x=space.id==='RAMP'?mapping.aftX+Math.max(0,Math.min(1,point?.fraction??(entry.arm-window.CabinRampLimits.limits.hinge)/3000))*(mapping.rampAftX-mapping.aftX):mapping.forwardX+(station-4875)/6518*(mapping.aftX-mapping.forwardX),y=mapping.centerY+(space.id==='RAMP'?-95+lateral*190:-125+(space.lane+lateral)*250/3)*mapping.sourceScale,key=x.toFixed(1)+':'+y.toFixed(1);if(!groups.has(key))groups.set(key,[]);groups.get(key).push({entry,x,y});}
    for(const group of groups.values())group.forEach(({entry,x,y},index)=>{const id=String(entry.id);keep.add(id);let node=nodes.get(id);if(!node){node=document.createElement('button');node.type='button';node.className='cargo-symbol';node.dataset.cargoId=id;nodes.set(id,node);layer.append(node);}node.innerHTML=icon(entry.kind)+`<span>#${entry.id}</span>`;node.dataset.cargoKind=entry.kind;node.setAttribute('aria-label',`${entry.name}, ${entry.kind==='bay'?'bay weight':'cargo'}, ${entry.weight} kilograms, ${findSpace(entry.area).name}, entry ${id}`);node.title=`#${id} ${entry.name} · ${entry.weight} kg · ${entry.arm} mm`;node.classList.toggle('selected',id===String(selected));node.onclick=()=>window.CabinCargo.open(id);const [offsetX,offsetY]=place(node,x,y);Object.assign(node.style,{left:x/mapping.width*100+'%',top:y/mapping.height*100+'%',transform:`translate(-50%,-50%) translate(${offsetX}px,${offsetY}px)`});});
    for(const [id,node]of nodes)if(!keep.has(id)){node.remove();nodes.delete(id);}
   }

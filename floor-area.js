@@ -5,6 +5,8 @@
   const sides=['Stbd','Centre','Port'];
   const spaces=window.CH149_BAY_DATA.bays.filter(bay=>bay.forward!==undefined).flatMap(bay=>sides.map((side,lane)=>({id:`${bay.id}_${side.toUpperCase()}`,name:`B${bay.name.replace('Bay ','')} ${side}`,bay:bay.id,side,lane,forward:bay.forward,aft:bay.aft,arm:bay.arm})));
   window.CH149_FLOOR_SPACES=spaces;
+  const rampSpace={id:'RAMP',name:'Ramp',bay:'REAR',lane:0,forward:data.ramp.hinge,aft:data.ramp.end,arm:window.CH149_BAY_DATA.bays.find(b=>b.id==='REAR').arm};
+  const cellFor=space=>cells.get(space.id)||document.getElementById('rampAreaTarget');
   const area={id:'BAY6_PORT',name:'B6 Port',seat:'P18',bay:'BAY6',
     cot:'RF_SAR_EQUIPMENT_CSH_PATIENT_TREATMENT_SYSTEM',basket:'ME_SAR_MISSION_EQUIP_RESCUE_BASKET_PORT',otherBasket:'ME_SAR_MISSION_EQUIP_RESCUE_BASKET_STBD'};
   const layer=document.createElement('div');layer.className='floor-area-layer';layer.id='floorAreaLayer';document.getElementById('planSheet').append(layer);
@@ -27,7 +29,7 @@
   const kg=value=>`${Number(value).toLocaleString('en-CA',{maximumFractionDigits:3})} kg`;
   const arm=value=>`${Number(value).toLocaleString('en-CA')} mm`;
   const selectedBay=()=>window.CH149_BAY_DATA.bays.find(item=>item.id===selectedSpace.bay);
-  const estimateForSpace=(id,position=.5)=>{const space=spaces.find(s=>s.id===id);return Math.round((space.forward+position*(space.aft-space.forward))/10)*10;};
+  const estimateForSpace=(id,position=.5)=>{const space=id==='RAMP'?rampSpace:spaces.find(s=>s.id===id);const station=space.forward+position*(space.aft-space.forward);return id==='RAMP'?Math.round(station):Math.round(station/10)*10;};
   const estimatedArm=()=>estimateForSpace(selectedSpace.id,fraction);
   const catalogue={...data.paxSeats,...data.crewSeats};
   function notify(text){message=text;bridge.refresh();render();}
@@ -36,16 +38,19 @@
     const x=station=>m.forwardX+(station-4875)/6518*(m.aftX-m.forwardX);
     for(const space of spaces)Object.assign(cells.get(space.id).style,{left:`${x(space.forward)/m.width*100}%`,width:`${(x(space.aft)-x(space.forward))/m.width*100}%`,top:`${(m.centerY+(-125+space.lane*250/3)*m.sourceScale)/m.height*100}%`,height:`${250/3*m.sourceScale/m.height*100}%`});
     for(const space of spaces){const cell=cells.get(space.id);cell.setAttribute('aria-expanded',String(open&&selectedSpace.id===space.id));cell.classList.toggle('selected',open&&selectedSpace.id===space.id);}
-    selectionOutline.hidden=!available||!open;Object.assign(selectionOutline.style,{left:cells.get(selectedSpace.id).style.left,top:cells.get(selectedSpace.id).style.top,width:cells.get(selectedSpace.id).style.width,height:cells.get(selectedSpace.id).style.height});
+    selectionOutline.hidden=!available||!open;const selectedCell=cellFor(selectedSpace);if(selectedCell)Object.assign(selectionOutline.style,{left:selectedCell.style.left,top:selectedCell.style.top,width:selectedCell.style.width,height:selectedCell.style.height});
     drawPreview();
     openButton.textContent=selectedSpace.name;
     document.getElementById('planViewport').classList.toggle('placing-floor-cargo',placingCargo);placementHelp.hidden=!placingCargo;
-    pointMarker.hidden=!open||cargoKind!=='individual'||!cargoPointChosen;pointMarker.style.left=`${x(selectedSpace.forward+fraction*(selectedSpace.aft-selectedSpace.forward))/m.width*100}%`;pointMarker.style.top=`${(m.centerY+(-125+(selectedSpace.lane+lateral)*250/3)*m.sourceScale)/m.height*100}%`;
+    const ramp=selectedSpace.id==='RAMP';
+    pointMarker.hidden=!open||cargoKind!=='individual'||!cargoPointChosen;pointMarker.style.left=`${(ramp?m.aftX+fraction*(m.rampAftX-m.aftX):x(selectedSpace.forward+fraction*(selectedSpace.aft-selectedSpace.forward)))/m.width*100}%`;pointMarker.style.top=`${(m.centerY+(ramp?-95+lateral*190:-125+(selectedSpace.lane+lateral)*250/3)*m.sourceScale)/m.height*100}%`;
   }
+  function pointAt(event,space){const m=window.CabinBayLayer.getDisplayMapping(),rect=document.getElementById('planSheet').getBoundingClientRect(),x=(event.clientX-rect.left)/rect.width*m.width,y=(event.clientY-rect.top)/rect.height*m.height,ramp=space.id==='RAMP',station=4875+(x-m.forwardX)/(m.aftX-m.forwardX)*6518;return {fraction:Math.max(0,Math.min(1,ramp?(x-m.aftX)/(m.rampAftX-m.aftX):(station-space.forward)/(space.aft-space.forward))),lateral:Math.max(0,Math.min(1,ramp?((y-m.centerY)/m.sourceScale+95)/190:((y-m.centerY)/m.sourceScale+125)/(250/3)-space.lane))};}
   function rememberDraft(){const form=panel.querySelector('#areaLoadForm');if(form)cargoDraft={weight:form.elements.weight.value,name:form.elements.name.value,arm:form.elements.arm?.value||''};}
   function startCargo(){window.CabinImageMenu?.suspend();cargoKind='individual';placingCargo=true;cargoPointChosen=false;placementHelp.textContent='Cargo placement · click its floor position · Escape cancels';window.CabinBayLayer?.finishMarking();window.CabinSeatEditor?.finishLocating();render();document.getElementById('planViewport').scrollIntoView({block:'nearest'});}
   function cancelCargo(){const pending=relocation;relocation=null;placingCargo=false;cargoPointChosen=false;cargoKind=null;cargoDraft={};render();pending?.cancel();window.CabinImageMenu?.resume();}
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&(cargoKind||relocation)){event.preventDefault();event.stopImmediatePropagation();cancelCargo();}});
+  function cancelDraft(){const ramp=selectedSpace.id==='RAMP'&&cargoKind&&!relocation;cancelCargo();if(ramp)window.CabinRampArea.open();}
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&(cargoKind||relocation)){event.preventDefault();event.stopImmediatePropagation();cancelDraft();}});
   function openArea(space=selectedSpace,event){
     if(!available||!bridge)return;
     if(!placingCargo)window.CabinCargo?.close();
@@ -56,7 +61,7 @@
     window.CabinFloorEquipment?.close();window.CabinCasevac?.close();
     const choosing=placingCargo; if(choosing)rememberDraft();selectedSpace=space;
     const m=window.CabinBayLayer.getDisplayMapping(),rect=document.getElementById('planSheet').getBoundingClientRect();
-    if(choosing&&event&&event.detail!==0&&rect.width&&rect.height){const x=(event.clientX-rect.left)/rect.width*m.width,station=4875+(x-m.forwardX)/(m.aftX-m.forwardX)*6518,y=(event.clientY-rect.top)/rect.height*m.height;fraction=Math.max(0,Math.min(1,(station-space.forward)/(space.aft-space.forward)));lateral=Math.max(0,Math.min(1,((y-m.centerY)/m.sourceScale+125)/(250/3)-space.lane));}
+    if(choosing&&event&&event.detail!==0&&rect.width&&rect.height){({fraction,lateral}=pointAt(event,space));}
     else {fraction=.5;lateral=.5;}
     if(choosing&&relocation){const pending=relocation;relocation=null;placingCargo=false;cargoPointChosen=false;open=false;render();pending.pick({area:space.id,floorPoint:{bay:space.bay,side:space.side,fraction,lateral},estimatedArm:estimatedArm()});window.CabinImageMenu?.resume();return;}
     open=true;message='';placingCargo=false;cargoPointChosen=choosing;
@@ -82,7 +87,7 @@
   function bindLoadActions(state){
     for(const id of window.CabinCasevac?.positions||[])panel.querySelector('#areaRack'+id)?.addEventListener('click',()=>window.CabinCasevac.open(id));
     panel.querySelector('#areaIndividualCargo').onclick=()=>{cargoDraft={};startCargo();};
-    const bayEntry=(state.floorLoads||[]).find(row=>row.installed!==false&&row.kind==='bay'&&spaces.find(space=>space.id===row.area)?.bay===selectedSpace.bay);
+    const bayEntry=(state.floorLoads||[]).find(row=>row.installed!==false&&row.kind==='bay'&&(row.area==='RAMP'?rampSpace:spaces.find(space=>space.id===row.area))?.bay===selectedSpace.bay);
     if(bayEntry)panel.querySelector('#areaBayCargo').textContent='Edit bay weight';
     panel.querySelector('#areaBayCargo').onclick=()=>{if(bayEntry){window.CabinCargo.open(bayEntry.id);return;}placingCargo=false;cargoPointChosen=false;cargoDraft={};cargoKind='bay';render();window.CabinImageMenu?.showLocation();};
     if((state.floorLoads||[]).filter(row=>row.installed!==false&&row.kind==='individual').length>=4){panel.querySelector('#areaIndividualCargo').disabled=true;panel.querySelector('#areaIndividualCargo').title='All four cargo entries are in use. Edit or remove an existing entry.';}
@@ -98,7 +103,7 @@
     panel.querySelector('#areaSeaTrayOptions')?.addEventListener('click',()=>window.CabinFloorEquipment.openTray(selectedSpace.id));
     panel.querySelector('#areaRaftOptions')?.addEventListener('click',()=>window.CabinFloorEquipment.openRaft(selectedSpace.id==='BAY3_STBD'?'INT_LIFE_RAFT_B3_STBD_F':'INT_LIFE_RAFT_B4_STBD_A'));
     panel.querySelector('#areaStbdBasket')?.addEventListener('click',()=>{if(state.mission.has(area.otherBasket)){window.CabinBasket.open('STBD');return;}const result=state.mission.has(area.basket)?window.CabinBasket.move(state,area.basket,'CABIN_STBD_STOW'):window.CabinBasket.install(state,'STBD');notify(result.ok?'Basket installed at Stbd.':result.reason);});
-    panel.querySelector('#areaClose').onclick=()=>{open=false;placingCargo=false;cargoPointChosen=false;cargoKind=null;cargoDraft={};render();cells.get(selectedSpace.id).focus();};
+    panel.querySelector('#areaClose').onclick=()=>{open=false;placingCargo=false;cargoPointChosen=false;cargoKind=null;cargoDraft={};render();cellFor(selectedSpace)?.focus();};
     renderCargoForm();
   }
   function render(){
@@ -158,7 +163,10 @@
     if(!cargoKind){container.innerHTML='';return;}
     const bay=selectedBay();
     container.innerHTML=`<form id="areaLoadForm"><h3>${cargoKind==='bay'?`${bay.name} load`:'Individual cargo'}</h3><label>Weight (kg)<input name="weight" type="number" min="0.001" step="any" value="${esc(cargoDraft.weight||'')}" required></label>${cargoKind==='bay'?`<p>Configured arm: <strong>${arm(bay.arm)}</strong></p>`:`<p>${cargoPointChosen?`Estimated arm from selected floor point: <strong id="areaEstimatedArm">${arm(estimatedArm())}</strong>`:'Choose the cargo position on the floor to estimate its arm.'}</p><button type="button" class="secondary" id="areaChooseCargoPoint">${cargoPointChosen?'Change cargo position':'Choose cargo position'}</button><details id="areaKnownArm"><summary>Use a known arm instead</summary><label>Known arm (mm)<input name="arm" type="number" min="0" step="any" value="${esc(cargoDraft.arm||'')}" placeholder="Leave blank to use the estimate"></label></details>`}<details><summary>Description (optional)</summary><label>Description<input name="name" maxlength="80" value="${esc(cargoDraft.name||'')}" placeholder="${cargoKind==='bay'?bay.name+' load':selectedSpace.name+' cargo'}"></label></details><div class="floor-actions"><button type="submit" class="secondary">Add load record</button><button type="button" class="secondary" id="areaCancelLoad">Cancel</button></div><p id="areaLoadError" role="status"></p></form>`;
-    container.querySelector('#areaCancelLoad').onclick=cancelCargo;container.querySelector('#areaChooseCargoPoint')?.addEventListener('click',()=>{rememberDraft();startCargo(true);});
+    container.querySelector('#areaCancelLoad').onclick=cancelDraft;container.querySelector('#areaChooseCargoPoint')?.addEventListener('click',()=>{rememberDraft();startCargo(true);});
+    const rampPreview=document.createElement('div');rampPreview.id='areaRampStatus';container.querySelector('form').append(rampPreview);
+    const previewRamp=()=>{const form=container.querySelector('form'),override=cargoKind==='individual'&&form.elements.arm.value.trim()!=='';const value={area:selectedSpace.id,kind:cargoKind,weight:Number(form.elements.weight.value),arm:cargoKind==='bay'?bay.arm:override?Number(form.elements.arm.value):estimatedArm()};rampPreview.innerHTML=value.weight>0&&Number.isFinite(value.arm)?window.CabinRampLimits.markup(bridge.state(),value):window.CabinRampLimits.markup(bridge.state());};
+    container.querySelector('form').addEventListener('input',previewRamp);previewRamp();
     container.querySelector('form').onsubmit=event=>{
       event.preventDefault();const form=event.currentTarget,state=bridge.state(),name=form.elements.name.value.trim()||(cargoKind==='bay'?bay.name+' load':selectedSpace.name+' cargo'),weight=Number(form.elements.weight.value),override=cargoKind==='individual'&&form.elements.arm.value.trim()!=='',value=cargoKind==='bay'?bay.arm:override?Number(form.elements.arm.value):estimatedArm();
       if(cargoKind==='individual'&&!override&&!cargoPointChosen){container.querySelector('#areaLoadError').textContent='Choose a cargo position on the floor first.';return;}
@@ -169,10 +177,10 @@
   }
   let markerDrag=null;
   pointMarker.addEventListener('pointerdown',event=>{if(!cargoPointChosen)return;event.preventDefault();event.stopPropagation();rememberDraft();markerDrag={id:event.pointerId,space:selectedSpace,fraction,lateral};pointMarker.setPointerCapture(event.pointerId);window.CabinImageMenu?.suspend();});
-  pointMarker.addEventListener('pointermove',event=>{if(markerDrag?.id!==event.pointerId)return;event.stopPropagation();const m=window.CabinBayLayer.getDisplayMapping(),r=document.getElementById('planSheet').getBoundingClientRect(),x=(event.clientX-r.left)/r.width*m.width,y=(event.clientY-r.top)/r.height*m.height,station=4875+(x-m.forwardX)/(m.aftX-m.forwardX)*6518,lane=Math.floor(((y-m.centerY)/m.sourceScale+125)/(250/3));const space=spaces.find(s=>s.lane===lane&&station>=s.forward&&station<=s.aft);if(!space)return;selectedSpace=space;fraction=(station-space.forward)/(space.aft-space.forward);lateral=Math.max(0,Math.min(1,((y-m.centerY)/m.sourceScale+125)/(250/3)-lane));renderTarget();});
+  pointMarker.addEventListener('pointermove',event=>{if(markerDrag?.id!==event.pointerId)return;event.stopPropagation();const m=window.CabinBayLayer.getDisplayMapping(),r=document.getElementById('planSheet').getBoundingClientRect(),x=(event.clientX-r.left)/r.width*m.width,y=(event.clientY-r.top)/r.height*m.height,station=4875+(x-m.forwardX)/(m.aftX-m.forwardX)*6518,lane=Math.floor(((y-m.centerY)/m.sourceScale+125)/(250/3));const space=x>=m.aftX&&x<=m.rampAftX&&Math.abs(y-m.centerY)<=95*m.sourceScale?rampSpace:spaces.find(s=>s.lane===lane&&station>=s.forward&&station<=s.aft);if(!space)return;selectedSpace=space;({fraction,lateral}=pointAt(event,space));renderTarget();});
   function finishMarker(event,cancel=false){if(markerDrag?.id!==event.pointerId)return;event.stopPropagation();if(cancel){selectedSpace=markerDrag.space;fraction=markerDrag.fraction;lateral=markerDrag.lateral;}markerDrag=null;window.CabinImageMenu?.setAnchor(event.clientX,event.clientY);render();window.CabinImageMenu?.showLocation();}
   pointMarker.addEventListener('pointerup',event=>finishMarker(event));pointMarker.addEventListener('pointercancel',event=>finishMarker(event,true));
   pointMarker.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;event.preventDefault();event.stopPropagation();rememberDraft();if(event.key==='ArrowLeft')fraction=Math.max(0,fraction-.02);if(event.key==='ArrowRight')fraction=Math.min(1,fraction+.02);if(event.key==='ArrowUp')lateral=Math.max(0,lateral-.1);if(event.key==='ArrowDown')lateral=Math.min(1,lateral+.1);render();pointMarker.focus({preventScroll:true});});
-  window.CabinFloorArea={connect(value){bridge=value;},render,renderTarget,estimateForSpace,open:openArea,openById(id){const space=spaces.find(s=>s.id===id);if(space)openArea(space);},beginRelocation(callbacks){cancelCargo();window.CabinImageMenu?.suspend();relocation=callbacks;open=false;placingCargo=true;window.CabinBayLayer?.finishMarking();window.CabinSeatEditor?.finishLocating();placementHelp.textContent='Move cargo · click its new floor position · Escape cancels';render();document.getElementById('planViewport').scrollIntoView({block:'nearest'});},close(){open=false;cancelCargo();},getSelection:()=>({space:selectedSpace.id,estimatedArm:estimatedArm(),fraction,lateral,placingCargo,cargoPointChosen,cargoKind}),setView(value){if(relocation)cancelCargo();available=value;placingCargo=false;cargoPointChosen=false;cargoKind=null;cargoDraft={};placementHelp.hidden=true;document.getElementById('planViewport').classList.remove('placing-floor-cargo');render();}};
+  window.CabinFloorArea={beginRampCargo(){selectedSpace=rampSpace;open=true;cargoDraft={};startCargo();},chooseRampPoint(event){if(!placingCargo)return false;openArea(rampSpace,event);return true;},connect(value){bridge=value;},render,renderTarget,estimateForSpace,open:openArea,openById(id){const space=spaces.find(s=>s.id===id);if(space)openArea(space);},beginRelocation(callbacks){cancelCargo();window.CabinImageMenu?.suspend();relocation=callbacks;open=false;placingCargo=true;window.CabinBayLayer?.finishMarking();window.CabinSeatEditor?.finishLocating();placementHelp.textContent='Move cargo · click its new floor position · Escape cancels';render();document.getElementById('planViewport').scrollIntoView({block:'nearest'});},close(){open=false;cancelCargo();},getSelection:()=>({space:selectedSpace.id,estimatedArm:estimatedArm(),fraction,lateral,placingCargo,cargoPointChosen,cargoKind}),setView(value){if(relocation)cancelCargo();available=value;placingCargo=false;cargoPointChosen=false;cargoKind=null;cargoDraft={};placementHelp.hidden=true;document.getElementById('planViewport').classList.remove('placing-floor-cargo');render();}};
 })();
 
