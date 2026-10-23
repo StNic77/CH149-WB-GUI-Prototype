@@ -14,7 +14,7 @@ for(const [width,height]of [[1440,1000],[834,1194],[390,844]]){const page=await 
  assert.equal(await page.evaluate(()=>CabinCargo.add(state,{area:'RAMP',kind:'individual',weight:1,arm:12893}).ok),false);
  await page.evaluate(()=>{for(const row of [...state.floorLoads])if(row.kind==='individual')CabinCargo.remove(state,row.id);CabinCargo.add(state,{area:'BAY3_CENTRE',kind:'individual',weight:10,arm:7375});renderSeats();});
  assert.deepEqual(await page.evaluate(()=>state.floorLoads.filter(x=>x.kind==='individual').map(x=>x.slot)),[1]);
- assert.equal(await page.locator('.cargo-symbol[data-cargo-kind=individual]').getAttribute('data-limit-status'),'unreviewed');
+ assert.equal(await page.locator('.cargo-symbol[data-cargo-kind=individual]').getAttribute('data-limit-status'),'ok');
  // Every ramp entry reflects the aggregate, including other cargo and bay weight.
  const ramp=await page.evaluate(()=>{state.floorLoads=[];const cargo=[150,150].map(weight=>CabinCargo.add(state,{area:'RAMP',kind:'individual',weight,arm:12893}).entry);renderSeats();return cargo;});
  assert.equal(await page.locator('.cargo-symbol[data-limit-status=ok]').count(),2);

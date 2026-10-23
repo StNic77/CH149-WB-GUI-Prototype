@@ -22,25 +22,15 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <a class="skip-link" href="#workspaceHeading">Skip to workspace</a>
 <header class="app-header"><div class="brand"><span class="brand-mark" aria-hidden="true">615</span><div><h1>CH-149 <span>/ Flight preparation</span></h1><p>Cabin workspace · development edition</p></div></div><span class="badge">Design prototype · session only</span></header>
 <div class="app-layout">
-<nav class="workflow-nav" aria-label="Flight preparation">
-  <p class="nav-label">WORKSPACE</p>
-  <button data-stage="aircraft"><span class="step-number">01</span><span>Aircraft<small>Starting data &amp; acceptance</small></span></button>
-  <button data-stage="cabin" aria-current="page"><span class="step-number">02</span><span>Cabin setup<small>Role, equipment &amp; people</small></span></button>
-  <button data-stage="balance"><span class="step-number">03</span><span>Fuel &amp; balance<small>Load review &amp; CG path</small></span></button>
-  <button data-stage="complete"><span class="step-number">04</span><span>Complete<small>Cross-check &amp; flight record</small></span></button>
-  <div class="nav-divider"></div>
-  <button data-stage="manage"><span class="step-number" aria-hidden="true">≡</span><span>Data management<small>Fleet &amp; configuration tools</small></span></button>
-  <div class="nav-note"><span class="status-dot"></span>Independent development<p>Reference app remains unchanged.</p></div>
-</nav>
 <div class="workspace-body">
-<section class="workspace-intro"><div><p class="eyebrow" id="workspaceEyebrow">02 / PREPARE THE CABIN</p><h2 id="workspaceHeading" tabindex="-1">A clear view of your aircraft.</h2><p id="workspaceDescription">Choose a role, explore the cabin and inspect its equipment.</p></div><div class="workspace-state"><span id="workflowStatus">Cabin interaction concept</span><small>Calculations are not connected</small><a href="review.html">Review &amp; identify the original plan →</a></div></section>
+<section class="workspace-intro"><div><p class="eyebrow" id="workspaceEyebrow">02 / PREPARE THE CABIN</p><h2 id="workspaceHeading" tabindex="-1">A clear view of your aircraft.</h2><p id="workspaceDescription">Choose a role, open a view and edit the aircraft with live weight feedback.</p></div><div class="workspace-state"><span id="workflowStatus">Cabin interaction concept</span><small>Live planning results · session only</small><a href="review.html">Review &amp; identify the original plan →</a></div></section>
 <section id="stagePreview" class="stage-preview" hidden aria-labelledby="workspaceHeading"></section>
 <div id="cabinWorkspace">
 <div class="toolbar"><strong>Choose a Role Config</strong><div id="configButtons" style="display:flex;gap:8px;flex-wrap:wrap"></div><span class="grow"></span><span id="configSummary" class="quiet">No Role Config selected</span></div>
 <main id="cabinMain">
   <section class="panel">
     <div class="viewer-head"><div><h2 id="viewTitle">Starboard cabin · empty baseline</h2><div id="viewSub" class="quiet">Actual render with removable blue seats and loose equipment stripped out</div></div><span id="viewBadge" class="tag">BASE VIEW</span></div>
-    <div class="viewtabs" id="viewTabs"></div>
+    <nav class="viewtabs" id="viewTabs" aria-label="Aircraft views"></nav>
     <div class="plan-tools" id="planTools" aria-label="Cabin plan controls"><button id="planZoomOut" type="button" aria-label="Zoom out">−</button><output id="planZoomValue" aria-live="polite">100%</output><button id="planZoomIn" type="button" aria-label="Zoom in">+</button><button id="planFit" type="button">Fit aircraft</button><button id="planWide" type="button" aria-pressed="false">Wide view</button><label><input id="seatToggle" type="checkbox">Seats</label><label><input id="bayToggle" type="checkbox">Bays · review</label><label><input id="planGuideToggle" type="checkbox">Alignment guides</label></div>
     <p class="plan-help">Zoom for detail, then drag to pan. Keyboard: + / − to zoom, arrows to pan, Home to fit. View position stays fixed when changing Role Config.</p>
     <div class="photo-wrap plan-view"><div class="plan-viewport is-plan" id="planViewport" role="region" aria-label="Cabin plan. Use zoom controls, then drag to pan. Keyboard plus, minus, arrows and Home." tabindex="0"><div class="plan-sheet" id="planSheet"><img id="cabinImage" src="images/unconfigured-baseline-v2.png" alt="Draft unconfigured top-down cabin baseline" draggable="false"><button class="plan-target" id="planCabinet" type="button" aria-label="Open SAR Equipment Storage Cabinet"><span>SAR CABINET</span></button><svg class="plan-guides" id="planGuides" aria-hidden="true" hidden></svg></div></div><div id="planUnavailable" class="plan-unavailable"><div><b>No matching plan image is available for this Role Config yet.</b><br>Choose an available standard configuration or use the location list below.</div></div><span class="photo-chip" id="photoChip">Draft unconfigured baseline</span></div>
@@ -91,7 +81,7 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
   </aside>
 </main>
 </div>
-<footer class="workspace-footer"><span>CH-149-615 <span aria-hidden="true">/</span> Interface development</span><span>No aircraft W&amp;B calculation or certification · changes reset on reload</span></footer>
+<footer class="workspace-footer"><span>CH-149-615 <span aria-hidden="true">/</span> Interface development</span><span>Planning results · not operationally validated · changes reset on reload</span></footer>
 </div>
 </div>
 <script src="config-data.js"></script>
@@ -135,7 +125,7 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <script>
 const D=window.CH149_DATA;
 const IM={plan:'images/SAR_3_Pax_clean.png',cabinet:'images/SAR Cabinet.png',forward:'images/Bay 1 Shelves and Sensor WS.png',pta:'images/PTA View Port.png',ramp:'images/Rear Shelves.png',stbd:'images/Team member View STBD.png'};
-const VIEWS=[['plan','2D cabin plan'],['cabinet','SAR Cabinet'],['forward','Port Fwd shelves'],['pta','Port Aft View'],['ramp','Rear shelves'],['stbd','Starboard Aft View']];
+const VIEWS=[['plan','2D cabin plan'],['cabinet','SAR Cabinet'],['forward','Forward Shelves'],['pta','Port Aft View'],['ramp','Ramp Shelves'],['stbd','Starboard Aft View']];
 const PLAN_IMAGES={SAR3:'images/SAR_3_Pax_clean.png',SAR10:'images/SAR_10_Pax_clean.png',CASEVAC:'images/CASEVAC_clean.png',TRANSPORT:'images/Transport_clean.png'};
 const LOC=[
  {id:'CABIN_PORT_STOW',label:'Basket · Port',type:'basket',arm:D.stowage.CABIN_PORT_STOW.arm,view:'stbd'},
@@ -174,7 +164,7 @@ function locFor(item){if(item.key==='RF_AIRCRAFT_SYSTEMS_SEA_TRAY')return {id:'S
 function fmtKg(n){return Number(n||0).toFixed(1).replace(/\.0$/,'')+' kg'}
 function configName(){return state.preset?D.presets[state.preset]?.name||state.preset:'No preset'}
 function renderConfigButtons(){const host=document.querySelector('#configButtons');const configs=Object.entries(D.presets).filter(([,p])=>p.active!==false).sort((a,b)=>(a[1].displayOrder??999)-(b[1].displayOrder??999));host.innerHTML=`<button class="config ${state.preset?'':'active'}" data-preset="">No Role Config</button>`+configs.map(([key,p])=>`<button class="config ${state.preset===key?'active':''}" data-preset="${key}">${p.name||key}</button>`).join('');host.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>applyPreset(b.dataset.preset));}
-function renderViews(){document.querySelector('#viewTabs').innerHTML=VIEWS.map(([id,label])=>`<button class="viewtab ${state.view===id?'active':''}" data-viewtab="${id}">${label}</button>`).join('');document.querySelectorAll('[data-viewtab]').forEach(b=>b.onclick=()=>setView(b.dataset.viewtab));}
+function renderViews(){document.querySelector('#viewTabs').innerHTML='<label class="mobile-view-picker">Views<select id="viewPicker" aria-label="Aircraft view">'+VIEWS.map(([id,label])=>`<option value="${id}" ${state.view===id?'selected':''}>${label}</option>`).join('')+'</select></label>'+VIEWS.map(([id,label])=>`<button class="viewtab ${state.view===id?'active':''}" aria-pressed="${state.view===id}" data-viewtab="${id}">${label}</button>`).join('');document.querySelectorAll('[data-viewtab]').forEach(b=>b.onclick=()=>setView(b.dataset.viewtab));document.getElementById('viewPicker').onchange=e=>setView(e.target.value);}
 const AREAS=[['cabinet','SAR Equipment Storage Cabinet','Open cabinet shelf view'],['forward','Port forward shelves','Open shelf view'],['pta','Port Aft View','Open port aft view'],['ramp','Ramp shelves','Open ramp close-up'],['stbd','Starboard Aft View','Open starboard aft view']];
 const LOCATION_GROUPS={cabinet:'SAR Equipment Storage Cabinet',forward:'Port forward shelves',pta:'Port Aft View',ramp:'Rear cabin & ramp',stbd:'Starboard Aft View'};
 function renderLocationGroups(){const host=document.querySelector('#locationGroups');host.innerHTML=Object.entries(LOCATION_GROUPS).map(([view,label])=>{const items=LOC.filter(l=>l.view===view);return `<details class="location-group"><summary>${label} · ${items.length} locations</summary><div class="location-choices">${items.map(l=>`<button class="location-choice ${state.selectedLoc===l.id?'active':''}" data-location="${l.id}" data-location-view="${view}">${l.label}<small>${l.arm} mm app arm</small></button>`).join('')}</div></details>`}).join('');host.querySelectorAll('[data-location]').forEach(b=>b.onclick=()=>{state.selectedLoc=b.dataset.location;setView(b.dataset.locationView)});}
@@ -238,7 +228,14 @@ function renderDetail(){window.CabinCabinetZones.setSelection(state.selectedLoc)
  document.querySelector('#addStokesPatient')?.addEventListener('click',()=>togglePatient('STOKES_CABIN'));
  if(window.CabinShelfEditor&&['cabinet','shelf','storage'].includes(l.type)&&!window.CabinFloorEquipment.locations.includes(l.id))window.CabinShelfEditor.render(l,contents);
 }
-function itemsAt(id){return [...[...state.mission].map(missionObject),...[...state.roleFit].map(fitObject).filter(o=>o?.loc==='PTA_COT_AREA'||window.CabinFloorEquipment.locations.includes(o?.loc))].filter(o=>o&&locFor(o).id===id);}
+function itemsAt(id){
+ if(window.CabinPlanning){
+  const grouped=new Map();
+  for(const row of window.CabinPlanning.missionRows(state).filter(row=>row.stowId===id&&row.quantity>0)){const item=grouped.get(row.key)||{key:row.key,name:row.name,kind:'gear',mass:0,loc:id,source:'mission',quantity:0};item.mass+=row.w;item.quantity+=row.quantity;grouped.set(row.key,item);}
+  return [...grouped.values(),...[...state.roleFit].map(fitObject).filter(o=>o&&(o.loc==='PTA_COT_AREA'||window.CabinFloorEquipment.locations.includes(o.loc))&&o.loc===id)];
+ }
+ return [...[...state.mission].map(missionObject),...[...state.roleFit].map(fitObject).filter(o=>o?.loc==='PTA_COT_AREA'||window.CabinFloorEquipment.locations.includes(o?.loc))].filter(o=>o&&locFor(o).id===id);
+}
 function renderSeats(){window.CabinSeatEditor.render();window.CabinBasket.render();window.CabinPTA.render();window.CabinStokes.render();}
 function renderCatalog(){const sel=document.querySelector('#catalog');const items=Object.entries(D.missionEquip).filter(([,it])=>it.group!=='Stowage'&&it.active!==false).sort((a,b)=>a[1].name.localeCompare(b[1].name));sel.innerHTML='<option value="">Select an equipment item…</option>'+items.map(([k,it])=>`<option value="${k}">${it.name}</option>`).join('');}
 document.querySelector('#addEquipment').onclick=()=>{const key=document.querySelector('#catalog').value;if(!key)return;const conflict=window.CH149_SEAT_RULES.equipmentConflictMessage(state,key);if(conflict){alert(conflict);return}if(D.missionEquip[key]?.isBasket){const result=window.CabinBasket.install(state,key.endsWith('_PORT')?'PORT':'STBD');if(!result.ok){alert(result.reason);return;}}else if(key===window.CabinFloorEquipment.raftKey){const id=D.missionEquip[key].stow,result=window.CabinFloorEquipment.installRaft(state,id);if(!result.ok){window.CabinFloorEquipment.openRaft(id);return;}}else if(window.CabinStokes.isLitter(key)){const result=window.CabinStokes.install(state,key.endsWith('_CABIN')?'CABIN':'RAMP');if(!result.ok){alert(result.reason);return;}}else state.mission.add(key);recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();};
@@ -265,10 +262,17 @@ applyPreset('');
 </script>
 <link rel="stylesheet" href="image-workspace.css">
 <script>window.CabinImageState=()=>state;</script>
+<script src="fuel-source.js"></script>
+<script src="fuel-reference.js"></script>
+<script src="fuel-model.js"></script>
+<script src="planning-source.js"></script>
+<script src="planning-reference.js"></script>
+<script src="planning-model.js"></script>
+<script src="loading-feedback.js"></script>
 <script src="shelf-editor.js"></script>
 <script src="image-workspace.js"></script>
 <link rel="stylesheet" href="aircraft-summary.css">
 <script src="aircraft-summary.js"></script>
-<script src="workspace.js"></script>
+<script src="planning-ui.js"></script>
 </body>
 </html>

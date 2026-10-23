@@ -2,7 +2,7 @@
 
 An interactive cabin workspace for demonstrating aircraft configuration, equipment placement and people/patient handling.
 
-This development branch explores image-first floating menus. See [IMAGE_FIRST_WORKSPACE.md](IMAGE_FIRST_WORKSPACE.md) for the agreed interaction, working coverage and remaining location/clearance mapping. The previous demo is preserved on `main` at `30805a4`.
+The accepted image-first interface is on `main`. See [LOADING_WORKSPACE_CHANGES.md](LOADING_WORKSPACE_CHANGES.md) for current view access, shelf/bay warnings, planning calculations and the requirement-to-test cross-reference. Older branch/status notes in IMAGE_FIRST_WORKSPACE are historical.
 
 ## Run the demo
 
@@ -37,7 +37,7 @@ Transport and CASEVAC start without Sea Tray. Their internal rafts start with th
 
 ## Scope
 
-This is a demonstration prototype, not operational weight-and-balance software. Full aircraft calculations, loading/clearance validation, fuel/reporting and configuration save/restore are unfinished. Equipment and patient edits are session state and reset on refresh. Full CASEVAC rack footprint conflicts are not yet validated. Original role renders remain reference imagery; dynamic crops are approximate visual layers.
+This is a demonstration prototype, not operational weight-and-balance software. Session-only planning basic weight/CG and fuel entry now drive source-engine AUW/CG feedback; source shelf and explicit bay-load warnings are connected. NVGs follow the four-in-E, one-in-F allocation. Operational acceptance/validation, full equipment coverage, fuel visualization/reporting and save/restore remain unfinished. Equipment and patient edits reset on refresh. Full CASEVAC rack footprint conflicts are not yet validated. Original role renders remain reference imagery; dynamic crops are approximate visual layers.
 
 Cargo symbols and their visibility do not change installation or calculated contribution. Custom loads survive navigation and role switching within the session, but reset on refresh. The displayed load CG includes only individual cargo and bay/ramp entries, not the aircraft or its other loads. See [CARGO_DEVELOPMENT_REPORT.md](CARGO_DEVELOPMENT_REPORT.md).
 

@@ -8,6 +8,9 @@ verification/*
 !verification/aircraft-summary-check.cjs
 !verification/ramp-limits-check.cjs
 !verification/cargo-slots-check.cjs
+!verification/fuel-model-check.cjs
+!verification/planning-check.cjs
+!verification/loading-workspace-check.cjs
 references/
 history/
 *.previous.json

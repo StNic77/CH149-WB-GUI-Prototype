@@ -19,11 +19,12 @@
  function limitStatus(state,entry,except=entry?.id){
   if(!entry)return {level:'unreviewed',message:'Select a load to inspect its limits.'};
   const limits=window.CabinRampLimits.limits,isRamp=entry.area==='RAMP'||entry.arm>=limits.hinge&&entry.arm<=limits.end;
+  if(!isRamp&&window.CabinPlanning){const bay=findSpace(entry.area)?.bay,s=window.CabinPlanning.bay(state,bay,entry,except);return {level:s.level,message:`${findBay(findSpace(entry.area)).name} · ${window.CabinLoadingFeedback.message(s)}. Counts cargo, bay weight and equipment explicitly assigned to this bay; excludes fixed equipment, seats and people.`};}
   if(!isRamp)return {level:'unreviewed',message:'Cabin load limits are not connected yet.'};
   const result=window.CabinRampLimits.assess(state,entry,except);
   return {level:result.warnings.length?'caution':'ok',message:result.warnings.length?'Combined ramp loading: '+result.warnings.join(' '):'Within current ramp weight, arm and hinge-moment checks.'};
  }
- function statusMarkup(status){return `<div class="cargo-limit-alert" data-limit-status="${status.level}" role="status"><strong>${status.level==='caution'?'⚠ Caution':status.level==='ok'?'✓ Within ramp checks':'Limits not checked'}</strong><p>${esc(status.message)}</p></div>`;}
+ function statusMarkup(status){return `<div class="cargo-limit-alert" data-limit-status="${status.level}" role="status"><strong>${status.level==='caution'?'⚠ WARNING':status.level==='ok'?'✓ Within connected load checks':'Limits not checked'}</strong><p>${esc(status.message)}</p></div>`;}
  function validate(input){
   const space=findSpace(input.area),weight=Number(input.weight);if(!space||!['individual','bay'].includes(input.kind))return {ok:false,reason:'Choose a cabin floor cell and load type.'};
   if(!Number.isFinite(weight)||weight<=0)return {ok:false,reason:'Enter a positive finite weight.'};
