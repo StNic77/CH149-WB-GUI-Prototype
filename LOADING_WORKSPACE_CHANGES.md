@@ -34,3 +34,9 @@ Physical footprints/full location eligibility; individual quantities and entered
 ## Validation completed
 
 Full `npm test` passed before commit: fuel solver parity for all 4,153 whole-kilogram quantities; planning/source-engine comparison and allocation/accounting tests; existing demo, embedded/hosted/file calibration, cargo integrity/relocation, image-local menus, refinements, aircraft summary, ramp and cargo-slot checks; and the new loading-workspace checks at 1440×1000, 834×1194, 1194×834, 390×844 and 844×390. Screenshots were inspected at phone size. A fixed-strip scrolling obstruction and a view-label/seat overlap found during regression were corrected before the passing run. Tests did not modify the source app, pinned equipment catalogue, approved geometry or reference imagery.
+
+## Returning iPad loading repair
+
+After publication, the user reported Safari on iOS 27 showing a disorganized page without the aircraft. A retained older workspace stylesheet was reproduced collapsing an 834px workspace to 190px and hiding Views. This establishes a release/cache defect; it does not independently prove the cause of every symptom on the physical iPad.
+
+`version-assets.cjs` now assigns content hashes to all app script/stylesheet URLs. `npm run assets:version` refreshes them before release; `npm test` rejects stale/missing hashes. The new iPad loading check injects the older stylesheet for the old URL, verifies current requests avoid it, and confirms aircraft image loading, full-width layout, views and planning controls at 834×1194, 1194×834, 768×1024 and 1024×768. It passed using Playwright WebKit 26.5 as well as Edge; this is Safari-engine testing on Windows, not physical iOS 27 validation. Set `PLAYWRIGHT_ENGINE=webkit` for that check. An optional `IPAD_TEST_URL` exercises the hosted deployment.

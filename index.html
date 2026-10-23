@@ -14,9 +14,9 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 .hotspot{display:none!important}.photo-wrap.plan-view{height:auto;min-height:0;aspect-ratio:1550/694}.photo-wrap.plan-view img{width:100%;height:100%;object-fit:fill}.plan-target{display:none;position:absolute;left:31%;top:35%;width:9%;height:11%;border:3px solid #ffc644;background:#ffc64430;border-radius:7px;color:#13263a;font-weight:800;font-size:clamp(9px,1vw,13px);text-shadow:0 1px 2px white,0 0 5px white;box-shadow:0 0 0 2px #142a4270;cursor:pointer}.plan-target::after{content:"";position:absolute;inset:-7px;border:1px dashed #fff;border-radius:10px;pointer-events:none}.plan-target.show{display:block}.plan-target:hover,.plan-target.selected{background:#ffc6449c;box-shadow:0 0 0 3px #142a42,0 0 16px #ffc644}.plan-unavailable{display:none;min-height:300px;align-items:center;justify-content:center;text-align:center;padding:30px;background:#f3f6f8;color:var(--muted)}.plan-unavailable.show{display:flex}.area-nav{padding:10px 13px 12px;border-top:1px solid var(--line);background:#f8fafc}.area-nav-title{font-size:11px;color:var(--muted);margin:0 0 7px}.area-buttons{display:flex;flex-wrap:wrap;gap:7px}.area-button{border:1px solid #9aafc0;background:#fff;border-radius:8px;color:#213c53;padding:8px 11px;text-align:left;font-size:12px;font-weight:650}.area-button:hover,.area-button.active{border-color:var(--blue);background:#eaf4fb;color:#154e77}.area-button small{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:2px}.all-locations{margin-top:10px;border:1px solid var(--line);border-radius:8px;background:#fff}.all-locations>summary{padding:9px 10px;cursor:pointer;font-size:12px;font-weight:700;color:#344c61}.location-groups{padding:0 9px 9px;display:grid;gap:6px}.location-group{border:1px solid #e2e8ed;border-radius:7px}.location-group>summary{padding:7px 9px;cursor:pointer;font-size:11px;font-weight:650}.location-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:5px;padding:0 7px 7px}.location-choice{border:1px solid var(--line);border-radius:6px;background:#fff;text-align:left;padding:7px 8px;color:var(--ink);font-size:11px}.location-choice:hover,.location-choice.active{border-color:var(--teal);background:#e8f6f1}.location-choice small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
 @media(max-width:1050px){main{grid-template-columns:1fr}.side{max-height:unset;min-height:400px}.photo-wrap{height:48vh}}@media(max-width:650px){main{padding:8px}.toolbar{padding:9px}.toolbar strong{width:100%}.photo-wrap{min-height:240px}.axis-places{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
-<link rel="stylesheet" href="workspace.css">
-<link rel="stylesheet" href="plan-viewer.css?v=bay-boundaries-1">
-<link rel="stylesheet" href="floor-area.css">
+<link rel="stylesheet" href="workspace.css?v=e3a9aa93a551">
+<link rel="stylesheet" href="plan-viewer.css?v=ac07559a41d2">
+<link rel="stylesheet" href="floor-area.css?v=92fb3697a2e5">
 </head>
 <body>
 <a class="skip-link" href="#workspaceHeading">Skip to workspace</a>
@@ -84,44 +84,44 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <footer class="workspace-footer"><span>CH-149-615 <span aria-hidden="true">/</span> Interface development</span><span>Planning results · not operationally validated · changes reset on reload</span></footer>
 </div>
 </div>
-<script src="config-data.js"></script>
-<script src="prototype-rules.js"></script>
-<script src="plan-registration.js"></script>
-<script src="bay-data.js"></script>
-<script src="load-math.js"></script>
-<script src="ramp-limits.js"></script>
-<script src="bay-review-draft.js"></script>
-<script src="station-calibration.js?v=approved-ramp-edge-2"></script>
-<script src="bay-layer.js?v=ramp-edge-1"></script>
-<script src="seat-rules.js"></script>
-<script src="seat-editor.js?v=cargo-layer-1"></script>
-<script src="floor-area.js?v=cargo-layer-1"></script>
-<script src="cabinet-regions.js"></script>
-<script src="cabinet-zones.js"></script>
-<script src="forward-shelf-definition.js"></script>
-<script src="forward-shelf-regions.js"></script>
-<script src="ramp-shelf-definition.js"></script>
-<script src="ramp-shelf-regions.js"></script>
-<script src="port-overhead-definition.js"></script>
-<script src="port-overhead-regions.js"></script>
-<script src="stbd-overhead-definition.js"></script>
-<script src="stbd-overhead-regions.js"></script>
-<script src="shelf-zones.js"></script>
-<link rel="stylesheet" href="basket-editor.css">
-<script src="basket-editor.js"></script>
-<link rel="stylesheet" href="pta-editor.css">
-<script src="pta-editor.js"></script>
-<link rel="stylesheet" href="stokes-editor.css">
-<script src="stokes-editor.js"></script>
-<link rel="stylesheet" href="live-cabin.css">
-<script src="live-cabin.js"></script>
-<link rel="stylesheet" href="ramp-area.css">
-<script src="ramp-area.js?v=ramp-edge-1"></script>
-<script src="floor-equipment.js"></script>
-<script src="casevac-editor.js"></script>
-<link rel="stylesheet" href="cargo-layer.css">
-<script src="cargo-layer.js?v=ramp-edge-1"></script>
-<script src="plan-viewer.js?v=cargo-layer-1"></script>
+<script src="config-data.js?v=dd7dbe08d8ba"></script>
+<script src="prototype-rules.js?v=05ba8ac9912f"></script>
+<script src="plan-registration.js?v=f5ac9044e7d0"></script>
+<script src="bay-data.js?v=5ee3245d8362"></script>
+<script src="load-math.js?v=10f235ba5fad"></script>
+<script src="ramp-limits.js?v=1b0efffdee25"></script>
+<script src="bay-review-draft.js?v=48b86acdf67d"></script>
+<script src="station-calibration.js?v=2ae760681605"></script>
+<script src="bay-layer.js?v=989e937b4ead"></script>
+<script src="seat-rules.js?v=565892582908"></script>
+<script src="seat-editor.js?v=328d45cad2a7"></script>
+<script src="floor-area.js?v=82e0534f0fc7"></script>
+<script src="cabinet-regions.js?v=545f68265ea6"></script>
+<script src="cabinet-zones.js?v=2e563c88f99a"></script>
+<script src="forward-shelf-definition.js?v=d0f8d82b9e5b"></script>
+<script src="forward-shelf-regions.js?v=f5ffbef6d460"></script>
+<script src="ramp-shelf-definition.js?v=0869fb9a117c"></script>
+<script src="ramp-shelf-regions.js?v=975dfc113500"></script>
+<script src="port-overhead-definition.js?v=2bf2f59a6605"></script>
+<script src="port-overhead-regions.js?v=29ac8c88f846"></script>
+<script src="stbd-overhead-definition.js?v=b3bda586f317"></script>
+<script src="stbd-overhead-regions.js?v=47ff528afab2"></script>
+<script src="shelf-zones.js?v=5175137e78b5"></script>
+<link rel="stylesheet" href="basket-editor.css?v=09e85393c869">
+<script src="basket-editor.js?v=a2b621c27355"></script>
+<link rel="stylesheet" href="pta-editor.css?v=3735ce58747c">
+<script src="pta-editor.js?v=6cb5bdaf0e97"></script>
+<link rel="stylesheet" href="stokes-editor.css?v=3b237312a6b6">
+<script src="stokes-editor.js?v=669dbbbecc79"></script>
+<link rel="stylesheet" href="live-cabin.css?v=7fcb3afa31c9">
+<script src="live-cabin.js?v=e70a8d11f01d"></script>
+<link rel="stylesheet" href="ramp-area.css?v=f469962e1787">
+<script src="ramp-area.js?v=9276257208fb"></script>
+<script src="floor-equipment.js?v=706a6fdb3e6d"></script>
+<script src="casevac-editor.js?v=b77eae6fec95"></script>
+<link rel="stylesheet" href="cargo-layer.css?v=c3f77bdba681">
+<script src="cargo-layer.js?v=f7eef3af4396"></script>
+<script src="plan-viewer.js?v=0c67f0124024"></script>
 <script>
 const D=window.CH149_DATA;
 const IM={plan:'images/SAR_3_Pax_clean.png',cabinet:'images/SAR Cabinet.png',forward:'images/Bay 1 Shelves and Sensor WS.png',pta:'images/PTA View Port.png',ramp:'images/Rear Shelves.png',stbd:'images/Team member View STBD.png'};
@@ -260,19 +260,19 @@ window.CabinCargo.connect({state:()=>state,view:setView,refresh:()=>{recalculate
 window.CabinFloorArea.connect({state:()=>state,refresh:()=>{recalculateItems();renderItems();renderSeats();},seat:id=>{window.CabinSeatEditor.select(id);},view:setView,remove:removeItem,move:(key,dest)=>moveItem(key,dest,{keepView:true})});
 applyPreset('');
 </script>
-<link rel="stylesheet" href="image-workspace.css">
+<link rel="stylesheet" href="image-workspace.css?v=6ec601c874fc">
 <script>window.CabinImageState=()=>state;</script>
-<script src="fuel-source.js"></script>
-<script src="fuel-reference.js"></script>
-<script src="fuel-model.js"></script>
-<script src="planning-source.js"></script>
-<script src="planning-reference.js"></script>
-<script src="planning-model.js"></script>
-<script src="loading-feedback.js"></script>
-<script src="shelf-editor.js"></script>
-<script src="image-workspace.js"></script>
-<link rel="stylesheet" href="aircraft-summary.css">
-<script src="aircraft-summary.js"></script>
-<script src="planning-ui.js"></script>
+<script src="fuel-source.js?v=6a1df099acae"></script>
+<script src="fuel-reference.js?v=c1e465174de9"></script>
+<script src="fuel-model.js?v=365c39ddacee"></script>
+<script src="planning-source.js?v=516450741250"></script>
+<script src="planning-reference.js?v=8a73233220db"></script>
+<script src="planning-model.js?v=026f769378b1"></script>
+<script src="loading-feedback.js?v=f5d0b890a42c"></script>
+<script src="shelf-editor.js?v=d42cf2c93588"></script>
+<script src="image-workspace.js?v=8f1370f09205"></script>
+<link rel="stylesheet" href="aircraft-summary.css?v=babceb5f96f1">
+<script src="aircraft-summary.js?v=be601d512412"></script>
+<script src="planning-ui.js?v=3102320dca4c"></script>
 </body>
 </html>

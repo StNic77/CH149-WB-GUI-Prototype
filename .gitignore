@@ -11,6 +11,7 @@ verification/*
 !verification/fuel-model-check.cjs
 !verification/planning-check.cjs
 !verification/loading-workspace-check.cjs
+!verification/ipad-loading-check.cjs
 references/
 history/
 *.previous.json
