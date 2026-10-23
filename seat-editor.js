@@ -58,7 +58,7 @@
     const preset=data.presets[state.preset];
     return new Set(preset?[...(preset.seats?.crew||[]),...(preset.seats?.pax||[]),...Object.keys(data.crewSeats).filter(id=>all[id].alwaysInstalled)]:Object.keys(all).filter(id=>all[id].alwaysInstalled||all[id].normallyInstalled));
   }
-  function changed(state) {const expected=expectedSeats(state);return expected.size!==state.seats.size||[...expected].some(id=>!state.seats.has(id));}
+  function changed(state) {const expected=expectedSeats(state);expected.add('P2');expected.add('P3');return expected.size!==state.seats.size||[...expected].some(id=>!state.seats.has(id));}
   function select(id) {if(!all[id]||rules.blockers(getState(),id).length)return;getState().selectedSeat=id;render();window.CabinImageMenu?.showSeat(id);}
   function list(ids) {
     const state=getState();
@@ -67,10 +67,10 @@
   function renderMenu() {
     const state=getState(),id=state.selectedSeat,seat=all[id],container=document.getElementById('seatMenu');
     if(!seat){container.innerHTML='<p class="quiet">Select a seat marker or a named position to install or remove its seat.</p>';return;}
-    const installed=state.seats.has(id),occupied=!!state.occupants[id],fixed=!!seat.alwaysInstalled;
+    const installed=state.seats.has(id),occupied=!!state.occupants[id],fixed=!!seat.alwaysInstalled||['C1','C2','P2','P3'].includes(id);
     const plan=rules.installationPlan(state,id);
     if(plan.blockedBy.length){container.innerHTML=`<p class="quiet">${esc(id)} is unavailable while ${esc(plan.blockedBy.map(item=>item.name).join(' and '))} is installed.</p>`;return;}
-    container.innerHTML=`<div class="seat-menu"><strong>${esc(id)} · ${esc(seat.name.replace(new RegExp('^'+id+'\\s*'),''))}</strong><p>${installed?'Installed':'Available position'} · seat ${seat.wSeat} kg · seat arm ${seat.arm.toLocaleString('en-CA')} mm</p>${seat.occupantArm!==undefined&&seat.occupantArm!==seat.arm?`<p>Occupant arm ${seat.occupantArm.toLocaleString('en-CA')} mm</p>`:''}${fixed?'<p>This seat is always installed in the reference data.</p>':occupied?'<p>This position is occupied. Clear its occupant before removing the seat.</p>':''}${occupied?`<p>Occupant: ${esc(state.occupants[id])}</p>`:''}<div class="actions"><button type="button" class="secondary" id="toggleSeat" ${fixed||installed&&occupied?'disabled':''}>${installed?'Remove seat':'Install seat'}</button>${occupied?'<button type="button" class="secondary" id="clearSeatOccupant">Clear occupant</button>':''}${installed?'<button type="button" class="secondary" id="addPax">Add passenger</button><button type="button" class="secondary" id="addCrew">Assign crew</button>':''}</div></div>`;
+    container.innerHTML=`<div class="seat-menu"><strong>${esc(id)} · ${esc(seat.name.replace(new RegExp('^'+id+'\\s*'),''))}</strong><p>${installed?'Installed':'Available position'} · seat ${seat.wSeat} kg · seat arm ${seat.arm.toLocaleString('en-CA')} mm</p>${seat.occupantArm!==undefined&&seat.occupantArm!==seat.arm?`<p>Occupant arm ${seat.occupantArm.toLocaleString('en-CA')} mm</p>`:''}${fixed?'<p>This seat is permanently installed.</p>':occupied?'<p>This position is occupied. Clear its occupant before removing the seat.</p>':''}${occupied?`<p>Occupant: ${esc(state.occupants[id])}</p>`:''}<div class="actions"><button type="button" class="secondary" id="toggleSeat" ${fixed||installed&&occupied?'disabled':''}>${installed?'Remove seat':'Install seat'}</button>${occupied?'<button type="button" class="secondary" id="clearSeatOccupant">Clear occupant</button>':''}${installed?'<button type="button" class="secondary" id="addPax">Add passenger</button><button type="button" class="secondary" id="addCrew">Assign crew</button>':''}</div></div>`;
     const restricted=rules.occupancyBlockers(state,id);
     if(restricted.length){const note=document.createElement('p');note.className='seat-conflict-note';note.textContent=`${restricted.map(item=>item.name).join(' and ')} uses this space. The seat may stay installed, folded up, but cannot be occupied.`;container.querySelector('.seat-menu').append(note);for(const button of container.querySelectorAll('#addPax,#addCrew'))button.disabled=true;}
     document.getElementById('toggleSeat').onclick=()=>{

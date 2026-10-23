@@ -50,7 +50,7 @@
    if(id==='C3'){const point=window.CabinSeatEditor.getC3Point(),occupant=state.seats.has(id)?occupantKind(state.occupants[id]):null;add('c3-position',null,seat.arm,0,88,100,()=>bridge.seat(id),{...point,occupancy:occupant,label:'C3 cockpit jump position'+(occupant?' · '+occupant:'')});continue;}
    if(!state.seats.has(id))continue;
    const occupant=occupantKind(state.occupants[id]);
-   if(['C1','C2','P2','P3'].includes(id)){if(occupant){const port=/Port/i.test(seat.name);add('occupant-'+id,null,seat.arm,port?65:-65,40,40,()=>bridge.seat(id),{occupancy:occupant,label:id+' · '+occupant});}continue;}
+   if(['C1','C2','P2','P3'].includes(id)){const port=/Port/i.test(seat.name);add('seat-'+id,null,seat.arm,port?65:-65,88,110,()=>bridge.seat(id),{occupancy:occupant,label:id+' · permanently installed'+(occupant?' · '+occupant:'')});continue;}
    const crew=!!data.crewSeats[id],port=/Port/i.test(seat.name),stbd=/Stbd/i.test(seat.name),folded=window.CH149_SEAT_RULES.occupancyBlockers(state,id).length>0;
    const asset=crew?(stbd?'crewStbd':'crewPort'):folded?'folded':'pax',width=crew?assets[asset].crop[2]*scale:78,height=crew?assets[asset].crop[3]*scale:folded?33:110;
    add('seat-'+id,asset,seat.arm,port?(folded?84:65):stbd?-(folded?84:65):0,width,height,()=>{window.CabinFloorArea.close();window.CabinRampArea?.close();window.CabinFloorEquipment?.close();window.CabinCasevac?.close();window.CabinBasket.close();window.CabinPTA.close();window.CabinStokes.close();bridge.seat(id);},{rotation:!crew&&port?180:0,folded,occupancy:occupant,label:id+(folded?' · folded':'')+(occupant?' · '+occupant:'')});

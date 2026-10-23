@@ -162,11 +162,11 @@ function recalculateItems(){
 function applyPreset(key){
  const proposedPreset=key&&D.presets[key];
  if(proposedPreset){const proposedSeats=new Set([...(proposedPreset.seats?.crew||[]),...(proposedPreset.seats?.pax||[]),...Object.keys(D.crewSeats).filter(id=>D.crewSeats[id].alwaysInstalled)]);const conflicts=window.CH149_SEAT_RULES.issues(proposedSeats,{roleFit:new Set(proposedPreset.roleFitOn||[]),mission:new Set(proposedPreset.missionOn||[]),occupants:Object.fromEntries((proposedPreset.occupants||[]).map(id=>[id,true]))});if(conflicts.length){renderConfigButtons();document.querySelector('#configSummary').textContent=`Cannot apply ${proposedPreset.name}: ${conflicts.join('; ')}.`;return false;}}
- state.preset=key||'';state.view='plan';state.mission=new Set();state.roleFit=new Set();state.moved={};state.patients={};
+ state.preset=key||'';state.view='plan';state.mission=new Set();state.roleFit=new Set();state.moved={};state.patients={};state.removedFrom={};
  const p=key&&D.presets[key];
  if(p){for(const k of p.missionOn||[])if(D.missionEquip[k]&&D.missionEquip[k].group!=='Stowage')state.mission.add(k);for(const k of p.roleFitOn||[])if(D.roleFit[k])state.roleFit.add(k);state.seats=new Set([...(p.seats?.crew||[]),...(p.seats?.pax||[])]);state.occupants={};for(const s of p.occupants||[])state.occupants[s]=p.occupantRoles?.[s]||'OCCUPIED';}
  else {state.seats=new Set([...Object.entries(D.crewSeats).filter(([,s])=>s.alwaysInstalled).map(([k])=>k),...Object.entries(D.paxSeats).filter(([,s])=>s.normallyInstalled).map(([k])=>k)]);state.occupants={};}
- window.CabinPresetRules.apply(key,state);state.selectedSeat=null;document.querySelector('#seatEditMessage').textContent='';recalculateItems();render();
+ window.CabinPresetRules.apply(key,state);for(const id of ['C1','C2','P2','P3'])state.seats.add(id);state.selectedSeat=null;document.querySelector('#seatEditMessage').textContent='';recalculateItems();render();
 }
 function findKey(fragment){return [...state.mission].find(k=>k.includes(fragment));}
 function locFor(item){if(item.key==='RF_AIRCRAFT_SYSTEMS_SEA_TRAY')return {id:'SEA_TRAY_AREA',label:'B3/B4/B5 Centre',arm:D.roleFit[item.key].arm,view:'plan',type:'fit'};const linked=window.CabinBasket.resolvedLocation(state,item.key);if(linked)return linked;const loc=LOC.find(x=>x.id===item.loc);if(loc)return loc;const m=D.stowage[item.loc];if(m)return {id:item.loc,label:m.name,arm:m.arm,view:'cabinet',type:'generic'};return {id:item.loc,label:item.loc||'Unplaced',arm:byId(item.key).arm??null,view:'plan',type:'generic'};}
@@ -206,7 +206,7 @@ function moveItem(key,dest,{keepView=false}={}){const target=LOC.find(l=>l.id===
  else {state.moved[key]={loc:dest};}
  recalculateItems();if(target.view&&!keepView)setView(target.view);renderItems();renderTargets();renderSeats();renderDetail();return true;
 }
-function removeItem(key){if(D.missionEquip[key]?.isBasket)window.CabinBasket.remove(state,key);else if(window.CabinStokes.isLitter(key)){const result=window.CabinStokes.remove(state,key);if(!result.ok){alert(result.reason);return false;}}else{state.mission.delete(key);delete state.moved[key];}recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();return true;}
+function removeItem(key){const previous=missionObject(key);if(previous){state.removedFrom??={};state.removedFrom[key]=locFor(previous).id;}if(D.missionEquip[key]?.isBasket)window.CabinBasket.remove(state,key);else if(window.CabinStokes.isLitter(key)){const result=window.CabinStokes.remove(state,key);if(!result.ok){alert(result.reason);return false;}}else{state.mission.delete(key);delete state.moved[key];}recalculateItems();renderItems();renderTargets();renderSeats();renderDetail();return true;}
 function togglePatient(key){const pos=D.patientPositions[key];if(!pos){alert('That patient position is not in the app location catalogue.');return}if(key==='PTA'){const result=window.CabinPTA.setPatient(state,!state.patients.PTA);if(!result.ok){alert(result.reason);return;}}else if(key==='STOKES_CABIN'){const result=window.CabinStokes.setPatient(state,!state.patients.STOKES_CABIN);if(!result.ok){alert(result.reason);return;}}else if(pos.roleFitKey?.includes('CASEVAC_RACK')){const result=window.CabinCasevac.setPatient(state,key,!state.patients[key]);if(!result.ok){alert(result.reason);return;}}else state.patients[key]=!state.patients[key];renderItems();renderSeats();setView('pta');}
 function renderDetail(){window.CabinCabinetZones.setSelection(state.selectedLoc);window.CabinForwardShelves?.setSelection(state.selectedLoc);window.CabinRampShelves?.setSelection(state.selectedLoc);window.CabinPortOverhead?.setSelection(state.selectedLoc);window.CabinStbdOverhead?.setSelection(state.selectedLoc);const detail=document.querySelector('#viewerDetail'),slots=document.querySelector('#detailSlots'),title=document.querySelector('#detailTitle'),arm=document.querySelector('#detailArm'),contents=document.querySelector('#detailContents');let group=[];
  if(state.view==='cabinet'){group=LOC.filter(l=>l.type==='cabinet');title.textContent='SAR Cabinet · select a zone';}
@@ -235,6 +235,7 @@ function renderDetail(){window.CabinCabinetZones.setSelection(state.selectedLoc)
  document.querySelector('#inspectPTA')?.addEventListener('click',()=>window.CabinPTA.open());
  document.querySelector('#addPTA')?.addEventListener('click',()=>togglePatient('PTA'));
  document.querySelector('#addStokesPatient')?.addEventListener('click',()=>togglePatient('STOKES_CABIN'));
+ if(window.CabinShelfEditor&&['cabinet','shelf','storage'].includes(l.type)&&!window.CabinFloorEquipment.locations.includes(l.id))window.CabinShelfEditor.render(l,contents);
 }
 function itemsAt(id){return [...[...state.mission].map(missionObject),...[...state.roleFit].map(fitObject).filter(o=>o?.loc==='PTA_COT_AREA'||window.CabinFloorEquipment.locations.includes(o?.loc))].filter(o=>o&&locFor(o).id===id);}
 function renderSeats(){window.CabinSeatEditor.render();window.CabinBasket.render();window.CabinPTA.render();window.CabinStokes.render();}
@@ -263,6 +264,7 @@ applyPreset('');
 </script>
 <link rel="stylesheet" href="image-workspace.css">
 <script>window.CabinImageState=()=>state;</script>
+<script src="shelf-editor.js"></script>
 <script src="image-workspace.js"></script>
 <script src="workspace.js"></script>
 </body>
