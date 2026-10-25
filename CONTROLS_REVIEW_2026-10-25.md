@@ -50,3 +50,10 @@ Before the authorized device-test push, every check registered in verification/r
 The user reported that image dragging stopped after a small movement and required repeated touches. A native touch test reproduced this: transfer of implicit pointer capture from a clickable child to the viewport emitted a bubbling lostpointercapture event, which incorrectly cleared the active drag. Capture is now acquired once, and only capture loss on the viewport itself ends its pan; release/cancel also match the active pointer.
 
 Reset view now selects whole-image framing, fits at 100% and clears both pan offsets, including after Enlarge cabin. Enlarge cabin and its resize fitting remain separate actions. The new regression failed on the original interrupted touch gesture and passes with the fix at tablet portrait/landscape and phone sizes. Edge also passes the framing and seven-size usability/pinch checks; Safari-engine capture-handover/reset checks pass three sizes. Physical iPad retest is required. This patch is published under the existing device-test authorization.
+
+
+## Page scrolling versus image movement — supersedes one-finger image pan
+
+The user found it confusing that swiping over the image could not scroll the page and agreed to a split gesture model. One finger now scrolls the page over either default or zoomed imagery. Two fingers move the enlarged image; changing finger separation zooms about their moving midpoint. Mouse dragging remains available when zoomed. A three-second hint appears when a touch device enlarges the image. Browser accessibility pinch outside the image is unchanged. Reset remains centered 100%.
+
+Native Chromium touch tests verify actual page scroll with unchanged image transform, then sustained two-finger pan with unchanged page position at iPad portrait/landscape and phone sizes. Safari-engine tests exercise the two-touch handlers and reset; physical iPad testing remains the confirmation for native Safari gestures. The seven-size usability checks, including native pinch, also pass. Published under the existing device-test authorization.

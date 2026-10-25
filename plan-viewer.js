@@ -90,7 +90,7 @@
   }, true);
   viewport.addEventListener('pointerdown', event => {
     suppressClick=false;
-    if (zoom<=1 || event.target.closest('#floorCargoPoint,.cargo-symbol,.fuel-strip-cell') || (event.pointerType==='mouse' && event.button!==0)) return;
+    if (event.pointerType==='touch' || zoom<=1 || event.target.closest('#floorCargoPoint,.cargo-symbol,.fuel-strip-cell') || (event.pointerType==='mouse' && event.button!==0)) return;
     dragging = { id:event.pointerId, x:event.clientX, y:event.clientY, panX, panY };
   });
   viewport.addEventListener('pointermove', event => {
@@ -119,5 +119,5 @@
     event.preventDefault();
   });
   new ResizeObserver(paint).observe(viewport);
-  window.CabinPlanViewer = { setView, fit, fitBounds, changeZoom, pan(x,y){panX=x;panY=y;paint();}, getState:() => ({zoom,panX,panY,asset:activeAsset}) };
+  window.CabinPlanViewer = { setView, fit, fitBounds, changeZoom, setTransform(nextZoom,x,y){zoom=clamp(nextZoom,1,4);panX=x;panY=y;paint();}, pan(x,y){panX=x;panY=y;paint();}, getState:() => ({zoom,panX,panY,asset:activeAsset}) };
 })();

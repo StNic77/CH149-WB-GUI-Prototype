@@ -249,3 +249,8 @@ The user explicitly requested commit and push so the hosted prototype can be ass
 ## 26. iPad drag handover and default reset — 25 October 2026
 
 Device feedback identified interrupted panning. Native touch reproduction confirmed that child capture loss cancelled viewport dragging at the first movement. The handler now distinguishes capture ownership and active pointer, preserving continuous pan. Reset view clears enlarged-cabin framing and returns to centered 100% in plan/detail views. Focused native-touch/Safari-engine checks and framing/usability regressions pass. Published for device retesting under the user’s existing commit/push authorization.
+
+
+## 27. Separate page and image gestures — 25 October 2026
+
+The user approved one finger for page scrolling and two fingers for moving/zooming the image. Touch pointer pan is disabled, native vertical page scrolling is allowed, and two-touch translation/scale are applied together around their moving midpoint. Mouse pan and centered reset are retained. A brief touch hint explains the two-finger gesture. Native touch, Safari handler/reset and seven-size usability checks pass. This supersedes one-finger image panning in the preceding patch.
