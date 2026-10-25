@@ -43,3 +43,10 @@ Role selection/change preserves fuel amount, automatic/manual mode, entered tank
 ## Publication verification
 
 Before the authorized device-test push, every check registered in verification/run-checks.cjs passed in Edge, including the broader cargo, image workspace, summary, ramp, loading and stale-asset iPad checks. Legacy checks were updated to reopen editors after successful actions and to exercise phone drag targets with the floating editor clear. The focused detail-return/fuel-retention and ramp/fuel-label checks also passed in the Safari engine at five screen sizes. This remains browser automation, not physical-device acceptance.
+
+
+## iPad device feedback: continuous drag and Reset view
+
+The user reported that image dragging stopped after a small movement and required repeated touches. A native touch test reproduced this: transfer of implicit pointer capture from a clickable child to the viewport emitted a bubbling lostpointercapture event, which incorrectly cleared the active drag. Capture is now acquired once, and only capture loss on the viewport itself ends its pan; release/cancel also match the active pointer.
+
+Reset view now selects whole-image framing, fits at 100% and clears both pan offsets, including after Enlarge cabin. Enlarge cabin and its resize fitting remain separate actions. The new regression failed on the original interrupted touch gesture and passes with the fix at tablet portrait/landscape and phone sizes. Edge also passes the framing and seven-size usability/pinch checks; Safari-engine capture-handover/reset checks pass three sizes. Physical iPad retest is required. This patch is published under the existing device-test authorization.

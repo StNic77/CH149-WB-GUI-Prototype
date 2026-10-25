@@ -44,3 +44,5 @@ Thumbs.db
 !verification/ramp-fuel-menu-check.cjs
 
 !verification/detail-return-fuel-check.cjs
+
+!verification/touch-pan-reset-check.cjs

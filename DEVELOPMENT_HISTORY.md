@@ -244,3 +244,8 @@ The user requested a small top-right 2D view button in each detail, and preserva
 ## 25. Device-test publication authorized — 25 October 2026
 
 The user explicitly requested commit and push so the hosted prototype can be assessed on iPhone/iPad. The cumulative 24–25 October application changes, verification updates and current review documents are included. Local reference-pack archives, screenshots, checkpoints and development dependencies are excluded. Active Dev remains unchanged. Earlier local-only instructions are historical; this approval applies to the prototype device-test release.
+
+
+## 26. iPad drag handover and default reset — 25 October 2026
+
+Device feedback identified interrupted panning. Native touch reproduction confirmed that child capture loss cancelled viewport dragging at the first movement. The handler now distinguishes capture ownership and active pointer, preserving continuous pan. Reset view clears enlarged-cabin framing and returns to centered 100% in plan/detail views. Focused native-touch/Safari-engine checks and framing/usability regressions pass. Published for device retesting under the user’s existing commit/push authorization.

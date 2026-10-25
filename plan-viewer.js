@@ -96,12 +96,16 @@
   viewport.addEventListener('pointermove', event => {
     if (!dragging || dragging.id!==event.pointerId) return;
     if (!dragging.moved && Math.hypot(event.clientX-dragging.x,event.clientY-dragging.y)<7) return;
-    dragging.moved=true; suppressClick=true;
-    viewport.setPointerCapture(event.pointerId);viewport.classList.add('panning');event.preventDefault();
+    if (!dragging.moved) {dragging.moved=true;viewport.setPointerCapture(event.pointerId);}
+    suppressClick=true;viewport.classList.add('panning');event.preventDefault();
     panX = dragging.panX+(event.clientX-dragging.x)/viewport.clientWidth;
     panY = dragging.panY+(event.clientY-dragging.y)/viewport.clientHeight;paint();
   });
-  for (const event of ['pointerup','pointercancel','lostpointercapture']) viewport.addEventListener(event, () => { dragging=null;viewport.classList.remove('panning'); });
+  function finishPan(event) {if (dragging?.id!==event.pointerId) return;dragging=null;viewport.classList.remove('panning');}
+  for (const event of ['pointerup','pointercancel']) viewport.addEventListener(event, finishPan);
+  // Touch starts with implicit capture on the child that was touched. Its loss
+  // bubbles here when the viewport takes over; only losing our own capture ends pan.
+  viewport.addEventListener('lostpointercapture', event => {if (event.target===viewport) finishPan(event);});
   viewport.addEventListener('keydown', event => {
     if (event.target!==viewport) return;
     if (event.key==='+' || event.key==='=') changeZoom(zoom+.5);
