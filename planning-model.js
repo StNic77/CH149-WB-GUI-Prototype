@@ -19,8 +19,10 @@
   for(const key of state.mission){
    const item=config.missionEquip[key];if(!item)continue;
    const allocations=item.defaultAllocations?.length?item.defaultAllocations:[{quantity:item.defaultQuantity??1,stow:item.stow,customArm:item.customArm}];
-   s.missionLoads[key]=allocations.map((row,i)=>({id:'base'+i,...row,...(state.moved?.[key]?.loc?{stow:state.moved[key].loc}:{})}));
+   s.missionLoads[key]=window.CabinEquipment?window.CabinEquipment.rows(state,key):allocations.map((row,i)=>({id:'base'+i,...row,...(state.moved?.[key]?.loc?{stow:state.moved[key].loc}:{})}));
   }
+  if(p.fuelMode==='manual'){s.fuel.manualTanks=true;s.fuel.tanks={...p.tanks};}
+  s.fuel.landing=Math.min(p.reserve??300,p.fuel??0);
   for(const row of state.floorLoads||[]){if(row.installed===false)continue;if(row.kind==='bay'){const space=window.CH149_FLOOR_SPACES.find(x=>x.id===row.area);s.bays[row.area==='RAMP'?'REAR':space?.bay]=row.weight;}else s.cargo.push({w:row.weight,arm:row.arm});}
   for(const [id,w]of Object.entries(state.stowageLoads||{}))if(w>0)s.zones.push({id,w});
   return s;

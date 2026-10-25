@@ -24,15 +24,17 @@
   if(important)important.dataset.primaryActions='true';
  }
  function position(){frame=0;if(host.hidden)return;promoteActions();const box=viewport.getBoundingClientRect(),margin=8,visible=window.visualViewport,viewWidth=visible?.width||innerWidth,viewHeight=(visible?.height||innerHeight)-(document.getElementById('liveAircraftStrip')?.getBoundingClientRect().height||0),viewLeft=visible?.offsetLeft||0,viewTop=visible?.offsetTop||0;
-  host.style.width=Math.min(current==='cargoPanel'?520:420,viewWidth-margin*2)+'px';
-  host.style.maxHeight=Math.max(120,Math.min(viewHeight-24,viewWidth<650?viewHeight*.72:Math.max(box.height,400)))+'px';
+  const dock=document.getElementById('aircraftTouchControls'),reserve=viewWidth<650&&dock&&!dock.hidden&&dock.dataset.placement==='side'?dock.getBoundingClientRect().width+16:0,leftHand=dock?.dataset.hand==='left';
+  host.style.width=Math.min(current==='cargoPanel'?520:420,viewWidth-margin*2-reserve)+'px';
+  host.style.maxHeight=Math.max(120,Math.min(viewHeight-24,viewWidth<900?viewHeight*.78:Math.max(box.height,460)))+'px';
   const p=anchor||{x:box.left+box.width/2,y:Math.max(12,box.top)+30},size=host.getBoundingClientRect();
   if(viewWidth<650){const above=p.y-viewTop-24,below=viewTop+viewHeight-p.y-24;host.style.maxHeight=Math.max(120,Math.min(viewHeight-24,Math.max(above,below)))+'px';}
   const actual=host.getBoundingClientRect();
   let x=p.x+12;if(x+size.width>viewLeft+viewWidth-margin)x=p.x-size.width-12;
-  host.style.left=Math.max(viewLeft+margin,Math.min(viewLeft+viewWidth-size.width-margin,x))+'px';
+  host.style.left=Math.max(viewLeft+margin+(leftHand?reserve:0),Math.min(viewLeft+viewWidth-size.width-margin-(leftHand?0:reserve),x))+'px';
   const y=viewWidth<650?(p.y-viewTop>viewTop+viewHeight-p.y?p.y-actual.height-20:p.y+20):p.y-16;
   host.style.top=Math.max(viewTop+margin,Math.min(viewTop+viewHeight-actual.height-margin,y))+'px';
+  const controls=document.getElementById('compactViewControls')?.getBoundingClientRect(),placed=host.getBoundingClientRect();if(controls&&controls.bottom>viewTop&&controls.top<viewTop+viewHeight&&placed.top<controls.bottom&&placed.bottom>controls.top){const below=viewTop+viewHeight-controls.bottom-margin*2,above=controls.top-viewTop-margin*2;if(below>=120){host.style.maxHeight=below+'px';host.style.top=controls.bottom+margin+'px';}else if(above>=120){host.style.maxHeight=above+'px';host.style.top=viewTop+margin+'px';}}
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(position);}
  function separator(){if(crumbs.children.length){const s=document.createElement('span');s.textContent='›';s.setAttribute('aria-hidden','true');crumbs.append(s);}}
@@ -51,7 +53,7 @@
  function wrap(module,name,panel,resolve){const original=module?.[name];if(!original)return;module[name]=(...args)=>{original(...args);const context=resolve(...args);show(panel,context.area,context.label);};}
  wrap(window.CabinBasket,'open','basketPanel',side=>({area:side==='PORT'?'BAY6_PORT':'BAY6_STBD',label:'Rescue basket'}));
  wrap(window.CabinPTA,'open','ptaPanel',id=>({area:moduleArea(id||'BAY6_PORT',['BAY5_PORT','BAY55_PORT','BAY6_PORT']),label:'PTA cot'}));
- wrap(window.CabinStokes,'open','stokesPanel',side=>({area:side==='RAMP'?'RAMP':moduleArea('BAY3_CENTRE',['BAY3_CENTRE','BAY4_CENTRE']),label:'Stokes litter'}));
+ wrap(window.CabinStokes,'open','stokesPanel',side=>{const other=side==='RAMP'?'CABIN':'RAMP',prefix='ME_SAR_MISSION_EQUIP_STOKES_LITTER_',actual=state().mission.has(prefix+side)?side:state().mission.has(prefix+other)?other:side;return {area:actual==='RAMP'?'RAMP':moduleArea('BAY3_CENTRE',['BAY3_CENTRE','BAY4_CENTRE']),label:'Stokes litter'};});
  wrap(window.CabinRampArea,'open','rampAreaPanel',()=>({area:'RAMP'}));
  wrap(window.CabinFloorEquipment,'openTray','floorEquipmentPanel',()=>({area:moduleArea('BAY3_CENTRE',['BAY3_CENTRE','BAY4_CENTRE','BAY5_CENTRE']),label:'Sea Tray'}));
  wrap(window.CabinFloorEquipment,'openRaft','floorEquipmentPanel',id=>({area:(id||window.CabinFloorEquipment.raftLocation(state()))===window.CabinFloorEquipment.locations[1]?'BAY4_STBD':'BAY3_STBD',label:'Life raft and stowage'}));
@@ -61,7 +63,7 @@
  function showLocation(){const selected=window.CabinFloorArea.getSelection();window.CabinLoadingFeedback?.area();show('floorAreaPanel',selected.space,selected.cargoKind==='individual'?'Cargo details':selected.cargoKind==='bay'?'Bay weight':null);}
  function showDetail(id){show('viewerDetail',null,window.CH149_DATA.stowage[id]?.name||id);}
  // Capture the user's image target before existing handlers change the view.
- document.addEventListener('pointerdown',event=>{if(viewport.contains(event.target)){lastPoint={x:event.clientX,y:event.clientY};lastTrigger=event.target.closest('button,[role="button"]');}if(!host.hidden&&!host.contains(event.target)&&!viewport.contains(event.target)&&!event.target.closest('.image-layer'))close();},true);
+ document.addEventListener('pointerdown',event=>{if(viewport.contains(event.target)){lastPoint={x:event.clientX,y:event.clientY};lastTrigger=event.target.closest('button,[role="button"]');}if(!host.hidden&&!host.contains(event.target)&&!viewport.contains(event.target)&&!event.target.closest('.image-layer,#aircraftTouchControls,#compactViewControls,#roleResetDialog,.view-framing,.overlay-controls'))close();},true);
  document.addEventListener('click',event=>{if(!viewport.contains(event.target))return;
   if(event.detail===0){const r=event.target.getBoundingClientRect();lastPoint={x:r.left+r.width/2,y:r.top+r.height/2};}
   if(event.target===viewport||event.target.id==='planSheet'||event.target.id==='cabinImage')close();
@@ -69,7 +71,7 @@
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!host.hidden){close(true);event.stopPropagation();}});
  host.querySelector('#imageMenuClose').onclick=()=>close(true);
  new MutationObserver(()=>{if(host.hidden)return;const panel=document.getElementById(current);if(panel?.hidden||current==='viewerDetail'&&!panel.classList.contains('show'))close();else schedule();}).observe(body,{attributes:true,attributeFilter:['hidden','class'],childList:true,subtree:true});
- new ResizeObserver(schedule).observe(host);window.addEventListener('resize',schedule);window.addEventListener('scroll',schedule,true);window.visualViewport?.addEventListener('resize',schedule);window.visualViewport?.addEventListener('scroll',schedule);
+ window.addEventListener('resize',schedule);window.addEventListener('scroll',event=>{if(!host.contains(event.target))schedule();},true);window.visualViewport?.addEventListener('resize',schedule);window.visualViewport?.addEventListener('scroll',schedule);
  // Retire duplicate navigation while retaining elements referenced by legacy modules.
  const fallback=document.createElement('div');fallback.id='retiredImageControls';fallback.hidden=true;document.body.append(fallback);
  for(const id of ['floorSpaceOpen','rampAreaOpen','casevacOpen','cargoOpen']){const b=document.getElementById(id);if(b)fallback.append(b);}
@@ -82,9 +84,9 @@
  document.getElementById('floorCellsToggle').onchange=event=>viewport.classList.toggle('floor-cells-hidden',!event.target.checked);
  // Shelf access points refer to known fixtures; they do not define loading footprints.
  const shelfLayer=document.createElement('div');shelfLayer.id='planShelfAccess';document.getElementById('planSheet').append(shelfLayer);
- for(const [id,label,view]of [['forward','Forward shelves','forward'],['rampPort','Port ramp shelves','ramp'],['rampStbd','Stbd ramp shelves','ramp'],['portAft','Port Aft View','pta'],['stbdAft','Starboard Aft View','stbd']]){const b=document.createElement('button');b.type='button';b.dataset.shelfAccess=id;b.textContent=label;b.setAttribute('aria-label','Open '+label);b.onclick=()=>setView(view);shelfLayer.append(b);}
+ for(const [id,label,view]of [['forward','Forward shelves','forward'],['rampPort','Port ramp shelves','ramp'],['rampStbd','Stbd ramp shelves','ramp'],['portAft','Port Aft View','pta'],['stbdAft','Starboard Aft View','stbd']]){const b=document.createElement('button');b.type='button';b.dataset.shelfAccess=id;b.textContent='';b.hidden=id.endsWith('Aft');b.setAttribute('aria-label','Open '+label);b.onclick=()=>setView(view);shelfLayer.append(b);}
  function renderAccess(){const m=window.CabinBayLayer.getDisplayMapping();shelfLayer.hidden=state().view!=='plan'||!m;if(!m)return;
-  for(const b of shelfLayer.children){const id=b.dataset.shelfAccess,forward=id==='forward',aft=id.endsWith('Aft'),x=forward?m.forwardX+(5375-4875)/6518*(m.aftX-m.forwardX):aft?m.aftX-100*m.sourceScale:m.aftX+(m.rampAftX-m.aftX)*.48,y=m.centerY+(id==='stbdAft'?-560:id==='portAft'?560:id==='rampStbd'?-360:360);b.style.left=x/m.width*100+'%';b.style.top=y/m.height*100+'%';}
+  for(const b of shelfLayer.children){const id=b.dataset.shelfAccess,forward=id==='forward',aft=id.endsWith('Aft'),x=forward?m.forwardX+(5375-4875)/6518*(m.aftX-m.forwardX):aft?m.aftX-100*m.sourceScale:m.aftX+(m.rampAftX-m.aftX)*.48,y=m.centerY+(id==='rampStbd'?-120:120)*m.sourceScale;b.style.left=x/m.width*100+'%';b.style.top=y/m.height*100+'%';b.style.width=120*m.sourceScale/m.width*100+'%';b.style.height=80*m.sourceScale/m.height*100+'%';}
  }
  window.CabinImageMenu={showSeat,showLocation,showDetail,close,show,anchorAtElement(element){if(element){const r=element.getBoundingClientRect();lastPoint={x:r.left+r.width/2,y:r.top+r.height/2};lastTrigger=element;}},setAnchor(x,y){anchor={x,y};},retarget(panel,root,label){if(!host.hidden&&current===panel&&root!==area)show(panel,root,label);},renderAccess,onView(){close();back.hidden=state().view==='plan';renderAccess();},suspend(){placementHidden=!host.hidden;host.hidden=true;},resume(){if(placementHidden&&current){host.hidden=false;placementHidden=false;schedule();}},getState:()=>({open:!host.hidden,current,area,item})};
  back.hidden=state().view==='plan';

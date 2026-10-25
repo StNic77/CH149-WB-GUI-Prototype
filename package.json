@@ -7,7 +7,7 @@
     "start": "node preview-server.cjs 61448",
     "assets:version": "node version-assets.cjs",
     "pretest": "node version-assets.cjs --check",
-    "test": "node verification/fuel-model-check.cjs && node verification/planning-check.cjs && node verification/demo-check.cjs && node verification/hosted-calibration-check.cjs && node verification/cargo-layer-check.cjs && node verification/image-workspace-check.cjs && node verification/refinement-check.cjs && node verification/aircraft-summary-check.cjs && node verification/ramp-limits-check.cjs && node verification/cargo-slots-check.cjs && node verification/loading-workspace-check.cjs && node verification/ipad-loading-check.cjs"
+    "test": "node verification/run-checks.cjs"
   },
   "engines": {
     "node": ">=18"

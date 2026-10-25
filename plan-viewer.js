@@ -13,11 +13,12 @@
   const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
   function paint() {
     panX = clamp(panX, 1 - zoom, 0); panY = clamp(panY, 1 - zoom, 0);
-    sheet.style.transform = isPlan ? `translate(${panX*viewport.clientWidth}px,${panY*viewport.clientHeight}px) scale(${zoom})` : '';
+    sheet.style.transform = `translate(${panX*viewport.clientWidth}px,${panY*viewport.clientHeight}px) scale(${zoom})`;
     zoomOutput.value = Math.round(zoom*100) + '%';
     document.getElementById('planZoomOut').disabled = zoom <= 1;
     document.getElementById('planZoomIn').disabled = zoom >= 4;
-    viewport.classList.toggle('can-pan', isPlan && zoom > 1);
+    viewport.classList.toggle('can-pan', zoom > 1);
+    window.CabinTouchControls?.paint(zoom);window.CabinFuelUI?.renderOverlay();
   }
   function changeZoom(next, anchorX=.5, anchorY=.5) {
     next = clamp(next, 1, 4);
@@ -26,12 +27,13 @@
     zoom = next; paint();
   }
   function fit() { zoom=1;panX=panY=0;paint(); }
+  function fitBounds({left,top,right,bottom},padding=.025){const w=right-left,h=bottom-top;if(![left,top,right,bottom].every(Number.isFinite)||w<=0||h<=0){fit();return;}zoom=clamp(Math.min((1-2*padding)/w,(1-2*padding)/h),1,4);panX=.5-(left+right)*zoom/2;panY=.5-(top+bottom)*zoom/2;paint();}
   const percent = (value,total) => (value/total*100)+'%';
   function setView({ view, preset, hasPlan, cabinetInstalled }) {
     isPlan = view === 'plan';
-    tools.hidden = !isPlan || !hasPlan;
+    tools.hidden = isPlan && !hasPlan;
     viewport.classList.toggle('is-plan', isPlan);
-    viewport.setAttribute('tabindex', isPlan && hasPlan ? '0' : '-1');
+    viewport.setAttribute('tabindex', hasPlan ? '0' : '-1');
     activeAsset = isPlan ? registration.assets[preset || 'BASELINE'] : null;
     image.removeAttribute('style'); target.removeAttribute('style');
     image.hidden = isPlan && !hasPlan;
@@ -67,7 +69,8 @@
     window.CabinFloorEquipment?.setView(view);
     window.CabinCasevac?.setView(view);
     window.CabinCargo?.setView(isPlan && hasPlan && !!activeAsset);window.CabinImageMenu?.onView();
-    paint();
+    fit();
+    window.CabinTouchControls?.onView(view);
   }
   const guide = registration.guides;
   guideLayer.setAttribute('viewBox',`0 0 ${registration.width} ${registration.height}`);
@@ -87,7 +90,7 @@
   }, true);
   viewport.addEventListener('pointerdown', event => {
     suppressClick=false;
-    if (!isPlan || zoom<=1 || event.target.closest('#planCabinet') || (event.pointerType==='mouse' && event.button!==0)) return;
+    if (zoom<=1 || event.target.closest('#floorCargoPoint,.cargo-symbol,.fuel-strip-cell') || (event.pointerType==='mouse' && event.button!==0)) return;
     dragging = { id:event.pointerId, x:event.clientX, y:event.clientY, panX, panY };
   });
   viewport.addEventListener('pointermove', event => {
@@ -100,7 +103,7 @@
   });
   for (const event of ['pointerup','pointercancel','lostpointercapture']) viewport.addEventListener(event, () => { dragging=null;viewport.classList.remove('panning'); });
   viewport.addEventListener('keydown', event => {
-    if (!isPlan || event.target!==viewport) return;
+    if (event.target!==viewport) return;
     if (event.key==='+' || event.key==='=') changeZoom(zoom+.5);
     else if (event.key==='-') changeZoom(zoom-.5);
     else if (event.key==='Home') fit();
@@ -112,5 +115,5 @@
     event.preventDefault();
   });
   new ResizeObserver(paint).observe(viewport);
-  window.CabinPlanViewer = { setView, fit, getState:() => ({zoom,panX,panY,asset:activeAsset}) };
+  window.CabinPlanViewer = { setView, fit, fitBounds, changeZoom, pan(x,y){panX=x;panY=y;paint();}, getState:() => ({zoom,panX,panY,asset:activeAsset}) };
 })();

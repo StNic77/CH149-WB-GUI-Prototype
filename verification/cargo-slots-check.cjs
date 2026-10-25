@@ -1,8 +1,9 @@
+const prepare=require('./compact-test-navigation.cjs');
 const assert=require('node:assert/strict'),path=require('node:path');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),{createPreviewServer}=require('../preview-server.cjs');
 (async()=>{const server=createPreviewServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;
 try{browser=await chromium.launch({channel:process.env.PLAYWRIGHT_CHANNEL||'msedge',headless:true});
-for(const [width,height]of [[1440,1000],[834,1194],[390,844]]){const page=await browser.newPage({viewport:{width,height}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port);
+for(const [width,height]of [[1440,1000],[834,1194],[390,844]]){const page=await browser.newPage({viewport:{width,height}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port);await prepare(page);
  await page.evaluate(()=>{state.floorLoads=[];state.mission.clear();});
  // Removing every load never consumes a user-visible cargo slot.
  for(let i=0;i<8;i++){const slot=await page.evaluate(()=>{const r=CabinCargo.add(state,{area:'BAY3_CENTRE',kind:'individual',weight:10,arm:7375});renderSeats();const label=CabinCargo.label(r.entry);CabinCargo.remove(state,r.entry.id);return label;});assert.equal(slot,'Cargo 1');}

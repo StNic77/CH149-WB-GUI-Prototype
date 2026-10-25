@@ -4,6 +4,10 @@ An interactive cabin workspace for demonstrating aircraft configuration, equipme
 
 The accepted image-first interface is on `main`. See [LOADING_WORKSPACE_CHANGES.md](LOADING_WORKSPACE_CHANGES.md) for current view access, shelf/bay warnings, planning calculations and the requirement-to-test cross-reference. Older branch/status notes in IMAGE_FIRST_WORKSPACE are historical.
 
+## iPhone / iPad review
+
+Open [the hosted prototype](https://stnic77.github.io/CH149-WB-GUI-Prototype/) on the device. The 25 October device-test release includes compact space menus, immediate multi-select, Role/Layers/View controls, a hideable handed sizing rail, collapsible summary, revised ramp menu and fuel strip, direct 2D return from details, and fuel retention across Role changes. This is a prototype for usability review. Session edits reset on reload.
+
 ## Run the demo
 
 Install Node.js 18 or newer, download this repository, then double-click **START_DEMO.cmd** on Windows. Open **http://127.0.0.1:61448** in a browser. Keep the server window open. If that port is already in use, use the running prototype or choose another port with `node preview-server.cjs 61449`.

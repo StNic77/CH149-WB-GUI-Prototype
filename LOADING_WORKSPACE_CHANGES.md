@@ -1,4 +1,18 @@
+> **Device-test release, 25 October 2026:** The user has now explicitly authorized committing and pushing this prototype for iPhone/iPad testing. Earlier local-only/uncommitted/no-publish statements below are historical. Current behavior is recorded in CONTROLS_REVIEW_2026-10-25.md; physical device acceptance remains pending.
+
+> **Latest local review, 25 October 2026:** Controls, immediate contents multi-select, fuel strip, framing and collapsible summary are updated. See [CONTROLS_REVIEW_2026-10-25.md](CONTROLS_REVIEW_2026-10-25.md). Earlier menu descriptions below may describe the preceding iteration. No publication or Active Dev changes.
+
+> **25 October 2026 update:** The user subsequently authorized the compact contents-menu increment after interactive mock-up review. It is now implemented locally for review. See [COMPACT_CONTENTS_REVIEW_2026-10-25.md](COMPACT_CONTENTS_REVIEW_2026-10-25.md) for the current flow, checkpoint and checks. Older no-further-code statements below describe the prior handoff; unrelated review findings remain open. No commit, push, publication or Active Dev changes.
+
 # Loading workspace — implementation cross-reference
+
+## Current status notice — 24 October 2026
+
+The original 23 October increment below is historical. A subsequent LOCAL usability package now adds per-allocation quantity editing, extra units, grouped equipment actions/Undo, touch controls, compact-menu trials, symbols, signed mass deltas and a manual/automatic fuel panel with preferred landing reserve. Current modules and scope are in `CABIN_UI_DEVELOPMENT_HANDOFF.md` and `LOCAL_REVIEW_PACKAGE.md`. `equipment-ui.js` now replaces the earlier shelf-editor render after load; `equipment-actions.js` owns the prototype's editable allocation rows.
+
+Main's last commit is `dbb53a9`; the 24 October application changes and documents remain uncommitted and unpushed. Active Dev, source calculation bodies, catalogue, imagery and calibration were unchanged. Do not assume this local package is in the published demo.
+
+The full Chromium suite and seven-size WebKit package checks passed. The user subsequently identified eleven substantial usability issues; the GUI is not usability-accepted. See backlog section 14. Next work is to game out the menus and review framing/layers/symbols before further code, not to repeat already implemented loading cautions or start a source-engine audit. No post-review application fixes or publication are authorized by this record.
 
 23 October 2026. Local development on main after 79e673c. This increment brings planning aircraft calculations forward; it does not establish operational equivalence or certification.
 
@@ -17,11 +31,11 @@ The operator chose manual planning basic weight and CG entry. RFM basis adds rem
 
 People use the source standard weights until named people and individual weights are refined. Missing carrier/stowage arms remain unresolved, suppress the CG readout and produce an explicit warning. With fuel unentered, the engine uses zero and the UI says fuel is not entered. Envelope status uses the pinned source envelope; this is planning feedback, not aircraft clearance.
 
-The Fuel menu shows fuel to 15,600 and 16,000 kg AUW using current total non-fuel weight, capped at 4,152 kg. This includes cargo/bay loads, unlike Active Dev's current Operating-Weight-only briefing display. Full burn plotting and manual tank controls remain deferred; automatic source distribution supplies fuel weight/moment here.
+The Fuel menu shows fuel to 15,600 and 16,000 kg AUW using current total non-fuel weight, capped at 4,152 kg. This includes cargo/bay loads, unlike Active Dev's Operating-Weight-only briefing display recorded during the original increment. As of 24 October, manual tank entry is available through the local trial fuel panel as well as automatic source distribution. Full burn plotting/operational integration remain later. Preferred landing reserve is retained separately from the feasible planned landing quantity; zero aboard never displays 300 kg as actual landing fuel.
 
 ## Allocation scope
 
-Split allocations are displayed and counted. The existing item-level remove/move actions still affect the entire equipment item, including all its allocations; the shelf controls state this explicitly. Per-allocation quantity editing is a later refinement. Removing NVGs from the aircraft removes all five; it never leaves a hidden sixth/double-counted record. A move preserves five sets and combines their allocations at the chosen destination.
+The 23 October increment displayed/counted split defaults but used whole-item moves/removals. That limitation is superseded locally on 24 October: selected units can now move or be removed from a specific allocation while other units remain, and extra units can be installed at chosen destinations. NVGs still default to four in E and one in F. Bulk actions and Undo use the same edited allocation state and pinned source calculation functions. The user's review concerns the clarity of those menus and their post-action list/selection behaviour; it does not authorize discarding the quantity/allocation capability.
 
 ## Source ownership and performance
 
@@ -29,7 +43,7 @@ Original catalogue, geometry and imagery are preserved. Capacity/envelope data a
 
 ## Still deferred
 
-Physical footprints/full location eligibility; individual quantities and entered people weights; operational acceptance/persistence/reporting; fuel visual design, burn plot and manual tank UI; complete comparison of both aircraft models and their deliberate differences. The aircraft summary is retained as a separate section; a mobile drawer is optional future refinement.
+Still deferred: physical footprints/full eligibility, entered people weights, operational acceptance/persistence/reporting, final fuel imagery/burn plot, complete source/model integration and deliberate-difference reconciliation. Individual quantities and manual tank controls now exist as local trials. GUI usability is unfinished, and the current aircraft summary/global Undo/layer layout is subject to the eleven-point user review. Detail-image performance/offline/update/reversion work is explicitly parked for the demo.
 
 ## Validation completed
 

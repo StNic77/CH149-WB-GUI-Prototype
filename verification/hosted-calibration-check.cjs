@@ -1,3 +1,4 @@
+const prepare=require('./compact-test-navigation.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),os=require('node:os'),vm=require('node:vm');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),{createPreviewServer}=require('../preview-server.cjs');
@@ -24,9 +25,9 @@ assert.equal(bundled.window.CH149_STATION_CALIBRATION.rampAft,published.rampAft)
   for(const stale of [false,true]){
    const context=await browser.newContext(),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
    if(stale)await page.addInitScript(()=>localStorage.setItem('ch149-cabin-prototype.shared-stations.v1',JSON.stringify({schema:1,plane:[2560,1216],forward:500,aft:1700,source:'BASELINE',revision:0})));
-   await page.goto(hosted);await page.waitForFunction(()=>CabinBayLayer.getState().publishedReady);assert.equal(await page.evaluate(()=>CabinBayLayer.getState().projectReady),false);await checkRoles(page);
+   await page.goto(hosted);await prepare(page);await page.waitForFunction(()=>CabinBayLayer.getState().publishedReady);assert.equal(await page.evaluate(()=>CabinBayLayer.getState().projectReady),false);await checkRoles(page);
    if(stale){const backup=await page.evaluate(()=>JSON.parse(localStorage.getItem('ch149-cabin-prototype.shared-stations.v1.previous')));assert.equal(backup.forward,500);assert.equal(backup.aft,1700);}
-   await page.locator('#bayToggle').check();await page.locator('.bay-review').evaluate(el=>el.open=true);assert.equal(await page.locator('#baySaveShared').isDisabled(),true);assert.match(await page.locator('#bayPersistenceStatus').textContent(),/Published calibration loaded/);
+   await page.locator('.layer-options>summary').click();await page.locator('#bayToggle').check();await page.locator('.bay-review').evaluate(el=>el.open=true);assert.equal(await page.locator('#baySaveShared').isDisabled(),true);assert.match(await page.locator('#bayPersistenceStatus').textContent(),/Published calibration loaded/);
    await page.reload();await page.waitForFunction(()=>CabinBayLayer.getState().publishedReady);await checkRoles(page);assert.deepEqual(errors,[]);await context.close();
   }
   const page=await browser.newPage();await page.goto(localURL);await page.waitForFunction(()=>CabinBayLayer.getState().projectReady);await checkRoles(page);assert.equal(await page.locator('#baySaveShared').isDisabled(),false);
@@ -34,10 +35,10 @@ assert.equal(bundled.window.CH149_STATION_CALIBRATION.rampAft,published.rampAft)
   const sync={window:{}};vm.runInNewContext(fs.readFileSync(path.join(temp,'station-calibration.js'),'utf8'),sync);assert.equal(sync.window.CH149_STATION_CALIBRATION.forward,saved.forward);assert.equal(sync.window.CH149_STATION_CALIBRATION.aft,saved.aft);await page.close();
   // A separately marked ramp edge never changes either cabin joint or a loading arm.
   for(const [width,height,hasTouch,edge]of [[1440,1000,false,2330],[768,1024,true,2310]]){
-   const review=await browser.newPage({viewport:{width,height},hasTouch});await review.goto(localURL);await review.waitForFunction(()=>CabinBayLayer.getState().projectReady);
+   const review=await browser.newPage({viewport:{width,height},hasTouch});await review.goto(localURL);await prepare(review);await review.waitForFunction(()=>CabinBayLayer.getState().projectReady);
    await review.evaluate(()=>{CabinCargo.add(state,{kind:'individual',area:'RAMP',name:'Ramp test',weight:10,arm:13000});renderSeats();});
    const joints=await review.evaluate(()=>CabinBayLayer.getState().shared),loads=await review.evaluate(()=>JSON.stringify(state.floorLoads)),total=await review.evaluate(()=>CabinCargo.totals(state));
-   await review.locator('#bayToggle').check();await review.locator('.bay-review').evaluate(el=>el.open=true);
+   await review.locator('.layer-options>summary').click();await review.locator('#bayToggle').check();await review.locator('.bay-review').evaluate(el=>el.open=true);
    const beforeBays=await review.locator('.bay-region').evaluateAll(nodes=>nodes.map(el=>el.getAttribute('style')));
    await review.locator('#bayMarkRampAft').click();await review.locator('#planViewport').scrollIntoViewIfNeeded();const sheet=await review.locator('#planSheet').boundingBox();
    const pick=async x=>hasTouch?review.touchscreen.tap(sheet.x+x/2560*sheet.width,sheet.y+sheet.height/2):review.mouse.click(sheet.x+x/2560*sheet.width,sheet.y+sheet.height/2);

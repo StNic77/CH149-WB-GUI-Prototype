@@ -12,6 +12,9 @@ verification/*
 !verification/planning-check.cjs
 !verification/loading-workspace-check.cjs
 !verification/ipad-loading-check.cjs
+!verification/usability-package-check.cjs
+!verification/compact-test-navigation.cjs
+!verification/run-checks.cjs
 references/
 history/
 *.previous.json
@@ -29,3 +32,15 @@ prepare-overhead-review.cjs
 !.env.example
 .DS_Store
 Thumbs.db
+
+!verification/shelf-flow-check.cjs
+
+!verification/compact-contents-check.cjs
+
+!verification/view-controls-check.cjs
+
+!verification/refinement-round-check.cjs
+
+!verification/ramp-fuel-menu-check.cjs
+
+!verification/detail-return-fuel-check.cjs

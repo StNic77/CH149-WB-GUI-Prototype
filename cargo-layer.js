@@ -70,7 +70,7 @@
   syncArm();previewRamp();
   form.addEventListener('input',previewRamp);
   form.elements.area.onchange=()=>{syncArm();previewRamp();};if(form.elements.armSource)form.elements.armSource.onchange=()=>{syncArm();previewRamp();};
-  form.onsubmit=event=>{event.preventDefault();const patch=draft(form,entry),result=entry.id===null?add(state,{...patch,kind:entry.kind}):update(state,entry.id,patch);if(result.ok){selected=String(result.entry.id);addingBayArea=null;}changed(result,'Load saved. Other entries are unchanged.');if(result.ok&&entry.id===null){close();window.CabinImageMenu?.close();}};
+  form.onsubmit=event=>{event.preventDefault();const patch=draft(form,entry),result=entry.id===null?add(state,{...patch,kind:entry.kind}):update(state,entry.id,patch);if(result.ok){selected=String(result.entry.id);addingBayArea=null;}changed(result,'Load saved. Other entries are unchanged.');if(result.ok){if(entry.id===null)close();if(window.CabinActions)window.CabinActions.complete('Load saved. Other entries are unchanged.');else if(entry.id===null)window.CabinImageMenu?.close();}};
   panel.querySelector('#cargoRemove').onclick=()=>{if(entry.id===null){addingBayArea=null;render();return;}const result=remove(state,entry.id);if(result.ok)selected=null;changed(result,'Load removed. Other entries are unchanged.');};
   panel.querySelector('#cargoReposition')?.addEventListener('click',()=>{if(entry.id===null){message='Save this load before choosing a floor point.';panel.querySelector('#cargoMessage').textContent=message;return;}const patch=draft(form,entry),check=validate({...entry,...patch});if(!check.ok){message=check.reason;panel.querySelector('#cargoMessage').textContent=message;return;}beginMove(entry,patch);});
  }
