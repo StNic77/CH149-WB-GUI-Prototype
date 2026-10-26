@@ -87,3 +87,17 @@ body{padding-bottom:110px}html{scroll-padding-bottom:170px}#planViewport{scroll-
 #planningDialog{width:min(520px,calc(100vw - 24px));max-height:85dvh;overflow:auto;border:1px solid #527e86;border-radius:10px;padding:20px;color:#244b57}#planningDialog::backdrop{background:#143b4777}.planning-heading{display:flex;align-items:center;justify-content:space-between;gap:15px}.planning-heading h2{font-size:20px}.planning-heading button{min-width:44px}#planningDialog p{font-size:13px;line-height:1.5}#planningDialog label{display:block;font-size:13px;margin:14px 0}#planningDialog input,#planningDialog select{display:block;width:100%;min-height:44px;margin-top:6px;padding:9px;border:1px solid #9bb8bf;border-radius:5px;font-size:16px}#planningDialog button{min-height:44px;padding:9px;border:1px solid #487f83;border-radius:5px;background:#e9f5ef;color:#234d58;cursor:pointer}
 .mobile-view-picker{display:none}
 @media(max-width:650px){.viewtabs::before,.viewtabs .viewtab{display:none}.mobile-view-picker{display:flex;align-items:center;gap:10px;width:100%;font-weight:650;font-size:13px}.mobile-view-picker select{flex:1;min-width:0;min-height:44px;padding:8px;border:1px solid #a8c1c7;border-radius:6px;background:white;color:#204d59;font-size:16px}#liveAircraftStrip{padding:8px;gap:6px;flex-wrap:wrap}#liveAircraftValues{flex-basis:100%;gap:6px 14px}#liveAircraftValues strong{font-size:12px}#liveAircraftValues small{font-size:10px}#liveAircraftStrip button{min-height:36px;padding:5px 12px;font-size:12px}body{padding-bottom:160px}.detail-weight-grid{grid-template-columns:1fr}}
+
+/* Ordered component ribbon: Basic is already included in Operating. */
+#liveAircraftStrip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;padding:10px 16px max(10px,env(safe-area-inset-bottom))}
+#liveAircraftValues{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px 14px;align-items:start}
+#liveAircraftValues .aircraft-ribbon-metric{min-width:0;font-variant-numeric:tabular-nums}
+#liveAircraftValues small{font-size:12px;line-height:1.2;min-height:29px}
+#liveAircraftValues strong{font-size:16px;line-height:1.25;white-space:nowrap;margin:2px 0 0}
+#liveAircraftValues .aircraft-ribbon-cg{font-size:12px;line-height:1.4;color:#d2e7eb;white-space:nowrap;margin-top:2px}
+.aircraft-ribbon-actions{display:flex;gap:6px;align-items:center}
+#aircraftRibbonWarning{grid-column:1/-1;color:#ffe1b4;font-size:12px;line-height:1.3}
+#aircraftRibbonWarning[hidden]{display:none}
+body{padding-bottom:calc(var(--aircraft-ribbon-height,110px) + 16px)}
+@media(max-width:1100px){#liveAircraftStrip{grid-template-columns:minmax(0,1fr);gap:7px;padding:8px 12px max(8px,env(safe-area-inset-bottom))}.aircraft-ribbon-actions{justify-content:flex-end}#liveAircraftStrip button{min-height:36px;padding:5px 10px;font-size:12px}#liveAircraftValues{gap:6px 10px}#liveAircraftValues strong{font-size:15px}}
+@media(max-width:650px){#liveAircraftValues{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px}#liveAircraftValues small{min-height:0;font-size:12px}#liveAircraftValues strong{font-size:15px}#liveAircraftValues .aircraft-ribbon-cg{font-size:12px}.aircraft-ribbon-actions{justify-content:flex-start}}
