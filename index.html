@@ -14,7 +14,7 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 .hotspot{display:none!important}.photo-wrap.plan-view{height:auto;min-height:0;aspect-ratio:1550/694}.photo-wrap.plan-view img{width:100%;height:100%;object-fit:fill}.plan-target{display:none;position:absolute;left:31%;top:35%;width:9%;height:11%;border:3px solid #ffc644;background:#ffc64430;border-radius:7px;color:#13263a;font-weight:800;font-size:clamp(9px,1vw,13px);text-shadow:0 1px 2px white,0 0 5px white;box-shadow:0 0 0 2px #142a4270;cursor:pointer}.plan-target::after{content:"";position:absolute;inset:-7px;border:1px dashed #fff;border-radius:10px;pointer-events:none}.plan-target.show{display:block}.plan-target:hover,.plan-target.selected{background:#ffc6449c;box-shadow:0 0 0 3px #142a42,0 0 16px #ffc644}.plan-unavailable{display:none;min-height:300px;align-items:center;justify-content:center;text-align:center;padding:30px;background:#f3f6f8;color:var(--muted)}.plan-unavailable.show{display:flex}.area-nav{padding:10px 13px 12px;border-top:1px solid var(--line);background:#f8fafc}.area-nav-title{font-size:11px;color:var(--muted);margin:0 0 7px}.area-buttons{display:flex;flex-wrap:wrap;gap:7px}.area-button{border:1px solid #9aafc0;background:#fff;border-radius:8px;color:#213c53;padding:8px 11px;text-align:left;font-size:12px;font-weight:650}.area-button:hover,.area-button.active{border-color:var(--blue);background:#eaf4fb;color:#154e77}.area-button small{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:2px}.all-locations{margin-top:10px;border:1px solid var(--line);border-radius:8px;background:#fff}.all-locations>summary{padding:9px 10px;cursor:pointer;font-size:12px;font-weight:700;color:#344c61}.location-groups{padding:0 9px 9px;display:grid;gap:6px}.location-group{border:1px solid #e2e8ed;border-radius:7px}.location-group>summary{padding:7px 9px;cursor:pointer;font-size:11px;font-weight:650}.location-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:5px;padding:0 7px 7px}.location-choice{border:1px solid var(--line);border-radius:6px;background:#fff;text-align:left;padding:7px 8px;color:var(--ink);font-size:11px}.location-choice:hover,.location-choice.active{border-color:var(--teal);background:#e8f6f1}.location-choice small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
 @media(max-width:1050px){main{grid-template-columns:1fr}.side{max-height:unset;min-height:400px}.photo-wrap{height:48vh}}@media(max-width:650px){main{padding:8px}.toolbar{padding:9px}.toolbar strong{width:100%}.photo-wrap{min-height:240px}.axis-places{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
-<link rel="stylesheet" href="workspace.css?v=46b6ff518ba5">
+<link rel="stylesheet" href="workspace.css?v=722ff2cd661d">
 <link rel="stylesheet" href="plan-viewer.css?v=ac07559a41d2">
 <link rel="stylesheet" href="floor-area.css?v=92fb3697a2e5">
 </head>
@@ -92,7 +92,7 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <script src="ramp-limits.js?v=1b0efffdee25"></script>
 <script src="bay-review-draft.js?v=48b86acdf67d"></script>
 <script src="station-calibration.js?v=2ae760681605"></script>
-<script src="bay-layer.js?v=989e937b4ead"></script>
+<script src="bay-layer.js?v=606740f174bf"></script>
 <script src="seat-rules.js?v=565892582908"></script>
 <script src="seat-editor.js?v=328d45cad2a7"></script>
 <script src="floor-area.js?v=82e0534f0fc7"></script>
@@ -118,10 +118,10 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <link rel="stylesheet" href="ramp-area.css?v=f469962e1787">
 <script src="ramp-area.js?v=e79a4663cbdc"></script>
 <script src="floor-equipment.js?v=706a6fdb3e6d"></script>
-<script src="casevac-editor.js?v=b77eae6fec95"></script>
+<script src="casevac-editor.js?v=475519371a8e"></script>
 <link rel="stylesheet" href="cargo-layer.css?v=c3f77bdba681">
 <script src="cargo-layer.js?v=6f45e1ff4ee2"></script>
-<script src="plan-viewer.js?v=26fde56e959a"></script>
+<script src="plan-viewer.js?v=432dce095920"></script>
 <script>
 const D=window.CH149_DATA;
 const IM={plan:'images/SAR_3_Pax_clean.png',cabinet:'images/SAR Cabinet.png',forward:'images/Bay 1 Shelves and Sensor WS.png',pta:'images/PTA View Port.png',ramp:'images/Rear Shelves.png',stbd:'images/Team member View STBD.png'};
@@ -260,29 +260,32 @@ window.CabinCargo.connect({state:()=>state,view:setView,refresh:()=>{recalculate
 window.CabinFloorArea.connect({state:()=>state,refresh:()=>{recalculateItems();renderItems();renderSeats();},seat:id=>{window.CabinSeatEditor.select(id);},view:setView,remove:removeItem,move:(key,dest)=>moveItem(key,dest,{keepView:true})});
 applyPreset('');
 </script>
-<link rel="stylesheet" href="image-workspace.css?v=6ec601c874fc">
+<link rel="stylesheet" href="image-workspace.css?v=3613938bb050">
 <script>window.CabinImageState=()=>state;</script>
 <script src="fuel-source.js?v=6a1df099acae"></script>
 <script src="fuel-reference.js?v=c1e465174de9"></script>
 <script src="fuel-model.js?v=365c39ddacee"></script>
-<script src="planning-source.js?v=516450741250"></script>
-<script src="planning-reference.js?v=8a73233220db"></script>
+<script src="planning-source.js?v=77a9b507ceb0"></script>
+<script src="planning-reference.js?v=a1a684dbfa97"></script>
 <script src="equipment-actions.js?v=28183cceed96"></script>
-<script src="planning-model.js?v=a9073890eb87"></script>
+<script src="planning-model.js?v=9da401d5bff1"></script>
+<script src="cg-envelope.js?v=5db60ea0deea"></script>
 <script src="loading-feedback.js?v=743b9b2b5ef5"></script>
 <script src="shelf-editor.js?v=d42cf2c93588"></script>
 <script src="image-workspace.js?v=94fd9ea538c1"></script>
 <link rel="stylesheet" href="aircraft-summary.css?v=babceb5f96f1">
 <script src="aircraft-summary.js?v=c83203308d91"></script>
-<script src="planning-ui.js?v=194b57680ac3"></script>
-<link rel="stylesheet" href="usability.css?v=769cdb38f017">
+<script src="planning-ui.js?v=227cd01d36ae"></script>
+<link rel="stylesheet" href="usability.css?v=c02c6e9dc315">
 <script src="equipment-ui.js?v=e29779b9e12e"></script>
 <script src="touch-workspace.js?v=fee64bc41bc7"></script>
 <script src="compact-workspace.js?v=f261a871cada"></script>
 <script src="fuel-ui.js?v=ae5a87d0bf64"></script>
+<script src="cg-strip.js?v=f9d4f60d4eb5"></script>
+<script src="cg-overlay.js?v=6848250e60a5"></script>
 <script src="equipment-markers.js?v=a286f9cc1b0c"></script>
 <script src="destination-hints.js?v=c88a7fe866b4"></script>
-<script src="view-controls.js?v=2ed4fab8a4f7"></script>
+<script src="view-controls.js?v=21c719cde011"></script>
 <script src="summary-controls.js?v=b01f6a849142"></script>
 </body>
 </html>

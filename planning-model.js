@@ -9,10 +9,10 @@
  const store={sessions:{}},reference=window.CabinPlanningReferenceFactory(config,store);
  const dictionary=set=>Object.fromEntries([...set].map(key=>[key,true]));
  function session(state){
-  const p=state.planning||{},baseline=p.baseline||{};
-  const s={preset:state.preset,accepted:{isAccepted:true,basicW:p.basicWeight||0,basicCG:p.basicCG||0,basicWeightBasis:p.basis==='CURRENT'?'MAINTENANCE':'RFM',maintenanceBaseline:baseline,maintenanceExceptions:[]},roleFit:dictionary(state.roleFit),seats:dictionary(state.seats),mission:dictionary(state.mission),missionLoads:{},roleFitDeclarations:{},roleFitDeclarationOrigins:{},patientOccupants:{...state.patients},occupants:{},bays:{},cargo:[],zones:[],customExceptions:[],fuel:{total:p.fuel??0,landing:0,manualTanks:false,tanks:{}}};
+  const p=state.planning||{},basis=p.basis||'MAINTENANCE',baseline=p.baseline||(basis==='MAINTENANCE'?reference.fleetMaintenanceBaseline():{});
+  const s={tail:p.tail||'preview',preset:state.preset,accepted:{isAccepted:true,basicW:p.basicWeight||0,basicCG:p.basicCG||0,basicWeightBasis:['CURRENT','MAINTENANCE'].includes(basis)?'MAINTENANCE':'RFM',maintenanceBaseline:baseline,maintenanceExceptions:[]},roleFit:dictionary(state.roleFit),seats:dictionary(state.seats),mission:dictionary(state.mission),missionLoads:{},roleFitDeclarations:{},roleFitDeclarationOrigins:{},patientOccupants:{...state.patients},occupants:{},bays:{},cargo:[],zones:[],customExceptions:[],fuel:{total:p.fuel??0,landing:0,manualTanks:false,tanks:{}}};
   for(const key of Object.keys(config.roleFit)){
-   const on=state.roleFit.has(key),included=p.basis==='CURRENT'&&baseline.roleFit?.[key];
+   const on=state.roleFit.has(key),included=['CURRENT','MAINTENANCE'].includes(basis)&&baseline.roleFit?.[key];
    s.roleFitDeclarations[key]=on?(included?'ACCOUNTED':'ADD'):(included?'REMOVE':'EXCLUDED');s.roleFitDeclarationOrigins[key]='manual';
   }
   for(const [seat,kind]of Object.entries(state.occupants||{}))if(kind)s.occupants[seat]={type:kind==='Crew'||kind!=='Passenger'&&(seat.startsWith('C')||kind==='SAR Tech')?'crew':'pax'};
@@ -28,9 +28,18 @@
   return s;
  }
  function missionRows(state){return reference.missionRows(session(state));}
+ function setBaseline(state,inputs){
+  if(!['RFM','CURRENT','MAINTENANCE'].includes(inputs.basis)||!Number.isFinite(inputs.basicWeight)||inputs.basicWeight<=0||!Number.isFinite(inputs.basicCG)||inputs.basicCG<=0)return {ok:false,reason:'Enter a valid basic weight, CG and weight basis.'};
+  if(inputs.tail&&!source.tails.active.includes(inputs.tail))return {ok:false,reason:'Choose a defined active aircraft.'};
+  const baseline=inputs.basis==='MAINTENANCE'?reference.fleetMaintenanceBaseline():{roleFit:dictionary(state.roleFit),seats:dictionary(state.seats)};
+  state.planning={...state.planning,...inputs,baseline:clone(baseline),source:clone(source.source)};
+  const result=evaluate(state);state.planning.start={weight:result.wb.auwExact,cg:result.wb.auwCG};
+  return {ok:true};
+ }
  function evaluate(state){
   const p=state.planning;if(!p||!Number.isFinite(p.basicWeight)||p.basicWeight<=0||!Number.isFinite(p.basicCG)||p.basicCG<=0)return {ready:false,issues:['Enter planning basic weight and CG.']};
   const s=session(state),rows=reference.missionRows(s),issues=rows.filter(r=>r.quantity>0&&r.error).map(r=>r.name+': '+r.error);
+  issues.push(...reference.accountingIssues(s),...reference.patientIssues(s));
   store.sessions.preview=s;const wb=reference.computeWB('preview');delete store.sessions.preview;
   if(!Number.isFinite(wb.auwExact)||wb.auwCG===null)issues.push('An installed load has no resolved accounting arm.');
   return {ready:true,wb,issues,allowances:window.CabinFuel.allowances(wb.nonFuelWExact)};
@@ -45,5 +54,5 @@
   const assigned=missionRows(state).filter(r=>r.stowId===id&&r.quantity>0),total=rows.reduce((n,r)=>n+Number(r.weight),0)+assigned.reduce((n,r)=>n+r.w,0),limit=source.bayLimits[id]??null;
   return {id,total,limit,rows,assigned,excess:limit===null?null:Math.max(0,total-limit),remaining:limit===null?null:limit-total,level:limit!==null&&total>limit+1e-9?'caution':limit===null||assigned.some(r=>r.error)?'unreviewed':'ok'};
  }
- window.CabinPlanning=Object.freeze({session,missionRows,evaluate,shelf,bay,source});
+ window.CabinPlanning=Object.freeze({session,missionRows,evaluate,shelf,bay,source,setBaseline});
 })();

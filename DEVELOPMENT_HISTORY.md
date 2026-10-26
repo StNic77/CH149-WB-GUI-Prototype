@@ -254,3 +254,17 @@ Device feedback identified interrupted panning. Native touch reproduction confir
 ## 27. Separate page and image gestures — 25 October 2026
 
 The user approved one finger for page scrolling and two fingers for moving/zooming the image. Touch pointer pan is disabled, native vertical page scrolling is allowed, and two-touch translation/scale are applied together around their moving midpoint. Mouse pan and centered reset are retained. A brief touch hint explains the two-finger gesture. Native touch, Safari handler/reset and seven-size usability checks pass. This supersedes one-finger image panning in the preceding patch.
+
+
+## 28. UI baseline accepted; engine-integration handoff — 25 October 2026
+
+After published gesture changes, the user said “good to go” and chose to start the math engine later: make this app do what W&B Active Dev can do. Preserve the UI baseline and reuse source model/editor/accounting/configuration/calculations/fuel/MCDU/clearance rather than rebuilding an engine. First proposed slice: one identical accepted state and one end-to-end graphical edit with component comparisons. The recorded 579.57 kg inclusion difference remains an early integration concern. This is UI-stage acceptance, not operational certification.
+
+The user requested all next-session documents updated with completed/future work. Rewrote handoff, continuation prompt, plan, backlog, review/run guide, loading cross-reference and both dated UI summaries to remove obsolete October 24 “uncommitted/all issues open/game out menus first” instructions. Added ACTIVE_DEV_INTEGRATION_NEXT_STEPS.md. Created the October 25 reference folder/ZIP with current documents and unchanged discussion images; October 24 pack remains historical. Application checkpoint is still main 58746ec, pushed and deployed. This documentation task did not change app behavior, edit Active Dev or begin integration. Documentation changes are newer local work, not another app release.
+
+
+## 29. Rounded component ribbon published; session closed — 26 October 2026
+
+Before broader engine integration, the user requested the bottom ribbon in order: Basic Weight/CG, Operating Weight/CG, Fuel, Cabin (Bay weight), Cargo, AUW Weight/CG. They clarified nearest kg/mm rounding and no change-since-baseline display. Implemented using existing source Operating/AUW results and existing adapted bay/cargo entries, preserving exact calculation precision. Tablet/desktop show six groups; phone wraps in reading order; content clearance follows ribbon height. Dedicated five-size Edge/Safari checks and related gesture/loading/iPad checks passed, as did source planning parity.
+
+Committed/pushed as a2c3e18; Pages deployment succeeded and current index was verified. User confirmed the commit/push and chose to leave it here, resuming in a new thread with updated references. Refreshed the October 26 handoff pack to include the ribbon release and existing integration brief; October 24/25 packs remain historical. No Active Dev edits or broader integration work have started. Current documentation refresh is local, newer than the published application commit.

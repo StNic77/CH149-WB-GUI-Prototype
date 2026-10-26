@@ -48,3 +48,6 @@ Thumbs.db
 !verification/touch-pan-reset-check.cjs
 
 !verification/weight-ribbon-check.cjs
+!verification/active-dev-integration-check.cjs
+!verification/casevac-multiselect-check.cjs
+!verification/cg-layer-check.cjs

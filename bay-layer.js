@@ -136,6 +136,7 @@
     for (const button of document.querySelectorAll('[data-bay-id]')) button.setAttribute('aria-pressed', String(button.dataset.bayId === selected));
   }
   function draw() {
+    window.CabinCGOverlay?.render();
     const visible = toggle.checked && available;
     panel.hidden = !visible; layer.hidden = !visible;
     // Bay inspection is a separate layer; equipment navigation resumes when it is off.

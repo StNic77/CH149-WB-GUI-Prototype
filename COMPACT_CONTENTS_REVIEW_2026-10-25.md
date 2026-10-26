@@ -1,40 +1,29 @@
-> **Device-test release, 25 October 2026:** The user has now explicitly authorized committing and pushing this prototype for iPhone/iPad testing. Earlier local-only/uncommitted/no-publish statements below are historical. Current behavior is recorded in CONTROLS_REVIEW_2026-10-25.md; physical device acceptance remains pending.
+> **26 October 2026 handoff:** Current published application is **a2c3e18** on main; commit, push and Pages deployment succeeded. The bottom ribbon now shows Basic Weight/CG, Operating Weight/CG, Fuel, Cabin (Bay weight), Cargo, AUW Weight/CG in that order, rounded to nearest kg/mm. No change-since-baseline display; calculation precision is unchanged. This was a UI display increment before source integration. Next session remains W&B Active Dev engine/capability integration. Use NEXT_CHAT_REFERENCE_PACK_2026-10-26; earlier dated packs are historical.
 
-> **Latest local review, 25 October 2026:** Controls, immediate contents multi-select, fuel strip, framing and collapsible summary are updated. See [CONTROLS_REVIEW_2026-10-25.md](CONTROLS_REVIEW_2026-10-25.md). Earlier menu descriptions below may describe the preceding iteration. No publication or Active Dev changes.
+# Compact contents — agreed UI baseline
 
-# Compact contents menus — local review, 25 October 2026
+Updated 25 October 2026 after publication and user acceptance of the UI stage. Application checkpoint: a2c3e18. This is the current interaction reference; earlier trial instructions are superseded.
 
-The user requested this bounded implementation after trying interactive practice menus. This is a local trial awaiting their review, not acceptance of the rest of the 24 October package. Nothing was committed, pushed or published. Active Dev, the equipment catalogue, calculation bodies, imagery and calibration were not changed.
+## Overview
 
-## Implemented interaction
+Opening a mapped shelf/compartment/stowage or bay contents view shows read-only contents immediately. The space header includes total contents weight; rows show item, quantity and combined row weight. Preview three rows, fading the last only when more are hidden; Show all contents expands. No redundant item-type count. Cabinet structure is shown only at its parent, with contents and total, never counted as each shelf's contents.
 
-- Opening a shelf, compartment, stowage group or bay contents menu shows a read-only contents preview immediately. The space header includes its complete current contents weight. Each item row shows name, quantity and the combined weight of that row.
-- Long lists initially show three rows, fading the bottom row only when more rows are hidden. Show all contents expands the list; Show fewer contents collapses it. No item-type count. The header always includes all contents, including hidden rows and any additional contents weight.
-- Edit contents explicitly enables quantity editing and removal without another item-inspection click. Each row offers target quantity, Apply quantity, Cancel edit and Remove all of this item at this location. Other-location allocations remain intact. Draft quantities on other rows survive applying a single row.
-- Move units retains the existing destination checks. Multi-select and selected-unit actions remain available under Move or remove selected units, keeping those action quantities separate from target quantities.
-- Available to install retains search, categories and the complete eligible catalogue. Its default category is Standard contents. Items already at the selected location disappear from Available and are edited through Edit contents. Existing allocations elsewhere remain visible. Successful installation confirms item, quantity and destination.
-- Selection totals and selection actions appear only with a selection. Clear all selections clears the entire current selection and confirms that no aircraft load was changed. Select all applies to the current list.
-- Back returns from editing/installation to the read-only space overview. Cabinet spaces can return to a cabinet overview and select another zone. Menu help explains viewing, editing and catalogue access.
-- The Undo control was removed as requested. Existing internal transaction snapshots remain for compatibility and accounting regressions; they are not exposed as a user control.
+Edit contents enables interaction. Available to install starts at Standard contents, retaining full catalogue/category/search access. Ordinary locally installed items leave Available; other-location allocations remain discoverable. Defaults are starting quantities, not maxima. Extra Penetration Kits can be placed in eligible non-cabinet locations, including CASEVAC examples.
 
-## Weight and safety presentation
+Remove all items and Install standard contents are direct overview actions. Small screens may require scrolling in the same menu, without a nested action gate. Specialized container/structure removal retains guards and explicit scope.
 
-Space headers and item rows reuse current planning state. Cabinet structure appears only at the cabinet parent level, alongside all-zone contents and their combined total. The cabinet detail overview also shows that breakdown. Aircraft totals remain the existing source-based results; presentation subtotals do not add another load.
+## Editing and selection
 
-Cabin bay contents use the existing explicit-bay accounting, including cargo/bay records and directly assigned mission equipment, not inferred seats/people/fixed equipment. Separate cargo editors remain available. Existing ramp checks and their shelf exclusion remain unchanged.
+Selection boxes are immediate beside compact item rows. Select all, Remove selected, Move selected and Clear all selections are first-level controls. Clear all selections is disabled when empty and describes its action. Selected-unit quantities are separate from target Quantity here. A grouped move has one destination; unselected units and other allocations stay intact.
 
-Loading limits remain accessible locally. Overloads and unresolved-load warnings expand automatically; undefined capacity remains explicit. Basket, Stokes, raft, occupant and patient controls retain their dedicated guards. No sample items or illustrative practice weights were copied into the prototype.
+Individual editors expand from their row: target quantity, preview, Apply/Cancel and Remove all of this item at this location. Zero removes locally. Successful final actions close the menu with short feedback; invalid input stays. No visible Undo; internal snapshots remain for recovery/tests.
 
-## Checkpoint and review
+Default container removal removes it and local contents. Relocate selected contents first to retain them aboard. Preserve fitting, cot, seat, occupant and patient rules. Applied allocations drive local and aircraft totals; do not double-count structures or retained units. Unknown capacity remains explicit.
 
-Before this increment, 442 project files were archived to:
+Ramp starts with Ramp Shelves, Ramp Cargo, Ramp Area (Bay weight), Stokes Litter. The same focused-action approach leads to its guarded editors.
 
-`../prototype-checkpoint-before-compact-contents-20261025-104446.zip`
+## Checks and recovery
 
-The archive includes the then-current local, uncommitted application and documents. Git metadata and reinstallable node_modules were excluded. Restore only the intended files after checking for newer work; do not reset or clean the repository.
+compact-contents-check, shelf-flow-check, usability-package-check, view-controls-check and source planning/fuel tests passed before publication. No illustrative mockup items/weights were copied into aircraft data. Further device bugs can emerge; the user accepted this baseline for engine integration.
 
-Refresh the already-running local page, or use START_DEMO.cmd and http://127.0.0.1:61448/. Refresh still clears session-only aircraft edits.
-
-Try Cabinet → Zone G, expand/collapse contents, enter Edit contents, edit or remove an item, return, and reinstall it through Available. Repeat in a forward/ramp shelf, overhead location and bay contents menu. Inspect the cabinet aggregate separately. Changes remain a trial until the user finds the real layouts useful.
-
-Relevant checks: compact-contents-check, shelf-flow-check and the existing regression suite. The new check covers read-only navigation, fading/expansion, direct editing, pending edits on other rows, local removal with split allocations, reinstall/search, selection feedback, cabinet totals, all mapped shelf/overhead locations, explicit bay loads and responsive bounds. Browser-engine checks do not replace physical-device review.
+Local pre-increment checkpoints: ../prototype-checkpoint-before-compact-contents-20261025-104446.zip and ../prototype-checkpoint-before-controls-symbols-20261025-122622.zip. Git holds subsequent published work. Restore only intended files after checking newer work; do not reset/clean blindly.

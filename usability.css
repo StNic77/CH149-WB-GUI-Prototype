@@ -76,3 +76,9 @@ body:not(:has(#imageMenu:not([hidden]))):is(.compact-view-controls-active) :is(#
 #detailReturn2D{position:absolute;top:8px;right:8px;z-index:40;min-height:36px;padding:6px 10px;font:12px "Segoe UI",sans-serif;color:#205447;background:#f7fffcf5;border:1px solid #92b5ab;border-radius:6px;box-shadow:0 1px 4px #163c3020}#detailReturn2D[hidden]{display:none!important}
 
 #imageGestureHint{position:absolute;top:8px;left:8px;z-index:26;max-width:calc(100% - 110px);padding:6px 8px;border-radius:5px;background:#f5fff8ee;color:#205447;font:12px/1.3 "Segoe UI",sans-serif;pointer-events:none}#imageGestureHint[hidden]{display:none!important}
+/* Selection stays a draft until the CASEVAC batch action succeeds. */
+#casevacPanel .casevac-selected{outline:2px solid var(--accent,#2688b8);background:rgba(38,136,184,.12)}
+#casevacPanel [data-casevac-select]{width:auto;min-width:20px;min-height:20px;accent-color:#2688b8}
+#casevacPanel .floor-choice label{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 0}
+#casevacAddSelected{min-height:44px;padding:10px 14px;border:1px solid #216c64;border-radius:6px;background:#277e74;color:white;font:600 14px "Segoe UI",sans-serif;cursor:pointer}
+#casevacAddSelected:disabled{opacity:.5;cursor:default}

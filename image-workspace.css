@@ -26,6 +26,6 @@
 .shelf-equipment-choice{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;text-align:left;margin:6px 0;padding:10px;min-height:44px;background:#f9fcfc;border:1px solid #c6d8db;border-radius:6px;color:#244c56;font:inherit}.shelf-equipment-choice small{font-size:10px;color:#5f7981}.shelf-equipment-choice[aria-pressed=true]{border:2px solid #277e74;background:#eaf6f0}.shelf-equipment-choice[hidden],.shelf-equipment-group[hidden]{display:none}
 #floorCargoPoint.floor-cargo-point{z-index:11;pointer-events:auto;touch-action:none;width:32px;height:32px;min-width:0;min-height:0;border:0;background:transparent;border-radius:50%;box-shadow:none;padding:0;cursor:move}
 #floorCargoPoint::before{content:'';position:absolute;inset:10px;border:2px solid #9f5a0c;background:#fff2cf;box-shadow:0 0 0 2px white;border-radius:50%}
-#imageMenuBody #casevacPanel .floor-actions:has([data-casevac-rack]){display:none}
+#imageMenuBody #casevacPanel .floor-actions:has([data-casevac-rack]){display:flex;flex-wrap:wrap;gap:6px}
 @media(max-width:650px){#imageMenuBody{padding:10px}[data-primary-actions=true],.shelf-item-focus{top:-10px}#imageMenuBody button,#imageMenuBody input,#imageMenuBody select{min-height:44px;font-size:14px}.image-back-button{width:calc(100% - 28px)}}
 @media(max-width:650px){#imageMenuBody input,#imageMenuBody select{font-size:16px}}

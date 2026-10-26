@@ -17,7 +17,7 @@
  window.CabinActions={complete,announce};
  function roleName(){return S().preset?D.presets[S().preset]?.name||S().preset:'Choose';}
  const viewNames={plan:'2D cabin',cabinet:'Cabinet',forward:'Fwd shelves',pta:'Port aft',ramp:'Ramp shelves',stbd:'Stbd aft'};
- const toggles=[['liveCabinToggle','Live equipment',true],['seatToggle','Seats',true],['floorCellsToggle','Bay cells',true],['bayToggle','Bay boundaries',true],['cargoToggle','Cargo',true],['equipmentMarkerToggle','Equipment symbols',false],['fuelLayerToggle','Fuel quantities',true],['planGuideToggle','Alignment guides',true]];
+ const toggles=[['liveCabinToggle','Live equipment',true],['seatToggle','Seats',true],['floorCellsToggle','Bay cells',true],['bayToggle','Bay boundaries',true],['cargoToggle','Cargo',true],['equipmentMarkerToggle','Equipment symbols',false],['fuelLayerToggle','Fuel quantities',true],['cgLayerToggle','Longitudinal CG',true],['planGuideToggle','Alignment guides',true]];
  for(const input of document.querySelectorAll('input[id$="Reveal"]'))if(!toggles.some(([id])=>id===input.id))toggles.push([input.id,input.closest('label')?.textContent.trim()||'Selectable regions',false]);
  for(const [id,label,planOnly]of toggles){const input=$(id);if(!input)continue;const b=document.createElement('button');b.type='button';b.dataset.layerFor=id;b.textContent=label;b.onclick=()=>{input.checked=!input.checked;input.dispatchEvent(new Event('change',{bubbles:true}));sync();announce(label+(input.checked?' shown.':' hidden.'));};input.addEventListener('change',sync);if(id.endsWith('Reveal')){const labelNode=input.closest('label');if(labelNode)retired.append(labelNode);}$('layerButtons').append(b);}
  retired.append($('controlHand'));
@@ -36,7 +36,7 @@
   $('roleControl').textContent='Role · '+roleName()+(open==='role'?' ▴':' ▾');$('viewControl').textContent='View · '+(viewNames[s.view]||s.view)+(open==='view'?' ▴':' ▾');$('layersControl').textContent='Layers'+(open==='layers'?' ▴':' ▾');
   for(const [name,id]of [['role','roleOptions'],['view','viewOptions'],['layers','layerOptionsPanel']]){const active=open===name;$(id).hidden=!active;$(name==='role'?'roleControl':name==='view'?'viewControl':'layersControl').setAttribute('aria-expanded',String(active));}
   const revealViews={cabinetZoneReveal:'cabinet',forwardShelfReveal:'forward',rampShelfReveal:'ramp',portOverheadReveal:'pta',stbdOverheadReveal:'stbd'};
-  for(const [id,,planOnly]of toggles){const input=$(id),b=bar.querySelector('[data-layer-for="'+id+'"]');if(!input||!b)continue;const applicable=id.endsWith('Reveal')?revealViews[id]===s.view:id==='equipmentMarkerToggle'?s.view!=='cabinet':planOnly?s.view==='plan':true;b.hidden=!applicable;b.setAttribute('aria-pressed',String(input.checked));b.disabled=input.disabled;b.title='';}
+  for(const [id,,planOnly]of toggles){const input=$(id),b=bar.querySelector('[data-layer-for="'+id+'"]');if(!input||!b)continue;const applicable=id.endsWith('Reveal')?revealViews[id]===s.view:id==='equipmentMarkerToggle'?s.view!=='cabinet':planOnly?s.view==='plan':true,cgHidden=document.body.classList.contains('cg-layer-active')&&['seatToggle','floorCellsToggle','bayToggle','equipmentMarkerToggle'].includes(id);b.hidden=!applicable;b.setAttribute('aria-pressed',String(input.checked&&!cgHidden));b.disabled=input.disabled||cgHidden;b.title=cgHidden?'Hidden while Longitudinal CG is shown.':'';}
   if(key)key.hidden=false;
   for(const b of configs.querySelectorAll('[data-preset]')){b.setAttribute('aria-pressed',String(b.dataset.preset===s.preset));b.onclick=()=>requestRole(b.dataset.preset);}
   placeDock();
@@ -48,7 +48,7 @@
   if(!hasWork){applyRole(key);return;}pending=key;$('roleResetError').textContent='';$('confirmRoleReset').textContent='Change to '+(D.presets[key]?.name||'No Role Config')+' and reset';dialog.showModal();$('keepRoleSession').focus();
  }
  function cancelRole(){pending=null;open='';dialog.close();sync();window.CabinImageMenu.resume();$('roleControl').focus();announce('Current session kept. No aircraft changes made.');}
- function applyRole(key){const s=S(),before=structuredClone(s),p=s.planning,accepted=p?Object.fromEntries(['basicWeight','basicCG','basis','baseline','fuel','fuelMode','tanks','reserve'].filter(k=>p[k]!==undefined).map(k=>[k,structuredClone(p[k])])):null;
+ function applyRole(key){const s=S(),before=structuredClone(s),p=s.planning,accepted=p?Object.fromEntries(['tail','source','basicWeight','basicCG','basis','baseline','fuel','fuelMode','tanks','reserve'].filter(k=>p[k]!==undefined).map(k=>[k,structuredClone(p[k])])):null;
   window.CabinImageMenu.close();for(const m of ['CabinCargo','CabinFloorArea','CabinBasket','CabinPTA','CabinStokes'])window[m]?.close?.();
   s.floorLoads=[];s.stowageLoads={};s.nextFloorLoadId=0;s.nextAllocationId=0;s.selectedLoc=null;for(const k of ['certification','certified','clearance'])delete s[k];if(accepted)s.planning=accepted;else delete s.planning;
   if(applyPreset(key)===false){for(const k of Object.keys(s))if(!(k in before))delete s[k];Object.assign(s,before);render();$('roleResetError').textContent='The new Role could not be applied. Your previous session was retained.';return false;}

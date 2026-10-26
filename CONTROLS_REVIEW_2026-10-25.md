@@ -1,59 +1,37 @@
-> **Device-test release, 25 October 2026:** The user has now explicitly authorized committing and pushing this prototype for iPhone/iPad testing. Earlier local-only/uncommitted/no-publish statements below are historical. Current behavior is recorded in CONTROLS_REVIEW_2026-10-25.md; physical device acceptance remains pending.
+> **26 October 2026 handoff:** Current published application is **a2c3e18** on main; commit, push and Pages deployment succeeded. The bottom ribbon now shows Basic Weight/CG, Operating Weight/CG, Fuel, Cabin (Bay weight), Cargo, AUW Weight/CG in that order, rounded to nearest kg/mm. No change-since-baseline display; calculation precision is unchanged. This was a UI display increment before source integration. Next session remains W&B Active Dev engine/capability integration. Use NEXT_CHAT_REFERENCE_PACK_2026-10-26; earlier dated packs are historical.
 
-# Controls and contents — local review, 25 October 2026
+# Controls, symbols and gestures — agreed UI baseline
 
-This local prototype increment follows the user’s live review. It is awaiting user assessment. No commit, push, publication or Active Dev changes.
+Updated 25 October 2026. Main a2c3e18 is pushed; Pages deployment succeeded. The user said “good to go” and chose W&B Active Dev integration next. This is UI-stage acceptance, not operational approval. Older trial and one-finger image-pan instructions are superseded.
 
-## Current behavior
+Live: https://stnic77.github.io/CH149-WB-GUI-Prototype/?v=a2c3e18
 
-- Role choices collapse after selection. Choosing a different role warns before clearing configuration/loading edits and applying its standard configuration. Cancel preserves work; accepted baseline inputs remain. This is prototype behavior, not completed acceptance-workflow integration.
-- Role, Layers and View remain together above the image. Hide controls collapses only the side rail’s zoom, sizing and handedness controls; Show controls recalls them. View is absent from the side rail and closes its chooser after a view is chosen.
-- The image rail floats over the left or right image margin, including portrait phones. Its hand key is the sole visible hand control. Layers contains relevant controls and Symbol key; no hand selector, layer help, region review tools or alignment guides.
-- Aircraft summary can collapse to a 44-pixel vertical strip at tablet/desktop widths without altering aircraft data.
-- Enlarge cabin fits the complete C1/C2 targets and calibrated ramp using uniform scaling. Fuel quantities sit along the image bottom, aligned horizontally to their associated bays as zoom/pan changes.
-- Opening a space shows contents and weights immediately. Edit contents exposes selection boxes and Select all, Remove selected, Move selected and Clear all selections first. Individual quantity editors expand by item. Selected-unit quantities remain separate from target quantities.
-- Remove all items and Install standard contents are directly available on the space overview. Small screens may require scrolling within that same menu. Successful final actions close the menu; invalid drafts stay open. Layers stays open until closed. Feedback lasts 2.5 seconds.
-- O2 has a 2D symbol and a transparent target on its rendered Port Aft rack. Guidelines are grouped inside the rendered Stbd Aft basket. Rifle/shotgun symbols use distinct cartridge/shell details. The stretcher symbol is visually associated with B6 Port (aft); its existing accounting arm and allocation were preserved.
+## Controls and gestures
 
-## Scope and checks
+Role / Layers / View remain above the image. Role choices are initially visible and collapse after selection. The floating left/right rail contains Whole aircraft / Enlarge cabin, zoom, Reset and handedness only. Hide controls collapses only that rail; Show controls recalls it. View and hand selectors are not in Layers.
 
-The source catalogue, calculation bodies, calibration and reference pictures are preserved. Role-aware removal of items from detail pictures remains deferred. Physical iPad/phone assessment is still required.
+One finger scrolls the page over default or enlarged images. Two fingers pan/pinch the image about their moving midpoint. A brief hint appears when touch users enlarge it. Mouse drag, wheel pan and Ctrl+wheel zoom remain. Reset selects whole-image framing at 100% with both offsets zero, not the previous Enlarge cabin framing. Enlarge cabin preserves proportions, C1/C2 and full ramp.
 
-The focused refinement check covers five screen sizes, all role framing, floating hand controls, hiding/recalling Views, relevant-only layers, immediate multi-select/removal, the fuel strip and summary collapse. Fuel checks pass all 4,153 whole-kilogram values with Active Dev parity; planning checks pass source-engine parity. Edge passes the five-size refinement check, seven-size role/view/symbol/final-action check, seven-size compact contents check, five-size shelf flow and seven-size usability package. Safari-engine refinement checks are also run separately. These are focused checks; the entire historical verification suite was not rerun.
+Every detail has a small top-right 2D view button outside transformed content, usable with the rail hidden. Summary minimizes to a 44px vertical strip on tablet/desktop without changing aircraft state.
 
-Rollback checkpoint: `../prototype-checkpoint-before-controls-symbols-20261025-122622.zip`.
+## Roles and menus
 
+Human Role changes warn/reset configuration, equipment/loading edits and certification. Accepted baseline and fuel amount/mode/manual tanks/reserve remain. Fuel may be entered from the book before any Role. Cancel preserves everything. Raw applyPreset is a model/fixture entry point, not the human reset flow. Full tail acceptance/resume is later work.
 
-## Subsequent approved ramp and fuel refinement
+Successful final actions close menus; invalid drafts remain. Feedback lasts 2.5 seconds. Layers stays open until closed with relevant-only highlighted buttons plus Symbol key. Demo help/review/alignment/hand controls are removed. The user likes current Layers behavior.
 
-The user accepted the corrected side-control hiding behavior and requested implementation of the agreed ramp and fuel changes.
+Ramp first menu: Ramp Shelves, Ramp Cargo, Ramp Area (Bay weight), Stokes Litter. Cargo submenu lists local loads plus Add and Back to Ramp. Existing guarded cargo/bay/litter editors and limits remain.
 
-- Ramp starts with exactly Ramp Shelves, Ramp Cargo, Ramp Area (Bay weight), Stokes Litter, in that order. Ramp Cargo lists installed ramp cargo and Add ramp cargo, with Back to Ramp. The other choices open the existing shelf, bay-weight and litter controls. Ramp limits remain in focused loading editors, rather than expanding the initial choice menu.
-- Bay names sit above the fuel band for every configured cabin bay, including Bay 5 and Bay 5.5 without tank entries. Tank numbers are prominent and each quantity includes kg. Both rows follow the existing calibrated bay boundaries and zoom/pan. Phone labels stack to avoid adjacent words running together. No fuel distribution, weights or geometry changed.
-- Edge and Safari-engine checks pass the new ramp/fuel flow at five sizes. Ramp limit/placement checks pass desktop, tablet and phone; the phone marker-drag test temporarily suspends its floating editor to reach the marker. The floating rail can also cover part of the ramp on a phone and can be moved or hidden using the existing controls. Fuel source parity still passes all 4,153 whole-kg quantities.
+## Fuel and symbols
 
+Bottom fuel band follows calibrated bay boundaries through zoom/pan. All cabin bay names sit above, including 5 and 5.5 without tank entries. Tank number is prominent and each amount includes kg; phone text stacks. No geometry/distribution/weight changes.
 
-## Detail return and fuel retained across Role changes
+O2 has a 2D symbol and transparent target on the rendered Port Aft rack. Guidelines group inside Stbd Aft basket with quantity. Rifle/shotgun use distinct cartridge/shell details. Stretcher symbol is B6 Port aft with prior accounting arm/allocation preserved; final stowage possibly behind PTA is unresolved. Cabinet contents need no duplicated symbols. Redundant image text selectors are removed; fixtures/regions remain clickable. Configuration-aware raster edits are parked.
 
-By user request, each detail image now has a small fixed 2D view button at its top right, independent of image pan/zoom and side-control visibility. It returns directly to the plan. The side rail starts below this button in detail views.
+## Device feedback and evidence
 
-Role selection/change preserves fuel amount, automatic/manual mode, entered tank quantities and preferred reserve along with accepted baseline information. This supports entering book fuel before selecting the first Role. Configuration/loading edits and certification still reset after confirmation; Cancel still preserves the complete session. The reset dialog states the retained fuel behavior. No source fuel calculation changed.
+iPad feedback reproduced a drag stopping after its first movement: a child lostpointercapture event wrongly ended viewport pan. dba5077 fixed capture ownership and centered reset. The user then found that image capture prevented normal page scrolling and approved the final split gestures in 58746ec. One-finger image pan is no longer the touch design.
 
+All registered Edge checks passed across cumulative pre-publication runs. After the final gesture change, native Chromium page-scroll/two-finger/reset tests passed three sizes and seven-size usability/pinch checks passed. Safari engine exercised touch handlers/reset at three sizes, not native physical iPad page scrolling. Earlier hosted iPad image/stale-asset/view/planning checks passed four Safari-engine sizes. The full historical suite was not rerun after every small gesture patch. User device feedback informed the accepted baseline; further bugs remain possible.
 
-## Publication verification
-
-Before the authorized device-test push, every check registered in verification/run-checks.cjs passed in Edge, including the broader cargo, image workspace, summary, ramp, loading and stale-asset iPad checks. Legacy checks were updated to reopen editors after successful actions and to exercise phone drag targets with the floating editor clear. The focused detail-return/fuel-retention and ramp/fuel-label checks also passed in the Safari engine at five screen sizes. This remains browser automation, not physical-device acceptance.
-
-
-## iPad device feedback: continuous drag and Reset view
-
-The user reported that image dragging stopped after a small movement and required repeated touches. A native touch test reproduced this: transfer of implicit pointer capture from a clickable child to the viewport emitted a bubbling lostpointercapture event, which incorrectly cleared the active drag. Capture is now acquired once, and only capture loss on the viewport itself ends its pan; release/cancel also match the active pointer.
-
-Reset view now selects whole-image framing, fits at 100% and clears both pan offsets, including after Enlarge cabin. Enlarge cabin and its resize fitting remain separate actions. The new regression failed on the original interrupted touch gesture and passes with the fix at tablet portrait/landscape and phone sizes. Edge also passes the framing and seven-size usability/pinch checks; Safari-engine capture-handover/reset checks pass three sizes. Physical iPad retest is required. This patch is published under the existing device-test authorization.
-
-
-## Page scrolling versus image movement — supersedes one-finger image pan
-
-The user found it confusing that swiping over the image could not scroll the page and agreed to a split gesture model. One finger now scrolls the page over either default or zoomed imagery. Two fingers move the enlarged image; changing finger separation zooms about their moving midpoint. Mouse dragging remains available when zoomed. A three-second hint appears when a touch device enlarges the image. Browser accessibility pinch outside the image is unchanged. Reset remains centered 100%.
-
-Native Chromium touch tests verify actual page scroll with unchanged image transform, then sustained two-finger pan with unchanged page position at iPad portrait/landscape and phone sizes. Safari-engine tests exercise the two-touch handlers and reset; physical iPad testing remains the confirmation for native Safari gestures. The seven-size usability checks, including native pinch, also pass. Published under the existing device-test authorization.
+Rollback: 261f9d0 cumulative UI package; dba5077 drag/default-reset; 58746ec final gestures. Local checkpoint ZIPs remain outside the repository. Active Dev, pinned source calculation bodies/catalogue, source pictures and calibration were not edited by UI work.

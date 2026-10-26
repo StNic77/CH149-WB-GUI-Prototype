@@ -95,9 +95,83 @@ body{padding-bottom:110px}html{scroll-padding-bottom:170px}#planViewport{scroll-
 #liveAircraftValues small{font-size:12px;line-height:1.2;min-height:29px}
 #liveAircraftValues strong{font-size:16px;line-height:1.25;white-space:nowrap;margin:2px 0 0}
 #liveAircraftValues .aircraft-ribbon-cg{font-size:12px;line-height:1.4;color:#d2e7eb;white-space:nowrap;margin-top:2px}
+#liveAircraftValues [data-aircraft-metric=auw]>.aircraft-ribbon-cg{display:flex;flex-wrap:wrap;column-gap:5px}
+#liveAircraftValues [data-weight-status=normal]>strong,#liveAircraftValues [data-weight-status=normal]>small{color:#8ce9a6;font-weight:800}
+#liveAircraftValues [data-cg-status=normal]>.aircraft-ribbon-cg{color:#8ce9a6;font-weight:800}
+#liveAircraftValues [data-weight-status=alternate]>strong,#liveAircraftValues [data-weight-status=alternate]>small,#liveAircraftValues [data-weight-status=alternate]>.aircraft-ribbon-weight-status{color:#ffd075;font-weight:800}
+#liveAircraftValues [data-weight-status=overweight]>strong,#liveAircraftValues [data-weight-status=overweight]>small,#liveAircraftValues [data-weight-status=overweight]>.aircraft-ribbon-weight-status,#liveAircraftValues [data-cg-status=out]>.aircraft-ribbon-cg{color:#ff9696;font-weight:800}
+#liveAircraftValues .aircraft-ribbon-weight-status{font-size:11px;line-height:1.2;margin-top:3px;overflow-wrap:normal}
 .aircraft-ribbon-actions{display:flex;gap:6px;align-items:center}
 #aircraftRibbonWarning{grid-column:1/-1;color:#ffe1b4;font-size:12px;line-height:1.3}
 #aircraftRibbonWarning[hidden]{display:none}
 body{padding-bottom:calc(var(--aircraft-ribbon-height,110px) + 16px)}
+.cg-envelope-layer{position:absolute;inset:0;width:100%;height:100%;z-index:40;pointer-events:auto}
+.cg-envelope-layer *{pointer-events:none;vector-effect:non-scaling-stroke}
+.cg-cabin-centreline{stroke:#52747b;stroke-width:1.5;stroke-dasharray:6 5}
+.cg-cabin-allowed-band{fill:#49c77c;fill-opacity:.35}
+.cg-cabin-allowed-band[data-weight-status=alternate]{fill:#edb544;fill-opacity:.4}
+.cg-cabin-limit{stroke:#16854b;stroke-width:3}
+.cg-cabin-leader{stroke:#086eaa;stroke-width:1.5}
+.cg-cabin-point-label{font:800 11px "Segoe UI",sans-serif;fill:#086eaa}
+.cg-cabin-label-card{fill:white;fill-opacity:.96;stroke:#086eaa;stroke-width:1.5}
+.cg-cabin-point-value{font:800 11px "Segoe UI",sans-serif;fill:#216e43}
+.cg-cabin-point-weight{font:600 10px "Segoe UI",sans-serif;fill:#294b57}
+.cg-cabin-condition-label{font:800 12px "Segoe UI",sans-serif;fill:#173f49;paint-order:stroke;stroke:white;stroke-width:4}
+.cg-cabin-range-label{font:700 11px "Segoe UI",sans-serif;fill:#216e43;paint-order:stroke;stroke:white;stroke-width:4}
+[data-cg-track=landing] .cg-cabin-label-card{stroke:#8145ad}
+[data-cg-status=out] .cg-cabin-point-value{fill:#bc2330}
+[data-weight-status=overweight] .cg-cabin-point-weight{fill:#bc2330}
+.cg-layer-active .photo-wrap.plan-view{height:clamp(380px,48vw,580px);aspect-ratio:auto;min-height:380px!important}
+.cg-layer-active #planSheet{height:auto;aspect-ratio:2560/1216;top:50%;bottom:auto;translate:0 -50%}
+.cg-condition-choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.cg-condition-choices button{min-height:40px;padding:6px 10px;border:1px solid #719b9d;border-radius:6px;background:white;color:#204d50;font:600 12px "Segoe UI",sans-serif}
+.cg-condition-choices [aria-pressed=true]{background:#204d50;color:white}
+.cg-point-symbol{stroke:white;stroke-width:2;fill:#086eaa}
+[data-cg-track=landing] .cg-cabin-leader{stroke:#8145ad;stroke-dasharray:4 2}
+[data-cg-track=landing] .cg-cabin-point-label{fill:#8145ad}
+[data-cg-track=landing] .cg-point-symbol{fill:#8145ad}
+[data-cg-status=out]>.cg-point-symbol,[data-weight-status=overweight]>.cg-point-symbol{fill:#bc2330}
+.cg-layer-active #cabinImage{opacity:.45!important}
+.cg-layer-active .live-cabin-active #cabinImage{opacity:0!important}
+.cg-layer-active #liveCabinBackground{opacity:.45}
+.cg-layer-active #liveCabinItems{opacity:.65}
+.cg-layer-active :is(#seatLayer,#seatPanel,#seatReferenceNotice,#floorAreaLayer,#floorSelectionOutline,#floorPreviewOutline,#bayLayer,#bayPanel,#equipmentMarkerLayer,#imageGestureHint,.photo-chip){display:none!important}
+.cg-layer-active #liveCabinItems :is([data-live-object^="seat-"],[data-live-object="c3-position"],.live-occupancy-marker){display:none!important}
+.cg-layer-summary{margin:10px 0;padding:12px;border:1px solid #a9c8ce;border-radius:8px;background:#f5fbfc;color:#173f49}
+#cgLayerSummary[hidden]{display:none}
+.cg-layer-heading{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.cg-layer-heading button{min-height:36px;padding:6px 10px;border:1px solid #719b9d;border-radius:5px;background:white;color:#204d50;font:inherit}
+.cg-layer-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:8px}
+.cg-layer-values article{min-width:0;padding:8px;border:1px solid #c7dce0;border-radius:6px;background:white}
+.cg-layer-values h3{margin:0 0 6px;font-size:14px;color:#086eaa}
+.cg-layer-values [data-cg-result=landing] h3{color:#8145ad}
+.cg-layer-values p,.cg-layer-note{margin:5px 0 0;font-size:12px;line-height:1.4}
+.cg-result-value{font-size:14px;color:#216e43;font-weight:800}
+.cg-layer-values [data-cg-status=out] .cg-result-value{color:#bc2330}
+.cg-layer-values [data-weight-status=alternate] .cg-result-weight{color:#805500;font-weight:800}
+.cg-layer-values [data-weight-status=overweight] .cg-result-weight{color:#bc2330;font-weight:800}
+@media(max-width:450px){.cg-layer-values{grid-template-columns:minmax(0,1fr)}}
+.cg-live-strip{margin-top:12px;padding:12px;border:1px solid #b4d0d5;border-radius:8px;background:white}
+.cg-live-strip h3{margin:0;font-size:15px}.cg-strip-explanation{margin:5px 0 10px;font-size:12px;line-height:1.4;color:#456670}
+.cg-strip-row{padding:10px 8px 8px;margin:8px 0;border:1px solid #c6dbe0;border-radius:6px}
+.cg-strip-row[data-selected=true]{border:2px solid #317b78;padding:9px 7px 7px;background:#f2faf7}
+.cg-strip-select{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;width:100%;min-height:36px;padding:0;border:0;background:transparent;color:#204f65;font:600 13px "Segoe UI",sans-serif;text-align:left;cursor:pointer}
+.cg-strip-current{color:#216e43;font-weight:800}.cg-strip-track{position:relative;height:36px;margin:0 8px}
+.cg-strip-track::before{content:'';position:absolute;left:0;right:0;top:13px;height:12px;border-radius:6px;background:#e3eaed}
+.cg-strip-allowed{position:absolute;top:13px;height:12px;box-sizing:border-box;border:1px solid #216e43;background:#8edbb0;border-radius:3px}
+[data-weight-status=alternate] .cg-strip-allowed{border-color:#986300;background:#f1ca74}
+.cg-strip-marker{position:absolute;top:0;font:800 23px/30px "Segoe UI",sans-serif;color:#086eaa;transform:translateX(-50%)}
+.cg-strip-marker::after{content:'';position:absolute;left:50%;top:20px;height:10px;width:2px;background:currentColor}
+[data-cg-strip-row=landing] .cg-strip-marker,[data-cg-strip-row=landing] .cg-strip-select{color:#8145ad}
+.cg-strip-margins{margin:0;font-size:12px;line-height:1.4;color:#315a4b}
+[data-cg-status=out] .cg-strip-current,[data-cg-status=out] .cg-strip-marker,[data-cg-status=out] .cg-strip-margins,[data-weight-status=overweight] .cg-strip-margins{color:#bc2330;font-weight:800}
+.cg-strip-axis{display:flex;justify-content:space-between;margin:0 16px;font-size:11px;color:#496773;font-variant-numeric:tabular-nums}
+.cg-strip-axis-label{text-align:center;margin:5px 0 10px;font-size:11px;font-weight:600;color:#496773}
+#cgFullEnvelopeDetails{border-top:1px solid #c6dbe0;padding-top:10px}#cgFullEnvelopeDetails>summary{cursor:pointer;min-height:32px;font-size:13px;font-weight:650}
+.cg-full-envelope{display:block;width:100%;height:auto;background:white}.cg-full-envelope *{vector-effect:non-scaling-stroke}
+.cg-full-grid{stroke:#a2b9c0;stroke-width:1;stroke-dasharray:2 4}.cg-full-tick{font:10px "Segoe UI",sans-serif;fill:#315363}.cg-full-title{font:700 11px "Segoe UI",sans-serif;fill:#234c58}
+.cg-full-area{fill:#83d5a5;fill-opacity:.35;stroke:#216e43;stroke-width:2}.cg-full-area[data-full-envelope=alternate]{fill:#eab950;stroke:#986300}
+.cg-full-slice{stroke:#086eaa;stroke-width:2;stroke-dasharray:4 3}.cg-full-marker{fill:#086eaa;stroke:white;stroke-width:1.5}.cg-full-label{fill:#086eaa;font:800 11px "Segoe UI",sans-serif;paint-order:stroke;stroke:white;stroke-width:3}
+[data-full-point=landing] .cg-full-slice{stroke:#8145ad}[data-full-point=landing] .cg-full-marker,[data-full-point=landing] .cg-full-label{fill:#8145ad}[data-full-point][data-cg-status=out] .cg-full-marker,[data-full-point][data-cg-status=out] .cg-full-label{fill:#bc2330}
 @media(max-width:1100px){#liveAircraftStrip{grid-template-columns:minmax(0,1fr);gap:7px;padding:8px 12px max(8px,env(safe-area-inset-bottom))}.aircraft-ribbon-actions{justify-content:flex-end}#liveAircraftStrip button{min-height:36px;padding:5px 10px;font-size:12px}#liveAircraftValues{gap:6px 10px}#liveAircraftValues strong{font-size:15px}}
 @media(max-width:650px){#liveAircraftValues{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px}#liveAircraftValues small{min-height:0;font-size:12px}#liveAircraftValues strong{font-size:15px}#liveAircraftValues .aircraft-ribbon-cg{font-size:12px}.aircraft-ribbon-actions{justify-content:flex-start}}

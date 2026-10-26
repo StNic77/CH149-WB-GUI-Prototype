@@ -18,7 +18,7 @@
     document.getElementById('planZoomOut').disabled = zoom <= 1;
     document.getElementById('planZoomIn').disabled = zoom >= 4;
     viewport.classList.toggle('can-pan', zoom > 1);
-    window.CabinTouchControls?.paint(zoom);window.CabinFuelUI?.renderOverlay();
+    window.CabinTouchControls?.paint(zoom);window.CabinFuelUI?.renderOverlay();window.CabinCGOverlay?.render();
   }
   function changeZoom(next, anchorX=.5, anchorY=.5) {
     next = clamp(next, 1, 4);

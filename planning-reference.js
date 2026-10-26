@@ -785,5 +785,14 @@ function computeWB(tail){
 /* =========================
    ACCEPTANCE INVALIDATION
    ========================= */
-return {computeWB,missionRows,stowageLimits,computeRoleFitAdjustment,computeSeatTotals};
+function fleetMaintenanceBaseline(){
+  const roleFit={}, seats={};
+  for (const [k,it] of Object.entries(AC.roleFit)) roleFit[k] = roleFitMaintenanceDefault(it);
+  normalizeRoleFitState(roleFit);
+  for (const [k,it] of [...Object.entries(AC.crewSeats), ...Object.entries(AC.paxSeats)]) seats[k] = !!(it.includedInRfmBasic || seatMaintenanceDefault(it));
+  return {roleFit,seats};
+}
+
+
+return {computeWB,missionRows,stowageLimits,computeRoleFitAdjustment,computeSeatTotals,fleetMaintenanceBaseline,accountingIssues,patientIssues};
 };

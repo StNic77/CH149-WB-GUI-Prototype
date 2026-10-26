@@ -1,95 +1,52 @@
-> **Device-test release, 25 October 2026:** The user has now explicitly authorized committing and pushing this prototype for iPhone/iPad testing. Earlier local-only/uncommitted/no-publish statements below are historical. Current behavior is recorded in CONTROLS_REVIEW_2026-10-25.md; physical device acceptance remains pending.
+> **26 October 2026 handoff:** Current published application is **a2c3e18** on main; commit, push and Pages deployment succeeded. The bottom ribbon now shows Basic Weight/CG, Operating Weight/CG, Fuel, Cabin (Bay weight), Cargo, AUW Weight/CG in that order, rounded to nearest kg/mm. No change-since-baseline display; calculation precision is unchanged. This was a UI display increment before source integration. Next session remains W&B Active Dev engine/capability integration. Use NEXT_CHAT_REFERENCE_PACK_2026-10-26; earlier dated packs are historical.
 
-> **Latest local review, 25 October 2026:** Controls, immediate contents multi-select, fuel strip, framing and collapsible summary are updated. See [CONTROLS_REVIEW_2026-10-25.md](CONTROLS_REVIEW_2026-10-25.md). Earlier menu descriptions below may describe the preceding iteration. No publication or Active Dev changes.
+> **26 October implementation update (local, unpublished):** Recorded Basic Weight is the default; CASEVAC batch patient loading is implemented. Independent source-app comparison proves the first SAR-3 baseline/quantity path. PROTOTYPE_ACTIVE_DEV_COMPARISON_2026-10-26.md records the stronger behavior to preserve from each app and unresolved workflow decisions. The source app is unchanged. Live editor propagation, maintenance exceptions, full tail lifecycle, operational outputs and persistence remain future integration work. Earlier “integration has not started” statements below describe the previous handoff.
 
-> **25 October 2026 update:** The user subsequently authorized the compact contents-menu increment after interactive mock-up review. It is now implemented locally for review. See [COMPACT_CONTENTS_REVIEW_2026-10-25.md](COMPACT_CONTENTS_REVIEW_2026-10-25.md) for the current flow, checkpoint and checks. Older no-further-code statements below describe the prior handoff; unrelated review findings remain open. No commit, push, publication or Active Dev changes.
+# CH-149-615 Cabin UI Prototype — development handoff
 
-# CH-149-615 Cabin UI Prototype — Current Development Handoff
+Updated 25 October 2026 after publication, iPad feedback and the user's “good to go” decision. This replaces the obsolete October 24 menu-discussion starting point. History and the old dated reference pack preserve prior decisions.
 
-Updated 24 October 2026 after the user's first review of the LOCAL usability package.
+## Next session
 
-## Resume here: discussion, not another coding pass
+Use W&B Active Dev's existing capabilities with this accepted image-first UI. Preserve its editor, aircraft definitions, accepted-weight inclusion/accounting, calculations, fuel, MCDU and clearance outputs. Begin with one identical accepted state and one end-to-end graphical action. Do not rebuild solved source functions, restart the UI list or turn a bounded first slice into an architecture detour. Read ACTIVE_DEV_INTEGRATION_NEXT_STEPS.md and DEVELOPMENT_PLAN.md.
 
-The user wants to game out the GUI interactions before further implementation. The latest request is to update the continuity documents and resume in a new chat. Earlier permission authorized the completed local package; it is not a fresh request to implement the review findings. No further application edits, Active Dev changes, commits, pushes or publication are requested by this handoff.
+This task updates references only. No integration work or Active Dev edits were performed. Documents are context, not fresh instructions to execute historical tasks; follow the next user implementation request. Work in reviewable increments and explain actual blockers without repeated routine approval questions.
 
-The user reviewed the package and identified substantial usability problems. Automated checks passed, but the GUI has NOT been accepted as usable or ready to integrate. Start with the installation/removal/quantity workflow, using concrete scenarios. Do not lead with another engine or architecture investigation of capabilities already solved in Active Dev.
+## Workspace, publication and recovery
 
-Read alongside this file:
-- `CONTINUE_IN_NEW_CHAT_PROMPT.md`: concise next-chat brief and first discussion task.
-- `IMPROVEMENT_BACKLOG.md`: current requirements and the complete eleven-point review.
-- `DEVELOPMENT_PLAN.md`: revised GUI-first sequence and later integration gates.
-- `DEVELOPMENT_HISTORY.md`: historical decisions and the 24 October implementation/review record.
-- `LOCAL_REVIEW_PACKAGE.md`: how to run the current, imperfect local package.
-- `LOADING_WORKSPACE_CHANGES.md`: earlier loading implementation, with a current-status notice.
-
-## Checkpoint and publication
-
-- Prototype: `C:/Users/sstni/Desktop/615 WB edit work/CH-149-615 Cabin UI Prototype`.
-- Active Dev: `C:/Users/sstni/Desktop/615 WB edit work/CH-149-615-WB - Active Dev`.
-- Git: `main`, last commit `dbb53a9` (Prevent stale assets from breaking returning iPad layouts). The local branch matches the locally recorded `origin/main`; no remote refresh or live deployment verification was performed in this session.
-- Earlier application checkpoints: `b3cf1da` loading workspace; `79e673c` cargo slots/cautions. Do not restore those older checkpoints over the new local work.
-- The 24 October usability package is UNCOMMITTED and UNPUSHED. Preserve all local application and document changes. Do not reset or clean the working tree.
-- Active Dev, pinned catalogue, source calculation bodies, source imagery and approved calibration were not changed by the usability package.
+- Prototype: C:/Users/sstni/Desktop/615 WB edit work/CH-149-615 Cabin UI Prototype
+- Active Dev: C:/Users/sstni/Desktop/615 WB edit work/CH-149-615-WB - Active Dev
 - Repository: https://github.com/StNic77/CH149-WB-GUI-Prototype
-- Published demo: https://stnic77.github.io/CH149-WB-GUI-Prototype/ — the new local package is not published there.
-- Local URL: http://127.0.0.1:61448/ . Double-click `START_DEMO.cmd` from the prototype folder, or use `npm start`. Check an existing listener before starting a duplicate; do not stop unrelated processes. Direct `index.html` opening is also supported.
-- Aircraft edits remain session-only. Refresh clears them. Role Config selection deliberately reapplies standard equipment; Back to 2D changes only the view. Existing custom cargo/bay entries and planning data survive Role Config changes.
+- Last application commit: main a2c3e18, pushed; Pages deployment succeeded.
+- Live: https://stnic77.github.io/CH149-WB-GUI-Prototype/?v=a2c3e18
+- Earlier 25 October commits: 261f9d0 cumulative UI; dba5077 drag/default-reset. Do not restore dbb53a9 over newer work.
+- The current documentation refresh is newer local work, not another app release. Check git status on resuming. Preserve local archives; do not reset/clean blindly.
+- Local: START_DEMO.cmd or npm start, then http://127.0.0.1:61448/ . Reuse an existing server. Prefer HTTP/hosted access: file-origin calibration CORS errors were observed; further loader work was not pursued after the user said it was fine.
+- Reload loses session aircraft edits. Navigation preserves work. Human Role changes use the reset dialog; raw applyPreset is a different model/test path.
+- Local rollback ZIPs: ../prototype-checkpoint-before-compact-contents-20261025-104446.zip and ../prototype-checkpoint-before-controls-symbols-20261025-122622.zip. Restore only intended files after checking newer work.
+- New reference folder/ZIP: NEXT_CHAT_REFERENCE_PACK_2026-10-26. October 24 pack remains historical and unchanged.
 
-## Product direction and sequencing
+## Completed UI baseline
 
-The final product should have Active Dev's power and the prototype's image-first interface. Active Dev's model, editor, configuration, acceptance/inclusion rules, accounting, calculations, fuel, MCDU workflow and clearance output remain the foundation. Preserve its existing editor capabilities, including fleet and tail-specific definitions. Do not recreate those solved functions as a competing engine.
+The initial eleven issues were discussed with small live mockups and addressed incrementally. The user reviewed the published app, supplied iPad feedback and accepted it as “good to go” before engine work. This is UI-stage acceptance, not operational certification or exhaustive device validation.
 
-The user explicitly redirected today's effort: improve GUI usability incrementally, test it, then wire it to Active Dev and resolve integration foibles. Integration packaging remains a later technical choice. Do not get stuck in minor engine details or prematurely put a full architecture audit ahead of GUI refinement.
+- Compact space contents: header total, item/quantity/row weight, three-row fading preview/show all, explicit Edit contents, immediate multi-select and focused quantity/remove/move. Direct Remove all / Install standard contents. Standard contents plus full catalogue/search. Installed locally leaves Available; other-location allocations remain discoverable. Cabinet structure belongs at parent level. No visible Undo.
+- Role / Layers / View above image; Role choices collapse. Side zoom/sizing/hand controls float left/right even in phone portrait and hide independently. Each detail has a small top-right 2D view button. Summary minimizes to a vertical strip on tablet/desktop.
+- Relevant highlighted Layers options plus Symbol key; no demo help/review/alignment/hand choices. Layers stays open; successful final actions close other menus, invalid drafts remain. Short feedback.
+- Uniform Enlarge cabin fit keeps C1/C2/full ramp. Reset selects whole-image framing at centered 100%.
+- Final touch design: one finger scrolls the page over the image; two fingers pan/pinch the image. Mouse drag remains. Brief hint explains two fingers. Do not restore one-finger image panning from old notes.
+- Human Role changes warn/reset configuration, equipment/loading edits and certification, retaining accepted baseline and entered fuel amount/mode/tanks/reserve. Cancel preserves work. Book fuel may be entered before any Role. Full tail lifecycle is not complete.
+- Ramp first choices: Ramp Shelves, Ramp Cargo, Ramp Area (Bay weight), Stokes Litter. Cargo submenu lists local loads plus Add and Back. Existing guarded editors/limits remain.
+- Fuel bottom band follows calibrated bays through pan/zoom; all cabin bay labels sit above, Tank numbers are prominent and quantities include kg. Bays 5/5.5 have labels without tanks. No invented shapes/distribution.
+- O2 symbol in 2D and transparent target on rendered Port Aft rack. Grouped Guidelines inside Stbd Aft basket. Distinct rifle/shotgun cartridge/shell. Stretcher symbol B6 Port aft with prior accounting arm unchanged. Redundant image text selectors removed; fixture/region targets retained.
 
-Future workflow decisions (agreed in discussion; not implemented by this package):
-1. Select a tail and record its aircraft information, including basic weight/CG and recorded fuel; accept the starting record.
-2. Selecting a tail with existing work resumes that session. Start fresh is explicit and warns before resetting.
-3. Editing accepted information is allowed through a warning/reset flow, rather than permanently locking the fields. Confirming resets that tail to no Role Config, clears configuration/loading edits and certification, retains the tail and revised acceptance information, and requires acceptance again. Cancel preserves the session.
-4. No Role Config does NOT mean every role-fit item is absent. Editor-defined normal fit and basic-weight inclusion are separate. SAR-10 omits the PTA Cot while flotation/ice protection can remain installed as defined.
-5. Active Dev already has Normally fitted and Included in recorded aircraft weight settings and tail-specific support. The user's -511 ECS Pack example is always fitted but added to basic weight. Do not infer inclusion from permanence or normal installation; unresolved aircraft data are not decisions to invent.
+Detailed current interaction references: COMPACT_CONTENTS_REVIEW_2026-10-25.md and CONTROLS_REVIEW_2026-10-25.md. Preserve this UI while integrating capabilities; respond to concrete new bugs rather than restarting the design.
 
-## Implemented locally on 24 October — not a usability sign-off
+## Source editor and future lifecycle
 
-- Screen-anchored +/−/Reset view controls, right hand by default and mirrored left-hand setting; aircraft-only pinch and pan; wheel pan/Ctrl+wheel zoom. Browser pinch outside the viewer remains available for text. Physical-device review is still needed.
-- Whole aircraft / Enlarge cabin framing controls. The user reports Enlarge cabin skews the view and cuts off C1/C2; this implementation needs correction.
-- Short area-choice cascades leading to existing dedicated editors. Shelf and equipment panels now offer individual quantities, extra units, split allocations, selected-unit moves/removals, Select all/Clear selection, bulk install/remove/move and one destination per group.
-- Catalogue defaults are starting quantities, not assumed inventory ceilings. CASEVAC can carry four Penetration Kits without a SAR Cabinet by choosing another defined location. Explicit configured maxima remain distinct from defaults.
-- `state.equipmentAllocations` is translated into the existing pinned reference resolver/calculations. Local source/destination/shelf/bay/aircraft totals use those rows. NVG default 4 in E / 1 in F remains.
-- Quantity controls are − / quantity / + with direct entry. Signed bay/cargo mass changes have separate + Add / − Subtract controls and accept direct negative entry; negative loads are not created.
-- Complete equipment list, Installed before Not installed and alphabetical within groups; item actions, split locations and Add more. Installation/prerequisite recovery exists but the interaction is confusing in user review.
-- Fitting/stowage/conflict checks and alternate destination hints for baskets, Stokes and internal raft. Missing required stowage is not a valid destination; existing occupant/patient safeguards remain.
-- Default container removal removes the container AND its local contents from the aircraft. Relocate contents first is a secondary path. This supersedes the earlier relocation-first default. Retained relocated units must remain counted once; reinstall must not duplicate them.
-- Last-equipment-action Undo, currently in the bottom results bar. The user rejected that location: next design must keep Undo in the relevant menu, where it can persist. Do not describe this correction as already implemented.
-- Trial equipment symbols for non-imaged equipment and stowage contents, off initially in 2D and on in detail views; symbol key; medical pouch for narcotics with NO N. SAR Cabinet shelves need no extra symbols.
-- Trial fuel panel: automatic/manual distribution, tank quantities, preferred landing reserve and optional per-tank image labels. Reserve means planned fuel remaining at landing. A preferred 300 kg reserve can remain selected, but zero aboard gives zero planned landing fuel and a shortfall warning.
-- Automatic tank quantities are expandable; manual mode opens those fields. Apply fuel is sticky at the top. A Safari-engine phone obstruction was found and corrected during testing.
-- Image layer settings were partly consolidated under Image layers, but equipment/fuel toggles are separate and controls still use checkboxes. The user's new requirement is ALL layer controls together as compact state-coloured buttons.
+Active Dev already supports fleet/tail definitions, Normally fitted versus Included in recorded aircraft weight, acceptance/accounting and operational outputs. Preserve its editor and those distinctions. A normally/always fitted -511 ECS Pack can still add to basic weight. No Role Config does not mean all role-fit absent; do not infer flotation/ice-protection inclusion from pictures or permanence.
 
-## Latest user review — all eleven points remain open
-
-1. Controls, specifically Role controls, are too far from the image.
-2. Global Undo Equipment is inappropriate; it should exist and persist only in the menu it concerns.
-3. Enlarge cabin visually skews/crops the view and loses C1/C2. Discuss the supplied framing reference; preserve proportions, both pilot-seat targets and the full ramp. Do not move calibration to compensate.
-4. Some equipment symbols are on the wrong aircraft side. Two Guidelines should use one symbol with ×2. The symbol set and placements need more work.
-5. Fuel might be better as a strip across the bottom of the image, showing bays, tanks and quantities when selected. This is a proposal to explore, not an agreed final layout.
-6. Menus still are not compact enough, especially on Mini/mobile. Discuss and refine the interaction, not just smaller fonts.
-7. Detail-view symbology is liked, but placements need correction. The user tentatively suggested grabbing/dragging a symbol into place in a Role setting. Placement editing is NOT yet agreed. It must not accidentally move loads, change arms or install equipment.
-8. In 2D, symbols outside the cabin and boxed stowage-location labels are disliked. Prefer live clickable fixture/region interaction like the SAR Cabinet; ramp access needs work.
-9. Equipment symbols can hide fuel indications. This remains a review defect despite earlier automated checks.
-10. All layer controls should be together, smallish buttons rather than checkboxes, changing colour for selected state. Retain clear accessible selected-state semantics.
-11. Equipment install/remove/quantity interaction is confusing. The install list/action can remain ready for repeated additions; editing quantities afterward involves awkward reselection. Walk through the precise desired list transition, selection and post-install controls before coding. Do not assume an assistant-proposed return-to-shelf/highlighted-item flow was accepted.
-
-Full detail is in the backlog. Start by gaming out one Penetration Kit workflow, then a group and a container/dependency example. Make clear decisions before the next bounded implementation request.
-
-## Durable reference images
-
-Copies of the user attachments are saved locally:
-- `references/2026-10-24-framing-reference.png`: latest broad cabin/cockpit-to-ramp image, supplied for framing consideration. It is not new calibration or an approved crop coordinate set.
-- `references/2026-10-24-sponson-discussion.png`: red arrow = Stbd, green arrow = Port.
-
-The references directory is Git-ignored. The images are available locally but would need explicit inclusion in a future release or reattachment if the next chat cannot access this workspace. Do not claim an image was reviewed if only its path is available.
-
-Sponsons were first described as permanent compartments, then explicitly withdrawn as confirmed geometry: they may not exist as depicted and cited RFM equipment arms do not support those locations. Leave them unverified, empty and normally hidden. No destinations, IDs, arms or limits were added.
+Future workflow: select tail, record/accept aircraft information and fuel; resume tail sessions; explicit Start fresh with warning. Changing accepted information warns and, on confirmation, retains tail/revised information, resets configuration/loading/certification to no Role Config and requires acceptance again; Cancel preserves work. Reconcile this deliberately with the retained-book-fuel expectation. Full tail/session integration is not implemented.
 
 ## Preserve established aircraft and load rules
 
@@ -120,46 +77,48 @@ Common image plane 2560 × 1216. Revision 2 in `station-calibration.js` and `.js
 
 Keep approved role registration, regions and source imagery. Framing corrections are display/fit/pan work, not permission to alter station boundaries, arms or outlines. Use temporary files for synthetic calibration/save tests.
 
-## Fuel and baseline cautions
+## Fuel and accepted-baseline comparison
 
-Confirmed mapping: B1/T4 transfer, B2/T3 Main/Engine 3, B3/T2 Main/Engine 2 + APU, B4/T5 transfer, B6/T1 Main/Engine 1. Underfloor cells are full width; do not infer liquid shapes, capacity curves or pump thresholds from illustrations. Source automatic/manual fuel computation is reused; full burn visualization and operational outputs are not integrated.
+Confirmed mapping: B1/T4 transfer, B2/T3 Main/Engine 3, B3/T2 Main/Engine 2 + APU, B4/T5 transfer, B6/T1 Main/Engine 1. Source auto/manual rules are reused; operational fuel/burn outputs are not fully integrated. Preferred reserve is not guaranteed landing fuel: zero aboard gives zero feasible landing amount and a shortfall, not 300 kg available.
 
-The recorded SAR-3 mismatch remains unresolved as an integration/baseline issue: basic 10401 kg, CG 8487 mm, zero fuel; captured current-fit prototype 11423.20 kg / 8386 mm versus source maintenance inclusion 12002.77 kg (12003 displayed) / 8371 mm. Difference 579.57 kg = role-fit 474.43 + seat structures 105.14, with identical compared equipment/mission/crew. Do not artificially adjust source weights to match. Verify identical accepted inclusion states during later integration; do not let this delay agreed independent GUI work now.
+Recorded SAR-3 comparison: basic 10401 kg, basic CG 8487 mm, zero fuel. Prototype CURRENT captured fit included: 11423.20 kg / 8386 mm. Source maintenance inclusion: 12002.77 kg (12003 displayed) / 8371 mm. Difference 579.57 kg = 474.43 role-fit + 105.14 seat structures. Reconcile identical accepted states, not altered weights. Same visible Role/input numbers are insufficient. See ACTIVE_DEV_INTEGRATION_NEXT_STEPS.md.
 
-Detail-image performance is PARKED by the user. Future delivery should carry forward the Active Dev principle of a full first-open device download, update checking and a saved-version fallback. The prototype does not gain those capabilities merely from browser caching.
+## Code map
 
-## Implementation map
+- index.html: prototype state, preset/model entry points and view/render bridges.
+- view-controls.js / summary-controls.js: current human Role reset/retained fuel, relevant Layers/View, detail return, rail hiding and summary presentation.
+- plan-viewer.js / touch-workspace.js / usability.css: transform, mouse capture, one-finger page/two-finger image gestures, default reset, bounds fitting and responsive presentation.
+- image-workspace.js/.css / compact-workspace.js: floating menus, breadcrumbs, cascades and signed weight delta. Final-action closing is in view-controls.js.
+- equipment-actions.js: allocation transactions, dependencies, containers and internal snapshots. equipment-ui.js: current contents/edit/catalogue/destination menus; its public render supersedes shelf-editor.js after load.
+- equipment-markers.js / destination-hints.js: symbols, allocations/grouping and alternate destinations. Display placement does not change accounting arms.
+- fuel-ui.js: auto/manual panel, reserve/shortfall, sticky Apply and bay-aligned band.
+- planning-model.js: GUI allocation/manual-fuel adapter to pinned functions. planning-reference.js / fuel-reference.js and planning-source.js / fuel-source.js are snapshots, not live editor connectivity.
+- aircraft-summary.js/.css / loading-feedback.js: grouped state, local limits and result entry points.
+- Existing seat, basket, PTA, Stokes, Sea Tray/raft, CASEVAC, cargo/ramp modules preserve specialized operations and guards.
+- version-assets.cjs: content-derived JS/CSS URLs; refresh after asset changes and verify before release.
 
-- `index.html`: state, role/view navigation, common render bridges; resets equipment allocations on Role Config application.
-- `plan-viewer.js`, `touch-workspace.js`, `plan-viewer.css`: transform, pinch/pan/zoom, handed controls and current hardcoded working-area framing.
-- `image-workspace.js/.css`, `compact-workspace.js`, `usability.css`: floating menus, cascades, signed load delta, menu positioning and package presentation.
-- `equipment-actions.js`: local quantity/allocation transactions, dependencies, container removal, snapshots and Undo.
-- `equipment-ui.js`: item/shelf/group/destination/Role Fit controls; currently creates Undo in `liveAircraftStrip`. This is the main menu-refinement area.
-- `equipment-markers.js`: trial symbols, grouping, positioning, layer defaults and key. Placements are NOT approved.
-- `destination-hints.js`: action-specific alternate basket/Stokes/raft destinations and basket contents access.
-- `fuel-ui.js`: fuel panel, reserve/shortfall display, sticky Apply action and trial image labels.
-- `planning-model.js`: graphical state/allocations/manual fuel translated into pinned source functions.
-- `planning-reference.js`, `fuel-reference.js`, `planning-source.js`, `fuel-source.js`: pinned source functions/data; not live editor connectivity.
-- `loading-feedback.js`: shelf/bay feedback/overview. `shelf-editor.js` remains an earlier implementation whose public render is replaced by `equipment-ui.js` after load; do not edit only the obsolete render and expect the current menu to change.
-- `aircraft-summary.js/.css`: full grouped lists and entry points, people and loads.
-- Existing seat, basket, PTA, Stokes, raft/Sea Tray, CASEVAC, cargo and ramp modules retain specialised operations and guards.
-- `version-assets.cjs`: content-hashed script/style URLs; refresh after asset changes before checks/publication.
+## Verification provenance
 
-## Verification and remaining scope
+Every check registered before gesture additions passed in Edge across cumulative pre-publication runs. After iPad feedback, focused native Chromium page-scroll/two-finger/reset checks passed at 834×1194, 1194×834 and 390×844; Safari touch-handler/reset checks passed those sizes; seven-size usability/pinch checks passed. Framing checks also passed after the initial drag/default-reset patch. The full historical suite was not rerun after every small gesture change. Earlier hosted Safari-engine iPad image/stale-asset/view/planning checks passed four sizes. User device feedback establishes the accepted baseline, not operational certification or exhaustive coverage.
 
-The full tracked regression suite passed in Edge/Chromium after implementation. The new usability package passed in Chromium and Playwright WebKit at 1440×1000, 744×1133, 1133×744, 834×1194, 1194×834, 390×844 and 844×390. Chromium exercised a two-finger aircraft pinch without page scrolling/scaling. Safari-engine simulations on Windows are NOT physical iPad/iPhone validation. The later eleven-point user review is evidence that usability remains unfinished; passing tests do not overrule it.
-
-Windows checks:
+Windows environment and commands:
 ```powershell
 $env:PLAYWRIGHT_MODULE='C:/Users/sstni/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright'
 $env:PLAYWRIGHT_CHANNEL='msedge'
-& 'C:/Program Files/nodejs/npm.cmd' test
-# Selected checks: npm test -- usability-package-check image-workspace-check
-# Safari-engine package: set PLAYWRIGHT_ENGINE=webkit, then select usability-package-check.
+npm test
+# Focused:
+npm test -- touch-pan-reset-check usability-package-check
+# Safari-engine focused handler/reset check:
+$env:PLAYWRIGHT_ENGINE='webkit'
+npm test -- touch-pan-reset-check
 ```
 
-`verification/run-checks.cjs` runs the suite; `compact-test-navigation.cjs` adapts older regression navigation through real cascade controls; `usability-package-check.cjs` covers new transactions, fitting recovery, hints, signed deltas, layers, fuel and responsive layouts. Legacy checks verify source parity (including all 4153 whole-kg fuel quantities), calibration, loads, seats, patients and warnings.
+verification/run-checks.cjs registers tests. compact-test-navigation.cjs adapts legacy navigation to compact menus and reopening after Apply; newer tests directly check closing. Fuel tests cover all 4153 whole-kg quantities and source parity. Function parity is not accepted-session parity. Other review sizes include Mini 744×1133 / 1133×744 and desktop 1440×1000. Use temporary files for calibration save tests.
 
-Still later: GUI usability acceptance; complete source/model integration; actual editor propagation; complete eligible-location/footprint review; named people/entered weights; operational acceptance/MCDU/clearance workflow; persistence/recovery; custodian/network/user workflow; reliable offline/update/reversion support. Conditional ramp-detail Stokes imagery remains parked.
+## Remaining and parked
 
-When implementation is later authorized, complete routine steps and checks without repetitive conversational approvals. Respect genuine platform restrictions; explain actual blockers. Do not bypass device security or ask the user to disable it. This documentation pass changes no application behaviour and does not authorize publication.
+Next: source model/editor/engine integration, same accepted-state comparison, then full source capabilities/outputs. Later: entered people weights, eligibility/footprints, tail sessions, persistence/recovery, MCDU/clearance, full offline download/update/previous-version fallback and operational acceptance. Browser caching does not implement offline/reversion.
+
+Parked: configuration-aware reference-image edits, conditional ramp-detail Stokes imagery, final stretcher location possibly behind PTA, unverified sponsons and tentative placement editor. Sponsons remain empty/hidden; no invented destinations/arms/limits. Image performance is acceptable for the demo, not the next task.
+
+Discussion images: references/2026-10-24-framing-reference.png and references/2026-10-24-sponson-discussion.png (red Stbd / green Port). Copies are in the new pack. They are not new approved geometry. Old packs and local checkpoints remain intact. This documentation update changes no app behavior or Active Dev files and does not start integration.
