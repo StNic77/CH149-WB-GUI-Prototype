@@ -45,6 +45,19 @@
 #fuelPanel{padding:10px;color:#234f54;font-size:13px}#fuelPanel h2{font-size:17px;margin:4px 0 8px}#fuelPanel label{display:grid;gap:4px}#fuelPanel input,#fuelPanel select{padding:8px;width:100%;box-sizing:border-box;font:inherit;border:1px solid #a9c3c9;border-radius:6px;min-height:40px}#fuelPanel button{min-height:40px;padding:8px;border:1px solid #9cbabf;border-radius:6px;background:#fff;color:#1c5363}#fuelPanel .fuel-tanks{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:9px 0}#fuelPanel p{margin:7px 0}.fuel-warning{color:#8b3c10;background:#fff1dc;padding:7px;border-radius:5px}
 .bay-delta{padding:8px;border-top:1px solid #cddbd6}.bay-delta label{display:block}.bay-delta input{width:95px;min-height:40px}.bay-delta button{min-height:40px}.bay-delta [aria-pressed=true]{background:#dcefe8}
 .fuel-primary-actions{position:sticky;top:-10px;z-index:3;background:white;padding:5px 0 8px}.fuel-primary-actions button{width:100%}#fuelPanel details{padding:8px 0}#fuelPanel summary{cursor:pointer}
+#fuelPanel .fuel-main-fields{display:grid;gap:10px}
+#fuelPanel .fuel-primary-actions{display:flex;gap:8px;margin-top:10px;position:static}
+#fuelPanel .fuel-primary-actions button{width:auto;flex:1;min-height:44px}
+#fuelPanel input,#fuelPanel select{font-size:16px;min-width:0}
+.fuel-landscape #fuelPanel{padding:0}
+.fuel-landscape #fuelPanel h2{margin:0 0 8px;font-size:16px}
+.fuel-landscape #fuelPanel .fuel-main-fields{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fuel-landscape #fuelPanel .fuel-main-fields>label{display:flex;flex-direction:column;justify-content:flex-end;min-width:0}
+.fuel-landscape #fuelPanel .fuel-main-fields>label>:is(input,select){margin-top:auto}
+.fuel-landscape #fuelPanel .fuel-tanks{grid-template-columns:repeat(5,minmax(0,1fr))}
+.fuel-landscape #fuelPanel .fuel-primary-actions{justify-content:flex-end;margin-top:8px;padding:0}
+.fuel-landscape #fuelPanel .fuel-primary-actions button{flex:0 1 160px}
+.fuel-landscape #fuelPanel p{margin:5px 0}
 @media(max-width:900px){#imageMenu input,#imageMenu select{font-size:16px!important}}
 @media(max-width:650px){#aircraftTouchControls{width:51px;right:5px;padding:4px;top:39%}#aircraftTouchControls[data-hand=left]{left:5px}#aircraftTouchControls button{min-width:42px;min-height:42px}.view-framing{padding:6px;gap:5px}.view-framing label{margin-left:0}.equipment-marker{min-height:30px;min-width:30px;padding:2px 4px}.equipment-marker svg{width:20px;height:20px}.equipment-marker small{font-size:9px}.fuel-marker{font-size:9px;padding:3px}.equipment-footer{padding:7px 2px}#equipmentUndo{bottom:100px}.image-menu{max-width:calc(100vw - 16px)}.image-menu .floor-reference-note{display:none}}
 

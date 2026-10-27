@@ -1,33 +1,19 @@
-> **26 October 2026 handoff:** Current published application is **a2c3e18** on main; commit, push and Pages deployment succeeded. The bottom ribbon now shows Basic Weight/CG, Operating Weight/CG, Fuel, Cabin (Bay weight), Cargo, AUW Weight/CG in that order, rounded to nearest kg/mm. No change-since-baseline display; calculation precision is unchanged. This was a UI display increment before source integration. Next session remains W&B Active Dev engine/capability integration. Use NEXT_CHAT_REFERENCE_PACK_2026-10-26; earlier dated packs are historical.
+> Release update — 27 October 2026: the user authorized commit and push of the wider landscape Fuel menu (Fuel only), the full CG chart retaining both conditions independently of image selection, and these updated handoff documents. Physical iPad usability remains unconfirmed. The dated reference ZIP is an unchanged snapshot of earlier checkpoint 39b9b7f.
 
-# Run and review the current prototype
+# Run and review — current prototype
 
-Updated 25 October 2026. The user accepted the UI baseline and chose W&B Active Dev integration next. This replaces the obsolete “local only / eleven issues open” guide.
+Local changes after the package checkpoint: full CG chart always retains both conditions independently of image selection; Fuel has a wider landscape trial with three main entries in a row, Apply/Close together and five manual tank columns. Portrait stays stacked. Both changes are included in the newly authorized device-check release. The dated ZIP remains an unchanged snapshot of the earlier handoff.
 
-## Published version
+For Chrome/Edge desktop layout review, open DevTools (F12), toggle device emulation (Ctrl+Shift+M), select Responsive and enter exact width/height rather than dragging. Trial sizes: 1133x744 and 1024x768 landscape, 744x1133 portrait. Save custom devices through the device list's Edit/Add custom device controls if desired. Reducing landscape height to about 330 px approximates restricted space, but does not reproduce native Safari keyboard scrolling or visual-viewport offsets. Browser simulation is not physical iPad acceptance.
 
-Application main a2c3e18 is pushed and Pages deployment succeeded:
-https://stnic77.github.io/CH149-WB-GUI-Prototype/?v=a2c3e18
+Updated 27 October 2026. Current pushed application: 39b9b7f. Hosted deployment completion is unverified. Device URL: https://stnic77.github.io/CH149-WB-GUI-Prototype/?v=39b9b7f
 
-Recent commits: 261f9d0 cumulative UI refinement; dba5077 capture/default-reset repair; 58746ec final page/image gestures. Use the versioned link/refresh to load current hashed assets. Reload clears aircraft session edits. This prototype is not operational clearance software.
+Local workspace: C:/Users/sstni/Desktop/615 WB edit work/CH-149-615 Cabin UI Prototype. Use START_DEMO.cmd or npm start, then http://127.0.0.1:61448/ . Reuse an existing server; do not stop unrelated processes. HTTP is preferred to file-origin access.
 
-## Local launch
+Fresh session: select tail (149SIM is 149920), Recorded Basic Weight/CG, initial total fuel and Role, then Accept aircraft. Initial fuel automatically distributes; verify aircraft distribution in Fuel planning. No reserve is requested on entry. Image controls retain editing of all supported information. Compatible saved sessions resume to the image workspace. Return to Start page keeps the current aircraft until a valid replacement is accepted; Keep current session resumes it. Reload does not intentionally discard compatible saved sessions.
 
-From C:/Users/sstni/Desktop/615 WB edit work/CH-149-615 Cabin UI Prototype, use START_DEMO.cmd or npm start, then http://127.0.0.1:61448/ . Reuse an existing server; do not stop unrelated processes. Prefer HTTP/hosted access. File-origin calibration fetch CORS errors were observed; further loader work was not pursued after the user said the issue was fine.
+Role/Layers/View stay above image. One finger scrolls page; two fingers move/zoom image; Reset centers at 100%. Detail views have 2D return. Successful final actions close menus; invalid input remains. Human Role changes confirm reset of configuration/loading while retaining aircraft and fuel.
 
-## Current interactions
+Review the latest CG, seat, SWS, symbol, layer and input fixes using DEVICE_CHECK_2026-10-27.md. Physical iPad/Safari acceptance is still pending. The Live equipment layer name and independent Occupants/Seats controls remain. Detail imagery still has known role/state mismatches; do not interpret the static pictured equipment as the loaded state.
 
-- Role / Layers / View above image; hidden left/right sizing/zoom/hand rail. Detail images have top-right 2D view. Summary minimizes on tablet/desktop.
-- One finger scrolls the page. Two fingers pan/pinch the image. Reset returns centered 100%, including after Enlarge cabin. Mouse drag/wheel/Ctrl+wheel remain.
-- Immediate read-only contents/weights; Edit contents exposes multi-select and item editing. Available starts with Standard contents plus catalogue/search; local installed items disappear from it.
-- Partial/split moves, direct install/remove-all and dependency recovery remain. No visible Undo button. Successful final actions close menus; invalid input stays; Layers remains open.
-- Ramp has four compact choices, shelves first. Fuel band has bay labels above it, prominent tank numbers and kg quantities.
-- Enter book fuel before choosing a Role; it persists across confirmed Role changes. Configuration/loading/certification reset; Cancel preserves work. Full tail acceptance/resume is not implemented yet.
-
-## Checks and limitations
-
-All registered Edge checks passed across cumulative pre-publication runs. Following iPad feedback, native Chromium page-scroll/two-finger/reset checks passed at 834×1194, 1194×834 and 390×844; Safari handler/reset checks passed those sizes; seven-size usability/pinch checks passed. Earlier live-site Safari-engine stale-asset/image/view/planning checks passed four iPad sizes. The full historical suite was not rerun after each small gesture patch.
-
-Other CSS sizes: phone 844×390, Mini 744×1133 / 1133×744, desktop 1440×1000. Browser simulation is not exhaustive device validation; user device feedback informed the accepted baseline.
-
-Run npm test, or npm test -- touch-pan-reset-check usability-package-check. The handoff includes Windows Playwright environment settings. The current reference update changes documents only, not app behavior or Active Dev.
+After code/style changes: node version-assets.cjs, then node version-assets.cjs --check. Relevant checks: npm test -- oct27-improvements-check cg-layer-check session-navigation-check occupant-layer-check. See VERIFICATION_STATUS_2026-10-27.md for environment settings and actual completed coverage. This prototype is for development/device review, not operational clearance acceptance.

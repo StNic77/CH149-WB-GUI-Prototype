@@ -1,3 +1,7 @@
+> Release update — 27 October 2026: the user authorized commit and push of the wider landscape Fuel menu (Fuel only), the full CG chart retaining both conditions independently of image selection, and these updated handoff documents. Physical iPad usability remains unconfirmed. The dated reference ZIP is an unchanged snapshot of earlier checkpoint 39b9b7f.
+
+> Package status, 27 October 2026: application 39b9b7f is committed and pushed for device checks. This documentation refresh is local and newer than the release. Physical iPad/Safari acceptance and hosted deployment confirmation remain open. Read CABIN_UI_DEVELOPMENT_HANDOFF.md and OPEN_ITEMS_2026-10-27.md for current consolidated status; older dated release statements below are historical.
+
 # CH-149-615 development plan
 
 ## Current local revision — 27 October 2026

@@ -1,4 +1,14 @@
+> Release update — 27 October 2026: the user authorized commit and push of the wider landscape Fuel menu (Fuel only), the full CG chart retaining both conditions independently of image selection, and these updated handoff documents. Physical iPad usability remains unconfirmed. The dated reference ZIP is an unchanged snapshot of earlier checkpoint 39b9b7f.
+
+> Package status, 27 October 2026: application 39b9b7f is committed and pushed for device checks. This documentation refresh is local and newer than the release. Physical iPad/Safari acceptance and hosted deployment confirmation remain open. Read CABIN_UI_DEVELOPMENT_HANDOFF.md and OPEN_ITEMS_2026-10-27.md for current consolidated status; older dated release statements below are historical.
+
 # CH-149-615 current backlog
+
+## Device feedback after 39b9b7f — 27 October 2026
+
+The user tested the iPad and reports that entry menus remain clipped and difficult to use, especially Fuel on iPad Mini in landscape. The keyboard/menu issue is not accepted as fixed; automated viewport checks did not establish native usability. The user selected a wider landscape Fuel menu for local trial: distribution/total/landing fuel in one row, Apply/Close in a row, manual tank quantities across five columns, explanations collapsed. It stays wide during focused input; portrait stays stacked. Local width, row, reduced-keyboard bounds, rotation and fuel apply/close checks pass. Native iPad usability remains open; custom keypad/full-screen editor/side panel remain alternatives if this trial is insufficient.
+
+New local CG refinement: the full envelope always displays both Takeoff and Landing markers, weight/CG labels and each available weight-specific range, independently of image Takeoff/Landing/Both selection. Both live information rows retain full prominence. This is newer than pushed 39b9b7f and the dated reference ZIP; included in the newly authorized device-check release.
 
 ## Current status — 27 October 2026 (supersedes older status below)
 

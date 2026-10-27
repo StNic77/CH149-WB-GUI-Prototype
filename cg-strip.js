@@ -4,7 +4,7 @@
  let fullOpen=false,lastDetails=null;
  function scale(result){const e=window.CabinPlanning.source.envelope,arms=[...e.envMain,...e.envAlt].map(p=>p.cg).concat(result.takeoff.cg,result.landing.cg,...(result.burnTrack||[]).map(p=>p.cg));return {min:Math.floor((Math.min(...arms)-60)/100)*100,max:Math.ceil((Math.max(...arms)+60)/100)*100};}
  function svgNode(name,attrs,parent){const el=document.createElementNS(ns,name);for(const [key,value]of Object.entries(attrs))el.setAttribute(key,value);parent.append(el);return el;}
- function fullEnvelope(result,domain,width,condition){
+ function fullEnvelope(result,domain,width){
   const height=340,left=58,right=width-18,top=24,bottom=height-34,envelope=window.CabinPlanning.source.envelope;
   const weights=[...envelope.envMain,...envelope.envAlt].map(p=>p.w).concat(result.takeoff.weight,result.landing.weight),minW=Math.floor((Math.min(...weights)-200)/500)*500,maxW=Math.ceil((Math.max(...weights)+200)/500)*500;
   const x=cg=>left+(cg-domain.min)/(domain.max-domain.min)*(right-left),y=w=>bottom-(w-minW)/(maxW-minW)*(bottom-top);
@@ -20,11 +20,11 @@
   }
   const near=Math.abs(y(result.takeoff.weight)-y(result.landing.weight))<28;
   for(const [index,kind,label]of [[0,'takeoff','Takeoff'],[1,'landing','Landing est.']]){
-   const p=result[kind],xx=x(p.cg),yy=y(p.weight),group=svgNode('g',{'data-full-point':kind,'data-cg-status':p.cgStatus,'data-muted':String(condition!=='both'&&condition!==kind)},svg);
-   if(p.limits&&(condition==='both'||condition===kind))svgNode('line',{x1:x(p.limits.forward),x2:x(p.limits.aft),y1:yy,y2:yy,class:'cg-full-slice'},group);
+   const p=result[kind],xx=x(p.cg),yy=y(p.weight),group=svgNode('g',{'data-full-point':kind,'data-cg-status':p.cgStatus},svg);
+   if(p.limits)svgNode('line',{x1:x(p.limits.forward),x2:x(p.limits.aft),y1:yy,y2:yy,class:'cg-full-slice'},group);
    svgNode('polygon',{points:index?`${xx},${yy-5} ${xx-5},${yy} ${xx},${yy+5} ${xx+5},${yy}`:`${xx},${yy-6} ${xx-6},${yy+5} ${xx+6},${yy+5}`,class:'cg-full-marker','data-cg':p.cg,'data-weight':p.weight},group);
-   const labelX=Math.max(left+2,Math.min(right-130,xx+10)),labelY=Math.max(top+12,Math.min(bottom-4,yy+(index?19:-12)+(near&&index?10:0)));
-   svgNode('text',{x:labelX,y:labelY,class:'cg-full-label'},group).textContent=label+' · '+number(p.cg)+' mm';
+   const labelX=Math.max(left+2,Math.min(right-155,xx+10)),labelY=Math.max(top+12,Math.min(bottom-18,yy+(index?19:-24)+(near&&index?10:0)));
+   const text=svgNode('text',{x:labelX,y:labelY,class:'cg-full-label'},group);svgNode('tspan',{x:labelX,dy:0},text).textContent=label+' · '+number(p.weight)+' kg';svgNode('tspan',{x:labelX,dy:13},text).textContent=(p.cgStatus==='out'?'OUT CG ':'CG ')+number(p.cg)+' mm · '+p.band;
   }
   return svg;
  }
@@ -51,7 +51,7 @@
   const axis=document.createElement('div');axis.className='cg-strip-axis';for(let i=0;i<=4;i++){const tick=document.createElement('span');tick.textContent=number(domain.min+(domain.max-domain.min)*i/4);axis.append(tick);}box.append(axis);
   const axisLabel=document.createElement('p');axisLabel.className='cg-strip-axis-label';axisLabel.textContent='Fwd ← Longitudinal CG (mm) → Aft';box.append(axisLabel);
   const details=document.createElement('details');details.id='cgFullEnvelopeDetails';details.open=fullOpen;const title=document.createElement('summary');title.textContent='Full weight-versus-CG envelope';details.append(title);
-  const note=document.createElement('p');note.className='cg-strip-explanation';note.textContent='Green is the normal envelope; amber is the alternate envelope. Blue shows takeoff; purple shows estimated landing. '+(result.manual?'Predicted burn path is unavailable with manual tank quantities.':'The continuous line predicts automatic fuel burn from takeoff to your fuel at landing; non-fuel loads stay unchanged.');details.append(note,fullEnvelope(result,domain,Math.max(300,width),condition));lastDetails=details;details.addEventListener('toggle',()=>{if(lastDetails===details)fullOpen=details.open;});box.append(details);
+  const note=document.createElement('p');note.className='cg-strip-explanation';note.textContent='This chart always shows both takeoff and estimated landing, with their own weight-specific limits, independently of the image selection. Green is the normal envelope; amber is the alternate envelope. Blue shows takeoff; purple shows estimated landing. '+(result.manual?'Predicted burn path is unavailable with manual tank quantities.':'The continuous line predicts automatic fuel burn from takeoff to your fuel at landing; non-fuel loads stay unchanged.');details.append(note,fullEnvelope(result,domain,Math.max(300,width)));lastDetails=details;details.addEventListener('toggle',()=>{if(lastDetails===details)fullOpen=details.open;});box.append(details);
   return box;
  }
  window.CabinCGStrip=Object.freeze({render});

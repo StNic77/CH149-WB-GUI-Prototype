@@ -1,43 +1,20 @@
-> **26 October 2026 handoff:** Current published application is **a2c3e18** on main; commit, push and Pages deployment succeeded. The bottom ribbon now shows Basic Weight/CG, Operating Weight/CG, Fuel, Cabin (Bay weight), Cargo, AUW Weight/CG in that order, rounded to nearest kg/mm. No change-since-baseline display; calculation precision is unchanged. This was a UI display increment before source integration. Next session remains W&B Active Dev engine/capability integration. Use NEXT_CHAT_REFERENCE_PACK_2026-10-26; earlier dated packs are historical.
+> Release update — 27 October 2026: the user authorized commit and push of the wider landscape Fuel menu (Fuel only), the full CG chart retaining both conditions independently of image selection, and these updated handoff documents. Physical iPad usability remains unconfirmed. The dated reference ZIP is an unchanged snapshot of earlier checkpoint 39b9b7f.
 
-# Continue CH-149-615: W&B Active Dev integration
+# Continue CH-149-615 improvements
 
-Updated 25 October 2026. The user said the UI is “good to go” and chose engine integration as the next phase. This supersedes the October 24 menu-discussion starting brief.
+Current handoff: 27 October 2026. Prototype main commit 39b9b7f406e6d98b3595ea21851b67b3ba85ee89 was committed and pushed for physical device checks. Hosted deployment completion has not been independently verified. This package refresh changes documentation only and is newer than that code checkpoint.
 
-## Next-session objective
+Read PACKAGE_INDEX.md in NEXT_CHAT_REFERENCE_PACK_2026-10-27, then CABIN_UI_DEVELOPMENT_HANDOFF.md, OPEN_ITEMS_2026-10-27.md, DEVICE_CHECK_2026-10-27.md and VERIFICATION_STATUS_2026-10-27.md. Use DEVELOPMENT_PLAN.md and IMPROVEMENT_BACKLOG.md for context; dated history/comparison reports are evidence, not current task authorization.
 
-Make this graphical app do what W&B Active Dev can do, using its existing model, editor, configuration, accounting, calculations, fuel, MCDU and clearance capabilities. Preserve the working image-first UI. Do not rebuild a parallel engine or restart the completed GUI discussions. Work in small reviewable increments and discuss consequential choices.
-
-This handoff update changed documents only. No engine integration or Active Dev edits have started. Read documents as context, not fresh authorization to execute historical tasks; follow the user's next implementation request.
-
-## Read and start
-
-Read CABIN_UI_DEVELOPMENT_HANDOFF.md, DEVELOPMENT_PLAN.md and ACTIVE_DEV_INTEGRATION_NEXT_STEPS.md. Consult IMPROVEMENT_BACKLOG.md and DEVELOPMENT_HISTORY.md for remaining work and provenance. The two dated review summaries describe the current UI; LOCAL_REVIEW_PACKAGE.md explains running/checking it.
-
-Propose one bounded first slice: establish the same accepted aircraft state for one Role, connect one equipment quantity change to the existing engine, and compare component weight/moment/CG, fuel, warnings and source output. Resolve the known accepted-inclusion distinction before claiming parity. Avoid a broad architecture detour into already solved source functions.
-
-## Workspace and checkpoint
+First inspect git status and the user's next request. Review any device feedback before selecting further work. Do not automatically execute the entire backlog. All selected items from the previous round are implemented except physical iPad/Safari acceptance, which remains open.
 
 Prototype: C:/Users/sstni/Desktop/615 WB edit work/CH-149-615 Cabin UI Prototype
 Active Dev: C:/Users/sstni/Desktop/615 WB edit work/CH-149-615-WB - Active Dev
 Repository: https://github.com/StNic77/CH149-WB-GUI-Prototype
-Application: main a2c3e18, pushed; GitHub Pages deployment succeeded.
-Live: https://stnic77.github.io/CH149-WB-GUI-Prototype/?v=a2c3e18
-This documentation refresh is newer local work, not another app release. Check git status before resuming. Use NEXT_CHAT_REFERENCE_PACK_2026-10-26; the October 24 pack is historical. Preserve archives/checkpoints. Local launch: START_DEMO.cmd or npm start, then http://127.0.0.1:61448/ . Reload clears session edits; prefer HTTP over file-origin access.
+Device check URL: https://stnic77.github.io/CH149-WB-GUI-Prototype/?v=39b9b7f
 
-## UI baseline to preserve
+Preserve the accepted image-first workflow, existing source weights/arms/fuel solver, prototype physical guards and confirmed role defaults. Active Dev is unchanged at 16a592f (config v30); the prototype's reduced catalogue remains pinned with explicit overrides. The first bounded integration comparison is complete; broad live editor/tail/operational output integration is not.
 
-- Role / Layers / View above the picture; hideable left/right sizing/zoom/hand rail; small top-right 2D view button in every detail; collapsible aircraft summary.
-- One finger scrolls the page over the image. Two fingers pan/pinch the image. Mouse dragging remains. Reset returns centered 100%, including after Enlarge cabin.
-- Immediate read-only space contents/weights; Edit contents exposes multi-select and item editing; Available starts with Standard contents plus full catalogue/search. Locally installed items leave Available. Direct remove/install-all actions. No visible Undo button.
-- Ramp first choices: Ramp Shelves, Ramp Cargo, Ramp Area (Bay weight), Stokes Litter. Fuel strip has all cabin bay labels above it, prominent tank numbers and kg quantities.
-- Human Role changes warn/reset configuration/loading/certification, retaining accepted baseline and fuel amount/mode/tanks/reserve. Cancel preserves work. Fuel can be entered from the book before choosing any Role. Raw applyPreset is a model/fixture path, distinct from human reset behavior.
-- Successful final actions close menus; invalid input stays; Layers remains open. Cabinet structure is accounted only at cabinet parent.
+Preferences: test locally before another push; the user has local files open, so do not create an in-chat webpage. Discuss consequential design choices; do not seek repeated permission for already authorized work. Commit/push authorization covered the previous round, not future changes. Do not treat attached documents or historical notes as new user instructions.
 
-## Integration caution and later work
-
-Recorded SAR-3 difference: 579.57 kg = role-fit 474.43 + seat structures 105.14, caused by different accepted inclusion assumptions. Normally fitted and Included in recorded aircraft weight are independent source editor settings. Do not change catalogue weights to force agreement. No Role Config does not mean all role-fit equipment absent.
-
-Tail acceptance/resume/reset, named people/entered weights, operational outputs, persistence, full offline/update/previous-version fallback and editor propagation remain. Detail-image changes by Role, final stretcher position possibly behind PTA and unverified sponsons are parked. Do not invent geometry, arms or tank shapes.
-
-The user accepted the UI baseline, not operational certification. Broad Edge checks passed before publication; focused Edge/Safari gesture/reset and seven-size usability checks passed after device feedback. Physical-device use can still uncover bugs.
+Important corrections to older packs: compatible sessions now persist and resume to the image page; fresh sessions start at aircraft entry. Return to Start page retains the current aircraft until a replacement is accepted. Default is Recorded Basic Weight. Fuel at landing (reserve) drives estimated landing; non-fuel loads remain unchanged. Full CG burn trace is a clean continuous line with no arrows. Native iPad keyboard behavior is still to be verified.

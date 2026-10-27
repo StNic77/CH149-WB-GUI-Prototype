@@ -1,3 +1,5 @@
+> Package status, 27 October 2026: application 39b9b7f is committed and pushed for device checks. This documentation refresh is local and newer than the release. Physical iPad/Safari acceptance and hosted deployment confirmation remain open. Read CABIN_UI_DEVELOPMENT_HANDOFF.md and OPEN_ITEMS_2026-10-27.md for current consolidated status; older dated release statements below are historical.
+
 # CH-149-615 graphical prototype — Development History
 
 ## 27 October 2026 — selected outstanding fixes, local review

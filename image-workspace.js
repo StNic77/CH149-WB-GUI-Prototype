@@ -24,10 +24,12 @@
   if(important)important.dataset.primaryActions='true';
  }
  function position(){frame=0;if(host.hidden)return;promoteActions();const box=viewport.getBoundingClientRect(),margin=8,visible=window.visualViewport,viewWidth=visible?.width||innerWidth,viewHeight=(visible?.height||innerHeight)-(document.getElementById('liveAircraftStrip')?.getBoundingClientRect().height||0),viewLeft=visible?.offsetLeft||0,viewTop=visible?.offsetTop||0;
+  const fuelLandscape=current==='fuelPanel'&&viewWidth>=700&&matchMedia('(orientation: landscape)').matches;host.classList.toggle('fuel-landscape',fuelLandscape);
+  const preferredWidth=fuelLandscape?880:current==='cargoPanel'?520:420;
   const editing=host.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');
-  if(editing){host.style.width=Math.min(current==='cargoPanel'?520:420,viewWidth-16)+'px';host.style.left=(viewLeft+(viewWidth-parseFloat(host.style.width))/2)+'px';host.style.top=(viewTop+8)+'px';host.style.maxHeight=Math.max(60,(visible?.height||innerHeight)-16)+'px';window.CabinKeyboardMenus?.schedule();return;}
+  if(editing||fuelLandscape){host.style.width=Math.min(preferredWidth,viewWidth-16)+'px';host.style.left=(viewLeft+(viewWidth-parseFloat(host.style.width))/2)+'px';host.style.top=(viewTop+8)+'px';host.style.maxHeight=Math.max(60,(visible?.height||innerHeight)-16)+'px';if(editing)window.CabinKeyboardMenus?.schedule();return;}
   const dock=document.getElementById('aircraftTouchControls'),reserve=viewWidth<650&&dock&&!dock.hidden&&dock.dataset.placement==='side'?dock.getBoundingClientRect().width+16:0,leftHand=dock?.dataset.hand==='left';
-  host.style.width=Math.min(current==='cargoPanel'?520:420,viewWidth-margin*2-reserve)+'px';
+  host.style.width=Math.min(preferredWidth,viewWidth-margin*2-reserve)+'px';
   host.style.maxHeight=Math.max(120,Math.min(viewHeight-24,viewWidth<900?viewHeight*.78:Math.max(box.height,460)))+'px';
   const p=anchor||{x:box.left+box.width/2,y:Math.max(12,box.top)+30},size=host.getBoundingClientRect();
   if(viewWidth<650){const above=p.y-viewTop-24,below=viewTop+viewHeight-p.y-24;host.style.maxHeight=Math.max(120,Math.min(viewHeight-24,Math.max(above,below)))+'px';}
