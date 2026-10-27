@@ -13,6 +13,22 @@
     function valid(record){return Array.isArray(record?.points)&&record.points.length>=3&&record.points.every(p=>Array.isArray(p)&&p.length===2&&p.every(n=>Number.isFinite(n)&&n>=0&&n<=1));}
     function paint(){for(const polygon of overlay.querySelectorAll(selector)){const active=polygon.getAttribute('data-'+options.attribute)===selected;polygon.classList.toggle('selected',active);polygon.setAttribute('aria-pressed',String(active));}overlay.classList.toggle('reveal',reveal.checked);const count=overlay.querySelectorAll('polygon').length,location=window.CH149_DATA.stowage[selected];status.textContent=!count?'No areas defined yet · use the definition link':!location?`${count} identified areas · select one to inspect`:`${cfg.names[cfg.ids.indexOf(selected)]} · ${location.arm.toLocaleString('en-CA')} mm${Number.isFinite(location.maxKg)?' · limit '+location.maxKg+' kg':''}`;}
     function choose(id){selected=id;select?.(id);paint();}
+    // Thin ramp shelf faces need a finger-sized target without changing their
+    // reviewed outlines. Resolve nearby taps to the nearest actual shelf edge.
+    if(options.view==='ramp'){
+      let down=null;
+      viewport.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY,moved:false};});
+      viewport.addEventListener('pointermove',e=>{if(down&&Math.hypot(e.clientX-down.x,e.clientY-down.y)>7)down.moved=true;});
+      viewport.addEventListener('pointercancel',()=>{down=null;});
+      viewport.addEventListener('click',e=>{
+        if(view!=='ramp'||overlay.hasAttribute('hidden')||!down||down.moved||e.target.closest('button,[role=button],a'))return;
+        const matrix=overlay.getScreenCTM();if(!matrix)return;let nearest=null,best=23;
+        for(const id of cfg.ids){if(!valid(records[id]))continue;const points=records[id].points.map(([x,y])=>new DOMPoint(x*source.width,y*source.height).matrixTransform(matrix));
+          for(let i=0;i<points.length;i++){const a=points[i],b=points[(i+1)%points.length],dx=b.x-a.x,dy=b.y-a.y,t=Math.max(0,Math.min(1,((down.x-a.x)*dx+(down.y-a.y)*dy)/(dx*dx+dy*dy||1))),distance=Math.hypot(down.x-a.x-t*dx,down.y-a.y-t*dy);if(distance<best){best=distance;nearest=id;}}
+        }
+        if(nearest){e.preventDefault();e.stopImmediatePropagation();choose(nearest);}
+      },true);
+    }
     function align(){const ready=view===options.view&&image.getAttribute('src')===source.file&&image.complete&&image.naturalWidth===source.width&&image.naturalHeight===source.height;overlay.toggleAttribute('hidden',!ready);if(!ready)return;const scale=Math.min(viewport.clientWidth/source.width,viewport.clientHeight/source.height),width=source.width*scale,height=source.height*scale;Object.assign(overlay.style,{left:`${(viewport.clientWidth-width)/2}px`,top:`${(viewport.clientHeight-height)/2}px`,width:`${width}px`,height:`${height}px`});}
     function draw(){overlay.replaceChildren();cfg.ids.forEach((id,index)=>{const record=records?.[id];if(!valid(record)||!window.CH149_DATA.stowage[id])return;const polygon=document.createElementNS(ns,'polygon');polygon.setAttribute('points',record.points.map(([x,y])=>`${x*source.width},${y*source.height}`).join(' '));polygon.setAttribute('data-'+options.attribute,id);polygon.setAttribute('role','button');polygon.setAttribute('tabindex','0');polygon.setAttribute('aria-label',`${cfg.names[index]} · ${window.CH149_DATA.stowage[id].name}`);polygon.onclick=()=>choose(id);polygon.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();choose(id);}};overlay.append(polygon);const text=document.createElementNS(ns,'text');text.setAttribute('x',record.points[0][0]*source.width+12);text.setAttribute('y',record.points[0][1]*source.height+40);text.textContent=cfg.names[index];overlay.append(text);});paint();align();}
     async function loadProject(){if(location.protocol==='file:')return;try{const response=await fetch(cfg.endpoint,{cache:'no-store'});if(!response.ok)return;const project=await response.json();if(!matches(project))return;const local=JSON.parse(localStorage.getItem(cfg.key)||'null');if(!local||(Date.parse(project.updatedAt)||0)>=(Date.parse(local.updatedAt)||0)){records=project.regions;localStorage.setItem(cfg.key,JSON.stringify(project));if(view===options.view)draw();}}catch{}}

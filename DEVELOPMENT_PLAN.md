@@ -1,5 +1,15 @@
 # CH-149-615 development plan
 
+## Current local revision — 27 October 2026
+
+Published baseline is `6dc42c3` on `main`. The user authorized outstanding-list items 1–9, 11–13 and 16 for local implementation, with local review before publication; the user has now authorized commit and push for device checks. Older dated release/authorization statements below are historical.
+
+Implemented locally: automatic fuel-burn trace on the full CG envelope using the existing fuel solver; Takeoff/Landing emphasis and Both with distinct weight-specific bands; full-height focused input visibility with sticky action rows released during entry; larger forgiving ramp-shelf touch selection and access to its area-review page; P7 row/size alignment; shared controls for absent alternative seats; matching seat exclusions in the position lists; SWS reinstallation from its empty image position; corrected Port Aft stretcher association and installed O₂ rack symbol; Bay Cells above Bay Boundaries while seats/equipment retain their interaction priority. These displays preserve source weights, arms and calculations.
+
+Physical iPad Safari keyboard/touch acceptance (item 6) remains open. Local reduced visual-viewport checks do not establish physical-device acceptance. The other changes are ready for local user review; the user has now authorized commit and push for device checks.
+
+Still deferred: sea-tray status placement on the tray, clickable-zone highlight layer, layer naming, SAR Cabinet shelf-content symbols, rack stowage/dependencies, and the wider integration/operational work listed below.
+
 Updated 26 October 2026. Previous published checkpoint: 0458550. The user subsequently authorized a local implementation review of aft navigation, fresh-session entry/resume, iPad keyboard visibility and the agreed fuel/CG wording. The user has now authorized this reviewed revision to be committed and pushed. IMPROVEMENT_BACKLOG.md is the current detailed list; older dated packs record previous starting points.
 
 ## Completed foundation

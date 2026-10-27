@@ -1,5 +1,9 @@
 # CH-149-615 graphical prototype — Development History
 
+## 27 October 2026 — selected outstanding fixes, local review
+
+The user selected outstanding-list items 1–9, 11–13 and 16. Implemented the automatic fuel burn trace, selected/both CG presentation, full input visibility adjustments, ramp touch targeting and review access, P7 artwork alignment, alternative-seat choice/exclusion presentation, empty SWS access, corrected Port Aft stretcher/rack associations and Bay Cells drawing priority. Source solver, weights, arms and standard configurations are retained. Baseline `6dc42c3` was previously pushed; the user has now authorized this revision for commit/push to support device checks. Physical iPad Safari acceptance remains open. See the current backlog for the remaining deferred scope; older release statuses below describe previous work.
+
 Updated 24 October 2026 after the local usability package and first user review. This records major work and decisions, not a full transcript or operational-validation claim. The current specification is `CABIN_UI_DEVELOPMENT_HANDOFF.md`; the next-session brief is `CONTINUE_IN_NEW_CHAT_PROMPT.md`.
 
 Subsequent discussion settled engine/model authority: Active Dev's configuration, editor definitions, accounting and calculations will drive the GUI. Packaging remains undecided. The reproduced SAR-3 discrepancy arises from different accepted inclusion baselines; the source model is the reconciliation target. See `IMPROVEMENT_BACKLOG.md` for this decision and the latest usability/performance/quantity notes. These discussion notes authorize no implementation or publication; earlier statements of an entirely open model/engine decision are historical.

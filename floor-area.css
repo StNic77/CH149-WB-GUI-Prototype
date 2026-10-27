@@ -12,7 +12,7 @@
 .marking-station .floor-area-target,.locating-seat .floor-area-target{pointer-events:none;opacity:.2}
 .floor-space-cell:hover,.floor-space-cell:focus-visible,.floor-space-cell.selected{background:#edbe6030;border-color:#bd7c17;outline-offset:2px}
 .marking-station .floor-space-cell,.locating-seat .floor-space-cell{pointer-events:none;opacity:.2}
-.inspecting-bays .floor-space-cell,.inspecting-bays .floor-area-target{pointer-events:none}
+.inspecting-bays:not(.floor-cells-hidden):not(.marking-station):not(.locating-seat) .floor-space-cell,.inspecting-bays:not(.floor-cells-hidden):not(.marking-station):not(.locating-seat) .floor-area-target{pointer-events:auto}
 .floor-cargo-point{position:absolute;transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;background:#fff;border:2px solid #ae6200;box-shadow:0 0 0 2px #fff9;pointer-events:none;z-index:1}.floor-cargo-point[hidden]{display:none}
 .plan-target{z-index:6}
 .floor-area-panel{padding:16px;background:#f6faf9;border-top:1px solid #c8d9d5;color:#294650}

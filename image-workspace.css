@@ -4,6 +4,11 @@
 #imageBreadcrumbs{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:12px}
 #imageBreadcrumbs button,#imageMenuClose{background:transparent;border:0;color:#205b70;cursor:pointer;padding:5px;font:inherit}#imageBreadcrumbs span{font-weight:650}#imageMenuClose{font-size:24px;line-height:1;min-width:32px;min-height:32px}
 #imageMenuBody{overflow:auto;overscroll-behavior:contain;min-height:0;padding:12px}#imageMenuBody>:not(.image-menu-current){display:none!important}
+.editing-input :is([data-primary-actions=true],.equipment-footer,.equipment-selection-actions,.fuel-primary-actions,.shelf-item-focus){position:static!important}
+.editing-input input,.editing-input textarea,.editing-input select{flex-shrink:0;scroll-margin-block:12px;font-size:16px;box-sizing:border-box}
+.seat-choice{white-space:nowrap;font-size:10px;min-width:0}
+[data-live-object=sensor-access]{background:transparent;border:1px solid transparent}
+[data-live-object=sensor-access]:hover,[data-live-object=sensor-access]:focus-visible{border:1px dashed #397e73;background:#eaf7f22b}
 #imageMenuBody>.floor-area-panel,#imageMenuBody>.viewer-detail{padding:0;border:0;background:#fff;margin:0}#imageMenuBody .viewer-detail.show{display:block}
 #imageMenuBody .floor-choices,#imageMenuBody .cargo-layout{display:block}#imageMenuBody .floor-choice{margin:8px 0;padding:10px}#imageMenuBody .floor-area-heading{margin-bottom:8px}#imageMenuBody .floor-area-heading h2{font-size:16px}
 #imageMenuBody .seat-menu{margin-top:0}#imageMenuBody .floor-area-heading>button{display:none}#imageMenuBody .floor-choice p{margin:5px 0}#imageMenuBody input,#imageMenuBody select{max-width:100%}

@@ -24,7 +24,7 @@
   const reserve=p.reserve??300,landingFuel=Math.min(reserve,p.fuel);
   try{
    const fuel=window.CabinFuel.evaluate({total:p.fuel,manualTanks:p.fuelMode==='manual',tanks:p.tanks,landing:landingFuel},{weight:result.wb.nonFuelWExact,moment:result.wb.nonFuelM});
-   return {ready:true,takeoff:assess(result.wb.auwExact,result.wb.auwCG),landing:assess(result.wb.nonFuelWExact+landingFuel,fuel.plot.landing.cg),reserve,landingFuel,shortfall:Math.max(0,reserve-p.fuel),manual:!!fuel.plot.manual};
+   return {ready:true,takeoff:assess(result.wb.auwExact,result.wb.auwCG),landing:assess(result.wb.nonFuelWExact+landingFuel,fuel.plot.landing.cg),burnTrack:fuel.plot.track,reserve,landingFuel,shortfall:Math.max(0,reserve-p.fuel),manual:!!fuel.plot.manual};
   }catch(error){return {ready:false,reason:error.message};}
  }
  window.CabinCGEnvelope=Object.freeze({limitsAt,assess,flight});

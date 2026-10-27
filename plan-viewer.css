@@ -25,10 +25,10 @@
 #cabinMain.plan-expanded>.side{display:none}
 @media(max-width:650px){.plan-tools label{margin-left:0}.plan-target span{font-size:9px}.plan-help{font-size:10px}}
 .bay-layer{position:absolute;inset:0;pointer-events:none;z-index:4}
-.inspecting-bays .bay-layer{z-index:8}
-.inspecting-bays .floor-area-layer{pointer-events:none}
-.inspecting-bays .floor-space-cell,.inspecting-bays .floor-area-target{pointer-events:none}
-.inspecting-bays .plan-guides{z-index:9}
+.inspecting-bays .bay-layer{z-index:3}
+.inspecting-bays .floor-area-layer{z-index:4;pointer-events:none}
+.inspecting-bays:not(.floor-cells-hidden):not(.marking-station):not(.locating-seat) .floor-space-cell,.inspecting-bays:not(.floor-cells-hidden):not(.marking-station):not(.locating-seat) .floor-area-target{pointer-events:auto}
+.inspecting-bays .plan-guides{z-index:2}
 .live-cabin-active .plan-guides{z-index:7}
 .bay-layer[hidden],.bay-panel[hidden]{display:none}
 .bay-region{position:absolute;pointer-events:auto;border:1px dashed #9a6819;border-radius:0;background:#edb75716;padding:0;color:#6a4612;touch-action:inherit}

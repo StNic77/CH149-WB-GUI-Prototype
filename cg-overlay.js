@@ -24,25 +24,26 @@
    half:125*mapping.sourceScale/mapping.height*plane.height};
  }
  function drawCabin(result,mapping){
-  const p=projection(mapping),{width,height,x,y}=p,active=result[condition];
+  const p=projection(mapping),{width,height,x,y}=p,active=result[condition==='both'?'takeoff':condition];
   layer.setAttribute('viewBox',`0 0 ${width} ${height}`);
   layer.dataset.condition=condition;
   const defs=node('defs',{},layer),clip=node('clipPath',{id:'cgCabinDisplayClip'},defs);
   // Reuse the existing cabin display strip for visual clipping only. It is not a surveyed floor outline.
   node('rect',{x:x(4875),y:y-p.half,width:x(11393)-x(4875),height:2*p.half,'data-display-only':'true'},clip);
   node('line',{x1:x(4875),x2:x(11393),y1:y,y2:y,class:'cg-cabin-centreline'},layer);
-  if(active.limits){
-   const f=x(active.limits.forward),a=x(active.limits.aft),group=node('g',{'clip-path':'url(#cgCabinDisplayClip)'},layer);
-   node('rect',{x:f,y:y-p.half,width:a-f,height:2*p.half,class:'cg-cabin-allowed-band',
-    'data-condition-range':condition,'data-forward-cg':active.limits.forward,'data-aft-cg':active.limits.aft,'data-weight-status':active.weightStatus},group);
-   for(const [name,arm]of [['forward',active.limits.forward],['aft',active.limits.aft]])
-    node('line',{x1:x(arm),x2:x(arm),y1:y-p.half,y2:y+p.half,class:'cg-cabin-limit','data-cg-limit':name,'data-arm':arm},group);
+  for(const kind of condition==='both'?['takeoff','landing']:[condition]){const band=result[kind];if(!band.limits)continue;
+   const f=x(band.limits.forward),a=x(band.limits.aft),group=node('g',{'clip-path':'url(#cgCabinDisplayClip)','data-band-kind':kind},layer);
+   node('rect',{x:f,y:condition==='both'&&kind==='landing'?y:y-p.half,width:a-f,height:condition==='both'?p.half:2*p.half,class:'cg-cabin-allowed-band',
+    'data-condition-range':kind,'data-forward-cg':band.limits.forward,'data-aft-cg':band.limits.aft,'data-weight-status':band.weightStatus},group);
+   for(const [name,arm]of [['forward',band.limits.forward],['aft',band.limits.aft]])
+    node('line',{x1:x(arm),x2:x(arm),y1:condition==='both'&&kind==='landing'?y:y-p.half,y2:condition==='both'&&kind==='takeoff'?y:y+p.half,class:'cg-cabin-limit','data-cg-limit':name,'data-arm':arm},group);
   }
   const leftHand=document.getElementById('controlHand').value==='left',safeLeft=leftHand?82:8,safeRight=width-(leftHand?8:82);
-  node('text',{x:safeLeft+2,y:18,class:'cg-cabin-condition-label'},layer).textContent=(condition==='takeoff'?'Takeoff':'Estimated landing')+' · '+number(active.weight)+' kg';
-  node('text',{x:safeLeft+2,y:34,class:'cg-cabin-range-label'},layer).textContent=active.limits?'Fwd '+number(active.limits.forward)+' mm  —  Aft '+number(active.limits.aft)+' mm':'No allowable CG band at this weight';
+  node('text',{x:safeLeft+2,y:18,class:'cg-cabin-condition-label'},layer).textContent=condition==='both'?'Both · blue takeoff / purple landing':(condition==='takeoff'?'Takeoff':'Estimated landing')+' · '+number(active.weight)+' kg';
+  node('text',{x:safeLeft+2,y:34,class:'cg-cabin-range-label'},layer).textContent=condition==='both'?'Takeoff band above centreline · landing band below':active.limits?'Fwd '+number(active.limits.forward)+' mm  —  Aft '+number(active.limits.aft)+' mm':'No allowable CG band at this weight';
   for(const [index,kind,label]of [[0,'takeoff','Takeoff'],[1,'landing','Landing est.']]){
-   const point=result[kind],xx=x(point.cg),group=node('g',{'data-cg-track':kind,'data-cg-status':point.cgStatus,'data-weight-status':point.weightStatus},layer);
+   const point=result[kind],xx=x(point.cg),muted=condition!=='both'&&condition!==kind,group=node('g',{'data-cg-track':kind,'data-muted':String(muted),'data-cg-status':point.cgStatus,'data-weight-status':point.weightStatus},layer);
+   if(muted)continue;
    const labelWidth=Math.min(167,(safeRight-safeLeft)*.58),gap=22;
    let lx=index?xx+gap:xx-labelWidth-gap,ly=y-23;
    if(lx<safeLeft||lx+labelWidth>safeRight){lx=Math.max(safeLeft,Math.min(safeRight-labelWidth,lx));ly=y+(index?30:-76);}
@@ -57,15 +58,15 @@
   // Draw both symbols last, at their true arm on the same aircraft centreline.
   // Close or identical CGs are never separated artificially to make them look distinct.
   for(const [kind,size]of [['takeoff',8],['landing',5]]){
-   const point=result[kind],xx=x(point.cg),group=node('g',{'data-cg-track':kind,'data-cg-status':point.cgStatus,'data-weight-status':point.weightStatus},layer);
-   node('polygon',{points:kind==='takeoff'?`${xx},${y-size} ${xx-size},${y+size} ${xx+size},${y+size}`:`${xx},${y-size} ${xx-size},${y} ${xx},${y+size} ${xx+size},${y}`,
+   const point=result[kind],xx=x(point.cg),muted=condition!=='both'&&condition!==kind,group=node('g',{'data-cg-track':kind,'data-muted':String(muted),'data-cg-status':point.cgStatus,'data-weight-status':point.weightStatus},layer),s=muted?3:size;
+   node('polygon',{points:kind==='takeoff'?`${xx},${y-s} ${xx-s},${y+s} ${xx+s},${y+s}`:`${xx},${y-s} ${xx-s},${y} ${xx},${y+s} ${xx+s},${y}`,
     class:'cg-point-symbol','data-cg-marker':kind,'data-cg':point.cg,'data-weight':point.weight,'data-centre-x':xx,'data-centre-y':y},group);
   }
  }
  function focusCG(){
   const state=window.CabinImageState(),result=window.CabinCGEnvelope.flight(state),mapping=window.CabinBayLayer.getDisplayMapping();
   if(!result.ready||!mapping)return;
-  const point=result[condition],arm=point.limits?(point.limits.forward+point.limits.aft)/2:point.cg;
+  const point=result[condition==='both'?'takeoff':condition],arm=point.limits?(point.limits.forward+point.limits.aft)/2:point.cg;
   const viewer=window.CabinPlanViewer;viewer.changeZoom(4);
   const p=projection(mapping),view=viewer.getState();
   viewer.pan(view.panX+(.5-p.x(arm)/p.width),view.panY+(.5-p.y/p.height));
@@ -80,7 +81,7 @@
   const fuelButton=document.createElement('button');fuelButton.type='button';fuelButton.textContent='Fuel / reserve';fuelButton.onclick=()=>window.CabinFuelUI.open();
   heading.append(title,fuelButton);summary.append(heading);
   const choices=document.createElement('div');choices.className='cg-condition-choices';
-  for(const [key,label]of [['takeoff','Takeoff range'],['landing','Landing range']]){
+  for(const [key,label]of [['takeoff','Takeoff range'],['landing','Landing range'],['both','Both']]){
    const button=document.createElement('button');button.type='button';button.dataset.cgCondition=key;button.textContent=label;
    button.setAttribute('aria-pressed',String(condition===key));button.onclick=()=>{condition=key;render();};choices.append(button);
   }

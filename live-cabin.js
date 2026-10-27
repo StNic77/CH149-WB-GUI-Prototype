@@ -80,12 +80,20 @@
   if(state.roleFit.has('RF_SAR_EQUIPMENT_FWD_SAR_CABINET'))original('cabinet','cabinet','cabinet','SAR3',()=>bridge.view('cabinet'),{label:'SAR Cabinet'});
   const sensorKey='RF_SENSOR_SYSTEMS_SENSOR_WORKSTATION';
   if(state.roleFit.has(sensorKey))original('sensor-workstation','sensorWorkstation','SAR3-sensorWorkstation','SAR3',()=>window.CabinEquipmentUI.openRole(sensorKey),{label:'Sensor Workstation'});
+  else {original('sensor-access','sensorWorkstation','SAR3-sensorWorkstation','SAR3',()=>window.CabinEquipmentUI.openRole(sensorKey),{label:'Install Sensor Workstation'});objects.at(-1).asset=null;}
   // Rack fitting only: no assigned contents or stowage dependencies yet.
   const oxygenKey='RF_SAR_EQUIPMENT_DIVE_O2_BOTTLE_RACK';
   if(state.roleFit.has(oxygenKey))original('oxygen-rack','oxygenRack','SAR3-oxygenRack','SAR3',()=>window.CabinEquipmentUI.openRole(oxygenKey),{label:'Dive Bottle / O₂ Rack'});
   for(const [suffix,asset]of [['FWD_STBD','rackFwdStbd'],['AFT_STBD','rackAftStbd'],['FWD_PORT','rackFwdPort'],['AFT_PORT','rackAftPort']])if(state.roleFit.has('RF_SAR_EQUIPMENT_CASEVAC_RACK_'+suffix))sourceObject('rack-'+suffix,asset,'CASEVAC',()=>window.CabinCasevac.open(suffix),{label:'CASEVAC rack · '+suffix.replace('_',' '),patientTiers:window.CabinCasevac.patientIds(suffix).filter(id=>state.patients[id])});
   for(const [id,seat]of Object.entries({...data.crewSeats,...data.paxSeats})){
    if(id==='C3'){const point=window.CabinSeatEditor.getC3Point(),occupant=state.seats.has(id)?occupantKind(state.occupants[id],id):null;add('c3-position',null,seat.arm,0,88,100,()=>bridge.seat(id),{...point,occupancy:occupant,label:'C3 cockpit jump position'+(occupant?' · '+occupant:'')});continue;}
+   // P7 has no native reference image. Match P8's photographed row and size,
+   // keeping P7's own calibrated longitudinal position and source W&B arm.
+   if(id==='P7'){
+    const role=state.preset,native=visualLayouts[role]?.seats?.P8,r=reg.assets[role],c=native;
+    seatPoints.set(id,{x:x(seat.arm),y:native?r.y+(c[1]+c[3]/2)*r.scale:centre-65*scale});
+    if(state.seats.has(id)){add('seat-P7',native?role+'-seat-P8':'pax',seat.arm,0,native?c[2]*r.scale:78,native?c[3]*r.scale:110,()=>bridge.seat(id),{y:seatPoints.get(id).y,occupancy:occupantKind(state.occupants[id],id),label:'P7'});}continue;
+   }
    if(!state.seats.has(id))continue;
    const occupant=occupantKind(state.occupants[id],id);
    if(['C1','C2','P2','P3'].includes(id)){const port=/Port/i.test(seat.name);add('seat-'+id,null,seat.arm,port?65:-65,88,110,()=>bridge.seat(id),{occupancy:occupant,label:id+' · permanently installed'+(occupant?' · '+occupant:'')});continue;}
@@ -101,7 +109,7 @@
   const litters=['CABIN','RAMP'].filter(side=>state.mission.has('ME_SAR_MISSION_EQUIP_STOKES_LITTER_'+side));
   const raftEditor=window.CabinFloorEquipment;if(state.mission.has(raftEditor.raftKey)&&!raftEditor.raftIssue(state)){const id=raftEditor.raftLocation(state),forward=id===raftEditor.locations[0];sourceObject('life-raft',forward?'raftB3':'raftB4',forward?'TRANSPORT':'CASEVAC',()=>raftEditor.openRaft(id),{label:'Internal life raft · '+data.stowage[id].name});}
   for(const side of litters){const id=litters.length===1?'stokes':'stokes-'+side;if(side==='RAMP')original(id,'stokesRamp','stokes','SAR3',()=>window.CabinStokes.open(side),{label:'Stokes litter · ramp stowed'});else add(id,'stokesCabin',7863,0,340,99,()=>window.CabinStokes.open(side),{occupied:!!state.patients.STOKES_CABIN,label:'Stokes litter · deployed B3/B4 Centre'});}
-  if(!referenceLabels.hidden)for(const o of objects){const text=o.id==='sensor-workstation'?'SWS':o.id==='oxygen-rack'?'O₂ rack':o.id==='basket'||o.id.startsWith('basket-')?'Basket':null;if(!text)continue;const b=document.createElement('button');b.type='button';b.className='reference-item-label';b.dataset.referenceItem=o.id;b.textContent=text;b.setAttribute('aria-label',o.label||text);b.title=o.label||text;b.onclick=o.action;Object.assign(b.style,{left:percent(o.x,reg.width),top:percent(o.id==='sensor-workstation'?o.y-o.h/2:o.y,reg.height)});referenceLabels.append(b);}
+  if(!referenceLabels.hidden)for(const o of objects){const text=o.id==='sensor-workstation'?'SWS':o.id==='sensor-access'?'SWS +':o.id==='oxygen-rack'?'O₂ rack':o.id==='basket'||o.id.startsWith('basket-')?'Basket':null;if(!text)continue;const b=document.createElement('button');b.type='button';b.className='reference-item-label';b.dataset.referenceItem=o.id;b.textContent=text;b.setAttribute('aria-label',o.label||text);b.title=o.label||text;b.onclick=o.action;Object.assign(b.style,{left:percent(o.x,reg.width),top:percent(o.id.startsWith('sensor-')?o.y-o.h/2:o.y,reg.height)});referenceLabels.append(b);}
   occupants.replaceChildren();const keep=new Set(objects.map(o=>o.id));for(const [id,node]of nodes)if(!keep.has(id)){node.remove();nodes.delete(id);}
   for(const o of objects){let node=nodes.get(o.id);if(!node){node=document.createElement(o.action?'button':'div');if(o.action)node.type='button';node.className='live-cabin-object';node.dataset.liveObject=o.id;layer.append(node);nodes.set(o.id,node);}
    if(node.dataset.asset!==(o.asset||'')){node.replaceChildren(...(o.asset?[imageNode(assets[o.asset])]:[]));node.dataset.asset=o.asset||'';}

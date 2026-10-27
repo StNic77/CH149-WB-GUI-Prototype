@@ -169,6 +169,12 @@ body{padding-bottom:calc(var(--aircraft-ribbon-height,110px) + 16px)}
 .cg-strip-axis-label{text-align:center;margin:5px 0 10px;font-size:11px;font-weight:600;color:#496773}
 #cgFullEnvelopeDetails{border-top:1px solid #c6dbe0;padding-top:10px}#cgFullEnvelopeDetails>summary{cursor:pointer;min-height:32px;font-size:13px;font-weight:650}
 .cg-full-envelope{display:block;width:100%;height:auto;background:white}.cg-full-envelope *{vector-effect:non-scaling-stroke}
+.cg-burn-path{fill:none;stroke:#244f65;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+[data-cg-track][data-muted=true],[data-full-point][data-muted=true]{opacity:.35}
+[data-full-point][data-muted=true] .cg-full-label{display:none}
+#cgLiveStrip[data-condition=takeoff] [data-cg-strip-row=landing],#cgLiveStrip[data-condition=landing] [data-cg-strip-row=takeoff]{opacity:.65}
+[data-band-kind=takeoff] .cg-cabin-allowed-band{fill:#086eaa;fill-opacity:.22}[data-band-kind=takeoff] .cg-cabin-limit{stroke:#086eaa}
+[data-band-kind=landing] .cg-cabin-allowed-band{fill:#8145ad;fill-opacity:.22}[data-band-kind=landing] .cg-cabin-limit{stroke:#8145ad;stroke-dasharray:5 3}
 .cg-full-grid{stroke:#a2b9c0;stroke-width:1;stroke-dasharray:2 4}.cg-full-tick{font:10px "Segoe UI",sans-serif;fill:#315363}.cg-full-title{font:700 11px "Segoe UI",sans-serif;fill:#234c58}
 .cg-full-area{fill:#83d5a5;fill-opacity:.35;stroke:#216e43;stroke-width:2}.cg-full-area[data-full-envelope=alternate]{fill:#eab950;stroke:#986300}
 .cg-full-slice{stroke:#086eaa;stroke-width:2;stroke-dasharray:4 3}.cg-full-marker{fill:#086eaa;stroke:white;stroke-width:1.5}.cg-full-label{fill:#086eaa;font:800 11px "Segoe UI",sans-serif;paint-order:stroke;stroke:white;stroke-width:3}

@@ -66,7 +66,7 @@
   function select(id) {if(!all[id]||rules.blockers(getState(),id).length)return;getState().selectedSeat=id;render();window.CabinImageMenu?.showSeat(id);}
   function list(ids) {
     const state=getState();
-    return ids.map(id=>{const conflicts=rules.conflicts(state.seats,id),blocked=rules.blockers(state,id),restricted=rules.occupancyBlockers(state,id);return `<button type="button" class="seat ${state.seats.has(id)?'on':''}" data-seat="${id}" ${blocked.length?'disabled':''} aria-pressed="${state.selectedSeat===id}"><b>${esc(id)}</b> · ${esc(all[id].name.replace(new RegExp('^'+id+'\\s*'),''))}<small>${blocked.length?`Unavailable · ${esc(blocked.map(item=>item.name).join(' + '))} installed`:restricted.length?`${state.seats.has(id)?'Installed · folded up':'Seat can be installed'} · no occupant (${esc(restricted.map(item=>item.name).join(' + '))})`:state.seats.has(id)?'Installed':conflicts.length?`Space used by ${conflicts.join(', ')}`:'Available position'}${state.occupants[id]?' · occupied':''}</small></button>`;}).join('');
+    return ids.map(id=>{const conflicts=rules.conflicts(state.seats,id),blocked=rules.blockers(state,id),restricted=rules.occupancyBlockers(state,id);return `<button type="button" class="seat ${state.seats.has(id)?'on':''}" data-seat="${id}" ${blocked.length||conflicts.length?'disabled':''} aria-pressed="${state.selectedSeat===id}"><b>${esc(id)}</b> · ${esc(all[id].name.replace(new RegExp('^'+id+'\\s*'),''))}<small>${blocked.length?`Unavailable · ${esc(blocked.map(item=>item.name).join(' + '))} installed`:conflicts.length?`Excluded · remove ${conflicts.join(', ')} first`:restricted.length?`${state.seats.has(id)?'Installed · folded up':'Seat can be installed'} · no occupant (${esc(restricted.map(item=>item.name).join(' + '))})`:state.seats.has(id)?'Installed':'Available position'}${state.occupants[id]?' · occupied':''}</small></button>`;}).join('');
   }
   function renderMenu() {
     const state=getState(),id=state.selectedSeat,seat=all[id],container=document.getElementById('seatMenu');
@@ -127,7 +127,13 @@
     if(layer.hidden)return;
     const state=getState();
     const xAt=arm=>mapping.forwardX+(arm-4875)/6518*(mapping.aftX-mapping.forwardX);
+    const sharedAbsent=new Set();
+    for(const group of rules.groups){const ids=group.alternatives.flat();if(ids.some(id=>state.seats.has(id)))continue;
+      ids.forEach(id=>sharedAbsent.add(id));const id=ids[0],point=window.CabinLive?.getSeatPoint(id),seat=all[id],b=document.createElement('button');b.type='button';b.className='seat-marker seat-choice';b.dataset.seatChoice=group.id;b.textContent=group.alternatives.map(a=>a.join('+')).join(' / ');b.setAttribute('aria-label','Choose seating: '+b.textContent);b.style.left=(point?.x??xAt(seat.arm))/mapping.width*100+'%';b.style.top=(point?.y??mapping.centerY+(/Port/i.test(seat.name)?65:-65)*mapping.sourceScale)/mapping.height*100+'%';
+      b.onclick=()=>{const container=document.getElementById('seatMenu');container.innerHTML='<h3>Choose seating for this space</h3><p>Choose a crew seat or passenger seats. The alternatives cannot be installed together.</p>'+list(ids);for(const button of container.querySelectorAll('[data-seat]'))button.onclick=()=>select(button.dataset.seat);window.CabinImageMenu.show('seatLocalControls',null,'Seat choices');};layer.append(b);
+    }
     for(const id of [...ordered(Object.keys(data.paxSeats)),...ordered(Object.keys(data.crewSeats))]) {
+      if(sharedAbsent.has(id))continue;
       if(rules.blockers(state,id).length)continue;
       // An absent seat must not cover equipment currently using that position.
       // Its permitted folded installation remains available through Area options.

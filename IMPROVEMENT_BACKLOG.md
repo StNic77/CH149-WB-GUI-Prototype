@@ -1,5 +1,30 @@
 # CH-149-615 current backlog
 
+## Current status — 27 October 2026 (supersedes older status below)
+
+Published baseline: `6dc42c3`. The latest authorized scope is outstanding-list items 1–9, 11–13 and 16, locally reviewed and now authorized for commit/push to support device checks.
+
+Implemented locally, awaiting user review:
+
+- 1: Full CG envelope renders the existing automatic fuel solver's burn trace from departure to fuel at landing. Manual tank mode explicitly reports the trace unavailable; it does not invent a manual burn order.
+- 2–3: Takeoff/Landing selection subdues and reduces the other marker; Both shows both labels and each condition's allowable band. Cabin bands use blue above and purple below the centreline; markers retain their actual calibrated arms. The full chart uses matching colours and weight-specific slices.
+- 4: Input editing uses the available visual viewport, releases sticky action/footer rows, and scrolls the whole input into the visible menu body. Tests cover 330 px and 220 px keyboard-reduced viewports with an offset and retained entry text.
+- 5: Ramp shelf taps within 23 screen pixels of a reviewed shelf edge select the nearest shelf, using original touch coordinates and excluding pans/cancelled gestures. Existing outlines and loading locations are unchanged. View offers Adjust ramp shelf areas using the existing review page.
+- 7: P7 uses P8's row, proportions and artwork convention, including its native Transport crop when available. P7 retains its own longitudinal position and source arm; all standard-role defaults remain unchanged.
+- 8: When neither alternative is installed, one shared seat-choice control opens the alternatives at the existing shared seating position. Individual installed/available labels return once an alternative is chosen. No seat arm is moved to solve label overlap.
+- 9: Position lists disable C6 versus P7/P8 and C5 versus P13/P14 with an explicit exclusion message. The plan already hides excluded markers; underlying atomic replacement and occupied-seat protections remain.
+- 11: An absent SWS retains an interactive empty image position; reference mode offers SWS +. Reinstallation opens the same Role Fit controls and restores the existing load.
+- 12–13: Port Aft stretcher association moved onto the pictured stretcher; installed O₂ rack has its symbol over the user-circled rack. Symbols open the corresponding controls and follow installed state.
+- 16: Bay Cells render above Bay Boundaries and remain selectable; seats, occupants and live item interactions retain their higher layers.
+
+Still open within the selected scope:
+
+- 6: Physical iPad Safari keyboard, menus and touch acceptance. Automated desktop-browser viewport/touch checks are not a substitute for an actual iPad check.
+
+Additional user review note — 27 October 2026: SAR-10 Pax Port Aft detail currently shows the guideline symbol against the shared reference image. Review detail-view images and equipment symbology together so each role and installed/stowed state has the appropriate picture, symbols and associations. The supplied screenshot is a reference for future correction; no imagery or symbology change is included for this note.
+
+Remaining discussion/deferred items: Sea tray removed label directly on the tray (10); custom/unpictured equipment placement and cleared-floor review (14); role/state-aware detail imagery (15); remembered clickable-zone highlight layer, hidden by default (17); SAR Cabinet shelf-content symbols (18); Live equipment naming (19); future rack stowage/dependencies (20); final stretcher stowage confirmation (21); sponsons/contents/arms (22); placement editor (23); complete Active Dev parity (24); fleet/tail editing and operational acceptance (25); individual occupant weights (26); eligibility/footprint validation (27); Role reset/fit-only, negative adjustments, cargo-arm bounds and renewed-acceptance fuel policies (28); operational outputs/certification/invalidation (29); offline delivery/update/rollback/device acceptance (30).
+
 Updated 26 October 2026 after the user's latest iPad/workflow feedback. Previous published checkpoint: 0458550. Deployment was not independently verified in this session. Reference-pack ZIPs remain historical snapshots. The user subsequently authorized the entry page, local resume, keyboard fix, aft navigation and agreed wording for local review. The user has now authorized commit and push of this reviewed revision. The earlier hold is superseded for this scope only.
 
 ## Local implementation review — 26 October 2026

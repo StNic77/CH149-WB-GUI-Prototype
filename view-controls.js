@@ -8,6 +8,7 @@
  const retired=document.createElement('div');retired.id='retiredViewControls';retired.hidden=true;document.body.append(retired);
  const configs=$('configButtons'),oldToolbar=configs.closest('.toolbar');$('roleOptions').append(configs);oldToolbar.hidden=true;
  $('viewOptions').append($('viewTabs'));retired.append($('planTools'));
+ const rampAdjust=document.createElement('a');rampAdjust.id='adjustRampShelfAreas';rampAdjust.href='ramp-shelf-review.html';rampAdjust.target='_blank';rampAdjust.rel='noopener';rampAdjust.textContent='Adjust ramp shelf areas';$('viewOptions').append(rampAdjust);
  for(const node of document.querySelectorAll('.view-framing,.overlay-controls'))retired.append(node);
  const oldLayerOptions=document.querySelector('.layer-options');if(oldLayerOptions)retired.append(oldLayerOptions);
  document.body.classList.add('compact-view-controls-active');
@@ -33,6 +34,7 @@
  }
 
  function sync(){return2D.hidden=S().view==='plan';dock.classList.toggle('sizing-controls-collapsed',controlsHidden);visibilityKey.textContent=controlsHidden?'Show controls':'Hide controls';visibilityKey.setAttribute('aria-expanded',String(!controlsHidden));const s=S();if(s.preset!==lastRole){lastRole=s.preset;open=s.preset?'':'role';}
+  rampAdjust.hidden=s.view!=='ramp';
   $('roleControl').textContent='Role · '+roleName()+(open==='role'?' ▴':' ▾');$('viewControl').textContent='View · '+(viewNames[s.view]||s.view)+(open==='view'?' ▴':' ▾');$('layersControl').textContent='Layers'+(open==='layers'?' ▴':' ▾');
   for(const [name,id]of [['role','roleOptions'],['view','viewOptions'],['layers','layerOptionsPanel']]){const active=open===name;$(id).hidden=!active;$(name==='role'?'roleControl':name==='view'?'viewControl':'layersControl').setAttribute('aria-expanded',String(active));}
   const revealViews={cabinetZoneReveal:'cabinet',forwardShelfReveal:'forward',rampShelfReveal:'ramp',portOverheadReveal:'pta',stbdOverheadReveal:'stbd'};
