@@ -1,5 +1,11 @@
 # Verification and provenance — 27 October 2026
 
+## Latest authorized revision after 7dd6568
+
+Ramp hinge moment is now the visible wording; the user confirmed the existing limits. Constants/formula/aggregation are unchanged. Current release also contains numeric whole-value selection on first focus/tap/Tab and anchored menu placement while typing. The user likes the wider landscape Fuel layout; only Fuel uses that layout.
+
+Current local checks: ramp-limits-check and cargo-slots-check verify unchanged source limits/calculation and updated warnings; menu-entry-position-check reproduces ramp point/new/existing cargo entry at 1440x1000 desktop, 1366x1024 touch and 1133x744 touch; fuel-landscape-check exercises real typing, select-all replacement, Tab/backspace, normal later caret editing, fuel apply/close, manual totals, rotation and reduced keyboard bounds at five sizes. Recent session-navigation/zero-quantity checks also pass. Physical iPad selection remains pending. Latest Git commit/source snapshot in the v2 package identifies the release; the 39b9b7f record below is historical.
+
 Application commit: 39b9b7f406e6d98b3595ea21851b67b3ba85ee89. Commit and push to origin/main were verified. No independent Pages deployment confirmation or physical iPad/Safari acceptance for this revision.
 
 ## Local checks completed for the latest revision

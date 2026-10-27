@@ -20,7 +20,7 @@ for(const [width,height]of [[1440,1000],[834,1194],[390,844]]){const page=await 
  const ramp=await page.evaluate(()=>{state.floorLoads=[];const cargo=[150,150].map(weight=>CabinCargo.add(state,{area:'RAMP',kind:'individual',weight,arm:12893}).entry);renderSeats();return cargo;});
  assert.equal(await page.locator('.cargo-symbol[data-limit-status=ok]').count(),2);
  const bay=await page.evaluate(()=>{const r=CabinCargo.add(state,{area:'RAMP',kind:'bay',weight:1});renderSeats();return r.entry;});
- assert.equal(await page.locator('.cargo-symbol[data-limit-status=caution]').count(),3);assert.match(await page.locator(`[data-cargo-id="${ramp[0].id}"]`).getAttribute('aria-label'),/Hinge moment proxy/);
+ assert.equal(await page.locator('.cargo-symbol[data-limit-status=caution]').count(),3);assert.match(await page.locator(`[data-cargo-id="${ramp[0].id}"]`).getAttribute('aria-label'),/Ramp hinge moment/);
  await page.locator(`[data-cargo-id="${ramp[0].id}"]`).click();assert.match(await page.locator('#cargoLimitAlert').innerText(),/451.5 kg·m exceeds 450/);
  const alert=await page.locator('#cargoLimitAlert').boundingBox(),menu=await page.locator('#imageMenuBody').boundingBox();assert.ok(alert.y>=menu.y&&alert.y+alert.height<=menu.y+menu.height+1,'Limit caution should be visible without scrolling');
  await page.evaluate(()=>CabinImageMenu.close());await page.locator('[data-summary-id="planning"]>summary').click();

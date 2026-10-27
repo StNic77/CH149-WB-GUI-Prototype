@@ -4,7 +4,15 @@
 
 # CH-149-615 current backlog
 
+## Latest authorized release — 27 October 2026
+
+The user approved the landscape Fuel layout (Fuel only), reported focus-triggered centering disruptive on desktop/large tablets, and requested selecting the whole numeric value on entry. These are implemented: select-all on first focus/tap or Tab; normal later caret editing; anchored menus while typing with only necessary keyboard/viewport adjustment. User confirms the existing ramp limits are correct and approves replacing the inherited proxy wording with Ramp hinge moment. Limits, aggregation and calculations are unchanged. Commit/push is now authorized for these changes. Older local/unpushed statements below describe the prior review stage.
+
 ## Device feedback after 39b9b7f — 27 October 2026
+
+After pushed landscape trial 7dd6568, the user approved the landscape menu layout and requested whole-value selection on entry. Implemented locally for all editable numeric inputs: first focus/tap selects the complete number for replacement; keyboard Tab does the same. Subsequent editing retains normal caret behavior. Read-only/calculated fields are excluded. Real typing/backspace/Tab checks pass in Chromium across desktop/tablet/phone test sizes; native iPad selection still needs device confirmation. Not yet committed or pushed.
+
+The user then reported that entering ramp cargo weight snapped the menu to the centre, especially disruptive on desktop/large tablets. Removed focus-triggered recentering: menus keep their opened position and width while typing; viewport constraints adjust only when necessary to fit available keyboard space. The wider landscape Fuel layout still opens as before. Reproduced ramp point selection/new cargo and existing cargo editing with stable position checks at 1440x1000 desktop, 1366x1024 touch and 1133x744 touch; reduced keyboard bounds, Fuel layout and session navigation checks pass. These fixes are local and unpushed.
 
 The user tested the iPad and reports that entry menus remain clipped and difficult to use, especially Fuel on iPad Mini in landscape. The keyboard/menu issue is not accepted as fixed; automated viewport checks did not establish native usability. The user selected a wider landscape Fuel menu for local trial: distribution/total/landing fuel in one row, Apply/Close in a row, manual tank quantities across five columns, explanations collapsed. It stays wide during focused input; portrait stays stacked. Local width, row, reduced-keyboard bounds, rotation and fuel apply/close checks pass. Native iPad usability remains open; custom keypad/full-screen editor/side panel remain alternatives if this trial is insufficient.
 

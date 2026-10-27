@@ -1,4 +1,4 @@
-/* Active Dev AC_RAMP limits and hinge-moment proxy, applied to combined ramp loading.
+/* Active Dev AC_RAMP limits and ramp hinge moment, applied to combined ramp loading.
  * Source app.js checks cargo individually; aggregation and shelf exclusion follow
  * the confirmed prototype rules. Warnings remain editable, as in Active Dev.
  */
@@ -19,11 +19,11 @@
   if(loads.some(row=>!Number.isFinite(row.weight)||!Number.isFinite(row.arm)||row.arm<limits.hinge||row.arm>limits.end))warnings.push(`Ramp arms must be ${limits.hinge}–${limits.end} mm.`);
   if(weight>limits.maxClosed+1e-9)warnings.push(`Ramp closed: ${number(weight)} kg exceeds ${limits.maxClosed} kg.`);
   if(weight>limits.maxOpen+1e-9)warnings.push(`Ramp open: ${number(weight)} kg exceeds ${limits.maxOpen} kg.`);
-  if(moment>limits.hingeMomentMax+1e-9)warnings.push(`Hinge moment proxy: ${number(moment)} kg·m exceeds ${limits.hingeMomentMax} kg·m.`);
+  if(moment>limits.hingeMomentMax+1e-9)warnings.push(`Ramp hinge moment: ${number(moment)} kg·m exceeds ${limits.hingeMomentMax} kg·m.`);
   return {weight,moment,arm,stokes,count:loads.length,closedOK:weight<=limits.maxClosed+1e-9,openOK:weight<=limits.maxOpen+1e-9,momentOK:moment<=limits.hingeMomentMax+1e-9,warnings,
    // This is a combined-load CG bound, not a permissible arm for every item.
    maxCombinedArm:weight?Math.min(limits.end,limits.hinge+1000*limits.hingeMomentMax/weight):limits.end};
  }
- function markup(state,replacement,except){const s=assess(state,replacement,except);return `<div class="ramp-limit-status" role="status"><strong>${s.warnings.length?'Caution · Ramp loading':'Ramp loading checks'}</strong><p>${number(s.weight)} kg total · ${s.arm===null?'No load CG':number(s.arm)+' mm combined arm'} · ${number(s.moment)} kg·m hinge moment proxy</p><p>Closed: ${limits.maxClosed} kg · Open: ${limits.maxOpen} kg · Hinge moment proxy: ${limits.hingeMomentMax} kg·m. Arms: ${limits.hinge}–${limits.end} mm.</p>${s.warnings.map(message=>`<p class="floor-reason">${message}</p>`).join('')}<details><summary>Included loads and arm check</summary>${s.weight?`<p>At this total weight, combined arm must be at or forward of ${number(s.maxCombinedArm)} mm for the hinge-moment check.</p>`:''}<p>Includes cargo, ramp bay weight${s.stokes?' and '+number(s.stokes)+' kg stowed Stokes':''}. Ramp shelves and shelf contents are excluded. Warnings do not prevent editing.</p></details></div>`;}
+ function markup(state,replacement,except){const s=assess(state,replacement,except);return `<div class="ramp-limit-status" role="status"><strong>${s.warnings.length?'Caution · Ramp loading':'Ramp loading checks'}</strong><p>${number(s.weight)} kg total · ${s.arm===null?'No load CG':number(s.arm)+' mm combined arm'} · ${number(s.moment)} kg·m ramp hinge moment</p><p>Closed: ${limits.maxClosed} kg · Open: ${limits.maxOpen} kg · Ramp hinge moment: ${limits.hingeMomentMax} kg·m. Arms: ${limits.hinge}–${limits.end} mm.</p>${s.warnings.map(message=>`<p class="floor-reason">${message}</p>`).join('')}<details><summary>Included loads and arm check</summary>${s.weight?`<p>At this total weight, combined arm must be at or forward of ${number(s.maxCombinedArm)} mm for the hinge-moment check.</p>`:''}<p>Includes cargo, ramp bay weight${s.stokes?' and '+number(s.stokes)+' kg stowed Stokes':''}. Ramp shelves and shelf contents are excluded. Warnings do not prevent editing.</p></details></div>`;}
  window.CabinRampLimits={limits,assess,markup};
 })();

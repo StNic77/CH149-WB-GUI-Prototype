@@ -23,11 +23,20 @@
   if(important&&!important.matches('.floor-choice *')&&parent.firstElementChild!==important)parent.prepend(important);
   if(important)important.dataset.primaryActions='true';
  }
+ function keepEditorVisible(){
+  if(host.hidden)return;const vv=window.visualViewport,left=vv?.offsetLeft||0,top=vv?.offsetTop||0,width=vv?.width||innerWidth,height=vv?.height||innerHeight,r=host.getBoundingClientRect(),margin=8;
+  // Preserve the opened position. Only constrain it when the visible viewport
+  // actually cannot contain it (for example after a software keyboard opens).
+  const w=Math.min(r.width,width-2*margin),y=Math.max(top+margin,Math.min(r.top,top+height-margin-Math.min(144,height-2*margin)));
+  host.style.width=w+'px';host.style.left=Math.max(left+margin,Math.min(r.left,left+width-margin-w))+'px';host.style.top=y+'px';
+  const room=Math.max(60,top+height-margin-y),limit=parseFloat(host.style.maxHeight);host.style.maxHeight=Math.min(Number.isFinite(limit)?limit:room,room)+'px';
+ }
  function position(){frame=0;if(host.hidden)return;promoteActions();const box=viewport.getBoundingClientRect(),margin=8,visible=window.visualViewport,viewWidth=visible?.width||innerWidth,viewHeight=(visible?.height||innerHeight)-(document.getElementById('liveAircraftStrip')?.getBoundingClientRect().height||0),viewLeft=visible?.offsetLeft||0,viewTop=visible?.offsetTop||0;
   const fuelLandscape=current==='fuelPanel'&&viewWidth>=700&&matchMedia('(orientation: landscape)').matches;host.classList.toggle('fuel-landscape',fuelLandscape);
   const preferredWidth=fuelLandscape?880:current==='cargoPanel'?520:420;
   const editing=host.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');
-  if(editing||fuelLandscape){host.style.width=Math.min(preferredWidth,viewWidth-16)+'px';host.style.left=(viewLeft+(viewWidth-parseFloat(host.style.width))/2)+'px';host.style.top=(viewTop+8)+'px';host.style.maxHeight=Math.max(60,(visible?.height||innerHeight)-16)+'px';if(editing)window.CabinKeyboardMenus?.schedule();return;}
+  if(editing){keepEditorVisible();window.CabinKeyboardMenus?.schedule();return;}
+  if(fuelLandscape){host.style.width=Math.min(preferredWidth,viewWidth-16)+'px';host.style.left=(viewLeft+(viewWidth-parseFloat(host.style.width))/2)+'px';host.style.top=(viewTop+8)+'px';host.style.maxHeight=Math.max(60,(visible?.height||innerHeight)-16)+'px';return;}
   const dock=document.getElementById('aircraftTouchControls'),reserve=viewWidth<650&&dock&&!dock.hidden&&dock.dataset.placement==='side'?dock.getBoundingClientRect().width+16:0,leftHand=dock?.dataset.hand==='left';
   host.style.width=Math.min(preferredWidth,viewWidth-margin*2-reserve)+'px';
   host.style.maxHeight=Math.max(120,Math.min(viewHeight-24,viewWidth<900?viewHeight*.78:Math.max(box.height,460)))+'px';
@@ -93,7 +102,7 @@
  function renderAccess(){const m=window.CabinBayLayer.getDisplayMapping();shelfLayer.hidden=state().view!=='plan'||!m;if(!m)return;
   for(const b of shelfLayer.children){const id=b.dataset.shelfAccess,forward=id==='forward',aft=id.endsWith('Aft'),x=forward?m.forwardX+(5375-4875)/6518*(m.aftX-m.forwardX):aft?m.aftX-40*m.sourceScale:m.aftX+(m.rampAftX-m.aftX)*.48,y=m.centerY+(['rampStbd','stbdAft'].includes(id)?-120:120)*m.sourceScale;b.style.left=x/m.width*100+'%';b.style.top=y/m.height*100+'%';b.style.width=(aft?60:120)*m.sourceScale/m.width*100+'%';b.style.height=(aft?34:80)*m.sourceScale/m.height*100+'%';}
  }
- window.CabinImageMenu={showSeat,showLocation,showDetail,close,show,anchorAtElement(element){if(element){const r=element.getBoundingClientRect();lastPoint={x:r.left+r.width/2,y:r.top+r.height/2};lastTrigger=element;}},setAnchor(x,y){anchor={x,y};},retarget(panel,root,label){if(!host.hidden&&current===panel&&root!==area)show(panel,root,label);},renderAccess,onView(){close();back.hidden=state().view==='plan';renderAccess();},suspend(){placementHidden=!host.hidden;host.hidden=true;},resume(){if(placementHidden&&current){host.hidden=false;placementHidden=false;schedule();}},getState:()=>({open:!host.hidden,current,area,item})};
+ window.CabinImageMenu={showSeat,showLocation,showDetail,close,show,keepEditorVisible,anchorAtElement(element){if(element){const r=element.getBoundingClientRect();lastPoint={x:r.left+r.width/2,y:r.top+r.height/2};lastTrigger=element;}},setAnchor(x,y){anchor={x,y};},retarget(panel,root,label){if(!host.hidden&&current===panel&&root!==area)show(panel,root,label);},renderAccess,onView(){close();back.hidden=state().view==='plan';renderAccess();},suspend(){placementHidden=!host.hidden;host.hidden=true;},resume(){if(placementHidden&&current){host.hidden=false;placementHidden=false;schedule();}},getState:()=>({open:!host.hidden,current,area,item})};
  back.hidden=state().view==='plan';
  renderAccess();
 })();

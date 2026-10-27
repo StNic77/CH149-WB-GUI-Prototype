@@ -1,5 +1,7 @@
 # Device review sheet — 39b9b7f
 
+Latest feedback/release: the user likes Fuel's wider landscape layout delivered after this baseline. The next authorized revision adds numeric select-all and prevents desktop/large-tablet focus recentering, while retaining necessary keyboard visibility adjustment. Verify on-device that tapping a populated field replaces the full value and that opening/typing ramp cargo does not jump unnecessarily. Other menus have not received the wider Fuel layout. Ramp limits are user-confirmed correct; Ramp hinge moment is a wording change only. Pending rows below remain a historical baseline checklist; use the refreshed v2 source snapshot/current git log.
+
 User feedback received after this sheet was prepared: iPad entry menus remain clipped and difficult to use. Keyboard/menu acceptance failed; exact device/OS/orientation and affected fields were not supplied. The pending rows below remain detailed checks, not evidence that this issue passed. A replacement editor interaction is now for discussion.
 
 Use https://stnic77.github.io/CH149-WB-GUI-Prototype/?v=39b9b7f after the hosted site updates. Push is verified; hosting completion is not. The URL query identifies the requested checkpoint but does not prove deployment. Refresh before testing. This sheet records checks to perform, not passed results.

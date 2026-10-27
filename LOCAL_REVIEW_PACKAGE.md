@@ -2,6 +2,8 @@
 
 # Run and review — current prototype
 
+Latest authorized release: numeric fields select their complete value on entry; cargo menus stay at their opened position while typing and adjust only when available viewport space requires it. Landscape Fuel trial is user-approved, and remains Fuel only. User confirmed existing ramp limits; the UI now calls the calculation Ramp hinge moment. Tests cover actual typing and ramp point/new/existing cargo menu stability. Check git log for the current commit; use the refreshed v2 package instead of the older ZIP. Actual iPad whole-value selection still needs confirmation.
+
 Local changes after the package checkpoint: full CG chart always retains both conditions independently of image selection; Fuel has a wider landscape trial with three main entries in a row, Apply/Close together and five manual tank columns. Portrait stays stacked. Both changes are included in the newly authorized device-check release. The dated ZIP remains an unchanged snapshot of the earlier handoff.
 
 For Chrome/Edge desktop layout review, open DevTools (F12), toggle device emulation (Ctrl+Shift+M), select Responsive and enter exact width/height rather than dragging. Trial sizes: 1133x744 and 1024x768 landscape, 744x1133 portrait. Save custom devices through the device list's Edit/Add custom device controls if desired. Reducing landscape height to about 330 px approximates restricted space, but does not reproduce native Safari keyboard scrolling or visual-viewport offsets. Browser simulation is not physical iPad acceptance.

@@ -1,10 +1,10 @@
-> Release update — 27 October 2026: the user authorized commit and push of the wider landscape Fuel menu (Fuel only), the full CG chart retaining both conditions independently of image selection, and these updated handoff documents. Physical iPad usability remains unconfirmed. The dated reference ZIP is an unchanged snapshot of earlier checkpoint 39b9b7f.
+> Latest continuation update — 27 October 2026: 7dd6568 is the pushed base (wider Fuel only, full chart always both conditions). Subsequent authorized release includes select-all on entering numeric fields, removal of focus-triggered menu recentering, and Ramp hinge moment wording. The existing ramp limits are user-confirmed correct; calculation unchanged. User likes the landscape Fuel layout. Validate actual iPad selection/typing and other entry menus next. Read current root documents or NEXT_CHAT_REFERENCE_PACK_2026-10-27-v2; the earlier ZIP remains historical. Check git log for the latest release commit.
 
 # Continue CH-149-615 improvements
 
-Current handoff: 27 October 2026. Prototype main commit 39b9b7f406e6d98b3595ea21851b67b3ba85ee89 was committed and pushed for physical device checks. Hosted deployment completion has not been independently verified. This package refresh changes documentation only and is newer than that code checkpoint.
+Current handoff: 27 October 2026. Prototype base commit 7dd65685db3de9b2803df95692726975820a0f15 was committed and pushed; the subsequent authorized release adds the entry/position/ramp-label refinements described above. Hosted deployment completion has not been independently verified. This package refresh changes documentation only and is newer than that code checkpoint.
 
-Read PACKAGE_INDEX.md in NEXT_CHAT_REFERENCE_PACK_2026-10-27, then CABIN_UI_DEVELOPMENT_HANDOFF.md, OPEN_ITEMS_2026-10-27.md, DEVICE_CHECK_2026-10-27.md and VERIFICATION_STATUS_2026-10-27.md. Use DEVELOPMENT_PLAN.md and IMPROVEMENT_BACKLOG.md for context; dated history/comparison reports are evidence, not current task authorization.
+Read PACKAGE_INDEX.md in NEXT_CHAT_REFERENCE_PACK_2026-10-27-v2, then CABIN_UI_DEVELOPMENT_HANDOFF.md, OPEN_ITEMS_2026-10-27.md, DEVICE_CHECK_2026-10-27.md and VERIFICATION_STATUS_2026-10-27.md. Use DEVELOPMENT_PLAN.md and IMPROVEMENT_BACKLOG.md for context; dated history/comparison reports are evidence, not current task authorization.
 
 First inspect git status and the user's next request. Review any device feedback before selecting further work. Do not automatically execute the entire backlog. All selected items from the previous round are implemented except physical iPad/Safari acceptance, which remains open.
 

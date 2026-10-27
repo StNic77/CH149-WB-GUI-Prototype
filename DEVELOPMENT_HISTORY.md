@@ -2,6 +2,10 @@
 
 # CH-149-615 graphical prototype — Development History
 
+## 27 October 2026 — numeric entry, stable placement and ramp terminology
+
+After 7dd6568 was pushed, the user liked the landscape Fuel layout (only Fuel uses it), requested whole-value selection for numeric entry and reported cargo menus jumping on desktop. Numeric focus/tap/Tab now selects the value; later caret editing remains. Focus no longer recentres the image menu; keyboard constraints adjust position only as needed. Regression checks reproduce ramp floor-point selection and existing/new cargo editing at desktop and tablet dimensions. The user confirmed the existing ramp limits and approved Ramp hinge moment instead of the inherited proxy wording. No constants, formula, units, source raster or Active Dev edits. Commit/push and a reference refresh were authorized.
+
 ## 27 October 2026 — selected outstanding fixes, local review
 
 The user selected outstanding-list items 1–9, 11–13 and 16. Implemented the automatic fuel burn trace, selected/both CG presentation, full input visibility adjustments, ramp touch targeting and review access, P7 artwork alignment, alternative-seat choice/exclusion presentation, empty SWS access, corrected Port Aft stretcher/rack associations and Bay Cells drawing priority. Source solver, weights, arms and standard configurations are retained. Baseline `6dc42c3` was previously pushed; the user has now authorized this revision for commit/push to support device checks. Physical iPad Safari acceptance remains open. See the current backlog for the remaining deferred scope; older release statuses below describe previous work.

@@ -4,6 +4,10 @@
 
 # CH-149-615 development plan
 
+## Latest release and next review — 27 October 2026
+
+7dd6568 delivered the wider landscape Fuel layout (only Fuel) and independent always-both full CG chart. User likes Fuel's landscape layout. Newly authorized release adds whole-value numeric selection, preserves menu placement during entry and changes the wording to Ramp hinge moment. The user confirms existing limits; no numerical change. Follow up actual iPad selection/menu feedback, then select the next open slice from OPEN_ITEMS_2026-10-27.md. The refreshed v2 package contains current documents and exact release source; older package/checkpoint text below is historical.
+
 ## Current local revision — 27 October 2026
 
 Published baseline is `6dc42c3` on `main`. The user authorized outstanding-list items 1–9, 11–13 and 16 for local implementation, with local review before publication; the user has now authorized commit and push for device checks. Older dated release/authorization statements below are historical.

@@ -1,8 +1,8 @@
-> Release update — 27 October 2026: the user authorized commit and push of the wider landscape Fuel menu (Fuel only), the full CG chart retaining both conditions independently of image selection, and these updated handoff documents. Physical iPad usability remains unconfirmed. The dated reference ZIP is an unchanged snapshot of earlier checkpoint 39b9b7f.
+> Latest release preparation — 27 October 2026: base checkpoint 7dd6568 is pushed. The user approved the landscape Fuel layout and has now authorized commit/push of numeric whole-value selection, stable menu placement during entry, and the label Ramp hinge moment. The user confirmed the existing ramp limits are correct; neither limits nor calculations change. Desktop/large-tablet cargo position checks and reduced-keyboard checks pass. Actual iPad selection and broader menu usability still need review. Use the refreshed v2 reference package; earlier packages are historical.
 
 # CH-149-615 Cabin UI Prototype — current handoff
 
-Updated 27 October 2026. This document supersedes the older 24–26 October handoffs. Application checkpoint: main 39b9b7f406e6d98b3595ea21851b67b3ba85ee89, pushed to origin/main. Latest release title: Refine CG burn trace, seat choices and device input controls. Pages deployment and physical device acceptance are not confirmed.
+Updated 27 October 2026. This document supersedes the older 24–26 October handoffs. Pushed base checkpoint: main 7dd65685db3de9b2803df95692726975820a0f15. The latest authorized release is described above; consult git log and the v2 package manifest for its exact commit. Pages deployment and physical device acceptance are not confirmed.
 
 ## Workspace and authority
 

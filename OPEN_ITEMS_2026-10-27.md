@@ -2,6 +2,8 @@
 
 # Outstanding work — 27 October 2026
 
+Latest status: user likes the wider Fuel landscape layout. Whole-value numeric selection and stable menu placement during entry are implemented for the newly authorized release. Confirm them on the actual iPad. Only Fuel has the wider layout; extension to other forms is still open. Ramp hinge moment is the agreed label; user confirms existing limits are correct. No numerical change is included. Earlier unpushed notes below are historical. Use the v2 package for the refreshed source/doc snapshot.
+
 Latest device feedback: iPad entry menus remain clipped and awkward. Keyboard/menu usability is still unresolved. User authorized a local wider-landscape Fuel trial, now implemented with main entries/actions in rows and five tank columns; portrait remains stacked. Native review is pending. Full-envelope independence from image selection has also been implemented locally (both markers, labels and ranges always shown). Both changes are newer than the pushed checkpoint and reference ZIP.
 
 Baseline: pushed application 39b9b7f. This is a discussion/backlog document, not authorization to implement every item. Items refer to the latest consolidated open list; the prior selected implementation scope was earlier-list 1–9, 11–13 and 16. All of that code is implemented; physical iPad acceptance remains open.
