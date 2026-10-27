@@ -3,7 +3,7 @@ const browsers=require(process.env.PLAYWRIGHT_MODULE||'playwright'),{createPrevi
 (async()=>{const server=createPreviewServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;const engine=process.env.PLAYWRIGHT_ENGINE||'chromium';
 try{browser=await browsers[engine].launch(engine==='chromium'?{channel:process.env.PLAYWRIGHT_CHANNEL||'msedge',headless:true}:{headless:true});
 for(const [width,height]of [[390,844],[844,390],[744,1133],[1133,744],[1440,1000]]){
-const page=await browser.newPage({viewport:{width,height}}),errors=[];page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port);await page.waitForFunction(()=>!!window.CabinViewControls);
+const page=await browser.newPage({viewport:{width,height}}),errors=[];page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port);await require('./enter-workspace.cjs')(page);await page.waitForFunction(()=>!!window.CabinViewControls);
 assert.equal(await page.locator('#detailReturn2D').isVisible(),false);
 // Enter book fuel before choosing the first Role, through the actual fuel panel.
 await page.evaluate(()=>CabinFuelUI.open());await page.locator('#fuelCompactForm [name="total"]').fill('258');await page.locator('#fuelCompactForm [type="submit"]').click();assert.equal(await page.evaluate(()=>state.planning.fuel),258);

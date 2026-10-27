@@ -30,7 +30,7 @@
   const domain=scale(result),position=arm=>(arm-domain.min)/(domain.max-domain.min)*100;
   box.dataset.scaleMin=domain.min;box.dataset.scaleMax=domain.max;
   const heading=document.createElement('h3');heading.textContent='Live CG ranges';box.append(heading);
-  const explanation=document.createElement('p');explanation.className='cg-strip-explanation';explanation.textContent='Each band follows its own weight. Both rows share the same arm scale; out-of-limit CG stays visible.';box.append(explanation);
+  const explanation=document.createElement('p');explanation.className='cg-strip-explanation';explanation.textContent='Each band follows its own weight. Both rows share the same arm scale; out-of-limit CG stays visible. Estimated landing CG uses your selected fuel at landing (reserve), capped at fuel aboard, and assumes the same non-fuel load as takeoff. Calculated CG values update live as aircraft weight, fuel quantity or load positions change.';box.append(explanation);
   for(const [kind,label,symbol]of [['takeoff','Takeoff','▲'],['landing','Estimated landing','◆']]){
    const p=result[kind],row=document.createElement('article');row.className='cg-strip-row';row.dataset.cgStripRow=kind;row.dataset.cgResult=kind;row.dataset.cgStatus=p.cgStatus;row.dataset.weightStatus=p.weightStatus;row.dataset.selected=String(condition===kind);
    const button=document.createElement('button');button.type='button';button.className='cg-strip-select';button.setAttribute('aria-pressed',String(condition===kind));button.setAttribute('aria-label','Show '+label.toLowerCase()+' allowable band on aircraft');button.onclick=()=>select(kind);

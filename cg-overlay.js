@@ -93,7 +93,7 @@
   drawCabin(result,mapping);
   summary.append(window.CabinCGStrip.render(result,condition,key=>{condition=key;render();},summary.clientWidth-24));
   const note=document.createElement('p');note.className='cg-layer-note';
-  note.textContent='The shaded cabin band uses the selected condition’s weight. Both markers stay at their calibrated arm on the aircraft centreline; each is checked against its own weight’s limits. Focus CG enlarges the true spacing. Landing uses '+number(result.landingFuel)+' kg fuel from the preferred '+number(result.reserve)+' kg reserve; non-fuel loads stay unchanged.'+(result.shortfall?' Reserve shortfall: '+number(result.shortfall)+' kg.':'')+(result.manual?' Manual tanks: estimated landing uses the normal mapped fuel distribution.':'');summary.append(note);
+  note.textContent='The shaded cabin band uses the selected condition’s weight. Both markers stay at their calibrated arm on the aircraft centreline; each is checked against its own weight’s limits. Focus CG enlarges the true spacing. Landing uses '+number(result.landingFuel)+' kg fuel, capped at fuel aboard, from your selected '+number(result.reserve)+' kg fuel at landing (reserve); non-fuel loads stay unchanged. All CG values update live with aircraft weight, fuel and load-position changes.'+(result.shortfall?' Reserve shortfall: '+number(result.shortfall)+' kg.':'')+(result.manual?' Manual tanks: estimated landing uses the normal mapped fuel distribution.':'');summary.append(note);
  }
  toggle.addEventListener('change',render);document.getElementById('controlHand').addEventListener('change',render);
  const oldSummary=window.CabinAircraftSummary.render;

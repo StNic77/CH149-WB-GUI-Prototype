@@ -4,7 +4,7 @@ Updated 24 October 2026 after the local usability package and first user review.
 
 Subsequent discussion settled engine/model authority: Active Dev's configuration, editor definitions, accounting and calculations will drive the GUI. Packaging remains undecided. The reproduced SAR-3 discrepancy arises from different accepted inclusion baselines; the source model is the reconciliation target. See `IMPROVEMENT_BACKLOG.md` for this decision and the latest usability/performance/quantity notes. These discussion notes authorize no implementation or publication; earlier statements of an entirely open model/engine decision are historical.
 
-Latest checkpoint: main remains at `dbb53a9`; the 24 October GUI usability package is local, uncommitted and unpushed. Active Dev was unchanged. The full Chromium suite and seven-size WebKit usability checks passed, but the user identified eleven usability issues and did not accept the GUI as finished. The next task is to game out menus/interactions in a new chat before more coding. See sections 17–20 and the current backlog/plan. Sections 1–16 below are historical; their old pending-status, sequencing and authorization statements do not override the latest scope.
+Release baseline: `0458550`. The later 26 October review revision is authorized for commit/push; see the release authorization and validation notes at the end. Earlier checkpoint and local-only statements below describe their historical state.
 
 ## 1. Aim and starting material
 
@@ -268,3 +268,71 @@ The user requested all next-session documents updated with completed/future work
 Before broader engine integration, the user requested the bottom ribbon in order: Basic Weight/CG, Operating Weight/CG, Fuel, Cabin (Bay weight), Cargo, AUW Weight/CG. They clarified nearest kg/mm rounding and no change-since-baseline display. Implemented using existing source Operating/AUW results and existing adapted bay/cargo entries, preserving exact calculation precision. Tablet/desktop show six groups; phone wraps in reading order; content clearance follows ribbon height. Dedicated five-size Edge/Safari checks and related gesture/loading/iPad checks passed, as did source planning parity.
 
 Committed/pushed as a2c3e18; Pages deployment succeeded and current index was verified. User confirmed the commit/push and chose to leave it here, resuming in a new thread with updated references. Refreshed the October 26 handoff pack to include the ribbon release and existing integration brief; October 24/25 packs remain historical. No Active Dev edits or broader integration work have started. Current documentation refresh is local, newer than the published application commit.
+
+## 30. First integration slice, CASEVAC and live CG visualization — 26 October 2026
+
+Committed and pushed as 0458550. Added Recorded Basic Weight default using source inclusion definitions; independently compared the first SAR-3 graphical quantity path with Active Dev, explaining the 579.57 kg inclusion distinction. Added CASEVAC patient multi-select with atomic unavailable/occupied guards. Added AUW/CG status colours and Fwd/Mid/Aft bands, reserve-based landing CG, a calibrated cabin-centreline allowable band, Focus CG, enlarged takeoff/landing strips with margins and an expandable full weight-versus-CG envelope. Edge/Safari checks included the 301 kg ramp case and changing AUW-dependent limits. Active Dev is unchanged; full live editor/tail/output integration remains unfinished. Deployment of this commit was not independently verified in this session.
+
+The user confirmed that P2/P3 remain additive under the RFM basis despite permanent installation: 10098 + 18.70 = 10116.70 kg (10117 displayed). No weight or inclusion change was made.
+
+## 31. New iPad/startup feedback recorded; implementation deferred — 26 October 2026
+
+The user reported iPad on-screen keyboard/menu resizing that obscures text entry. They proposed a fresh-session lead page for tail, initial Basic Weight/CG and Role, with brief guidance before entering the image workspace; existing image controls should remain. A valid persistent session should open directly into the image workspace. They highlighted live CG visualization as a major benefit for understanding load/fuel consequences.
+
+The user explicitly requested adding these items to the ongoing list and reviewing what remains, without making application changes now. Updated IMPROVEMENT_BACKLOG.md and DEVELOPMENT_PLAN.md to distinguish completed work, pending requests, unresolved behavior decisions and parked visual work. These new planning updates are local and are not part of application commit 0458550.
+
+## 26 October 2026 — local entry and image refinements
+
+Authorized locally after the earlier hold: setup with tail buttons (149920 displayed as 149SIM), Recorded Basic Weight default, Basic Weight/CG/initial fuel together, Role and Accept aircraft. No reserve or distribution selector on entry. The user’s exact initial-fuel note is retained. Existing image-page editing remains. A compatible versioned local snapshot resumes to the image; Start fresh permits keeping the current session until replacement acceptance.
+
+Corrected desktop setup inheriting the cabin grid. The Starboard aft equipment parent action now selects its view. Aft navigation regions have moved to the user-circled edge areas and use hover labels without permanent text; equipment retains click priority. Fuel planning / Fuel at landing (reserve) wording and live CG helper are aligned. Zero-valued quantity inputs display blank and blanks represent zero where permitted. Occupants visibility hides all crew/passenger/patient markers without removing their masses or changing W&B.
+
+Keyboard handling scrolls focused menu/dialog inputs within the visual viewport; simulated shrink is checked locally. Physical iPad Safari remains to be verified. A Safari-engine check could not launch because its browser runtime is unavailable; no Safari pass is claimed for this revision.
+
+Clickable-zone highlight layer remains discussion-only. User chose hidden by default with remembered choice. Proposed highlights affect visibility only; navigation stays clickable and equipment, occupant and CG layers remain independent. Nothing from this revision has been committed or pushed.
+
+Further local review refinements: starboard basket menu opens Starboard Aft View; seat indicators are centred on seats, with drawing order images → Seats → Occupants. C4/C5/C6 are checked in both SAR roles. Occupant markers have a separate drawing plane, remain aligned under zoom, and can be hidden without altering state. Default crew / SAR Tech classification is shared with the W&B adapter; the generic occupied dot is removed. Crew, Passenger and Patient symbols are added to the key and remain visible in the key while the Occupants image layer is hidden.
+
+User clarified C3’s physical installation from the port avionics cabinet into the space aft of the centre console; the drawing is approximate but the seat centre is authoritative. C3 alone is repositioned from its confirmed seat centre at 4559 mm using the common station calibration, just forward of Bay 1 on the centreline. C1/C2 retain 3673 mm; their images and all other seat-image positions are unchanged. Catalogue occupant arms are unchanged.
+
+## 26 October 2026 — reference-image fidelity review
+
+Replaced the full cabinet highlight with a compact label in reference mode, and the same label on the live cabinet. Added live-visual-layout.js with original-render artwork crops and placement, preserving native proportions for pictured seats and SAR fixtures. Seat/occupant overlays follow their pictured seat centres; C3 retains its explicitly confirmed station-based position. Source masses/arms are unchanged. This improves source fidelity but does not establish surveyed geometry or exact artwork for unpictured/custom fits or hidden floor detail.
+
+The user clarified Dive Bottle / O2 Rack is currently only a fitting with no contents, and may later become stowage with dependencies. Rendered an empty source frame with pictured bottle area excluded, controlled only by the existing rack Role Fit key. No bottle identity, quantity, mass, storage control or dependency was added.
+
+Added the Sensor Workstation as a separate source-artwork component beside C4. Its installed/removed appearance follows RF_SENSOR_SYSTEMS_SENSOR_WORKSTATION; SAR defaults show it, Transport/CASEVAC defaults omit it, and custom installation is supported. Local tests confirm removal/reinstallation changes weight by the existing 46.69 kg while preserving seats, occupants and mission items.
+
+Local Edge checks passed the new fidelity/rack/workstation checks across desktop/tablet/phone, plus occupant layering, standard roles/CASEVAC, CG and image-local controls. Live equipment naming is held unchanged for later discussion. No commit or push.
+
+## 26 October 2026 — source-image item composition correction
+
+User supplied the four original annotated references and clarified that the full pictured items should become selectable live items, including rack and SWS. The prototype’s copies of these originals match Active Dev byte-for-byte; source files remain unchanged. The previous empty-rack artwork clipping is superseded: the complete rack depiction is retained as fitting artwork only, without creating contents or dependencies.
+
+Live equipment now retains the role reference image as the detailed backdrop. Its individually rendered item regions are masked out and restored by installed item components; removals/moves reveal the cleared underlay only in those regions. This preserves visible original floor panels and surrounding detail rather than substituting the whole cabin background. Hidden floor beneath removed items and unsupported custom arrangements remain a visual-review limitation. PTA crop and silhouette now include the full grey aft moulding while excluding the independent rack below. Liferaft placements and native proportions are taken directly from Transport and CASEVAC image coordinates; location identities and W&B arms are unchanged.
+
+Cabinet label is shown in reference mode only; live cabinet artwork remains selectable without a label. Aft access zones are transparent at rest and on hover/focus, with outline-only feedback, so they do not obscure the rack. No new highlight visibility layer or layer rename was introduced. All work remains local and unpushed.
+
+## 26 October 2026 — Transport / CASEVAC rack default correction
+
+User confirmed Dive Bottle / O2 Rack is not installed in these two roles. Updated the prototype-only default-fit rules to remove the fitting from Transport and CASEVAC, matching both the picture and W&B; SAR-3/SAR-10 retain it. The pinned source catalogue remains unchanged. Older valid saved Transport/CASEVAC sessions receive the correction once and keep their other loads; the saved fit revision then preserves any later deliberate rack installation. Local desktop/tablet/phone tests cover absence in both defaults, the 7 kg correction, preservation of other loads, and persistence of deliberate installations. No push.
+
+## 26 October 2026 — return-to-start wording
+
+Renamed Start fresh to Return to Start page at the user’s request. Navigation preserves current aircraft/session data. Keep current session returns unchanged; entering new details and selecting Accept aircraft replaces the session and starts over. The accept button now keeps the same label on first entry and return, with a short explanation of the choice. No immediate Clear all Data action was introduced. Local only.
+
+## 26 October 2026 — Stokes clarity and reference labels
+
+User requested a cleaner deployed Stokes rendering using the partially obscured ramp litter as reference. Replaced the enlarged low-resolution cabin crop/alpha filter with crisp open orange framework drawn as scalable SVG paths. Gaps remain transparent to the actual floor/tray. Existing deployment dimensions/position, patient actions, item identity and W&B are unchanged.
+
+User requested that a removed sea tray be identified or removed from the static reference view. Added a Sea tray removed status button in the image corner for SAR reference images depicting the tray when the actual fit omits it. It opens fitting controls and disappears after installation or when Live equipment is on. Positioned outside the image’s transformed item plane to avoid overlapping deployed litter controls or scaling with zoom.
+
+Added consistent compact reference labels: Fwd shelves for the retained fixed shelving, plus installed-only SWS, O₂ rack and Basket. Each opens the associated view/item menu. Reference basket symbol is suppressed in favour of the label. These labels hide in live mode and during CG display. Local desktop/tablet/phone tests cover the label visibility/actions, removal status, unchanged viewing calculations and clean litter rendering. No commit or push.
+
+## 26 October 2026 — release authorization
+
+User requested commit and push of the accumulated local revision after iterative review. This checkpoint includes entry/resume and Return to Start page, keyboard visibility handling, blank zero quantities, aft navigation and labels, separate seat/occupant drawing and occupant key, source-image live composition, corrected role rack defaults, liferaft and workstation rendering, deployed Stokes clarity, and reference-view installed/removed labels. Deferred highlight-layer design and layer renaming remain unimplemented.
+
+Reference ZIPs/directories and generated review images are excluded from the commit. Active Dev and original reference images are unchanged. Local automated checks cover the implemented paths; physical iPad keyboard behavior remains a device-acceptance item. Push success is verified separately in the chat and does not by itself verify hosted deployment.
+
+Pre-commit validation completed: the targeted new artwork, reference-label, occupant-layer, zero-quantity, entry/resume and CG checks passed. Remaining registered usability, fuel/planning engine parity, hosted calibration, cargo, refinement, aircraft summary, ramp/slot, loading workspace and iPad-size stale-asset checks also passed in the local Chromium/Edge engine. Asset URL integrity and whitespace checks passed. Native iPad keyboard and Safari-device acceptance remain outstanding.

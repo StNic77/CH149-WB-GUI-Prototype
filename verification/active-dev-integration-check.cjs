@@ -11,14 +11,14 @@ const near=(a,b,label)=>assert.ok(Math.abs(a-b)<1e-6,`${label}: ${a} != ${b}`);
   const context=await browser.newContext({serviceWorkers:'block'}),gui=await context.newPage(),source=await context.newPage(),errors=[];
   for(const page of [gui,source]){page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));}
   await Promise.all([gui.goto('http://127.0.0.1:'+guiServer.address().port),source.goto('http://127.0.0.1:'+sourceServer.address().port)]);
-  await gui.waitForFunction(()=>!!window.CabinPlanningUI);await source.waitForFunction(()=>STORE.tails.length>0);
+  await require('./enter-workspace.cjs')(gui);await gui.waitForFunction(()=>!!window.CabinPlanningUI);await source.waitForFunction(()=>STORE.tails.length>0);
   const sourceBaseline=await source.evaluate(()=>{const tail='149920',s=STORE.sessions[tail]=makeNewSession(tail,false);STORE.selectedTail=tail;Object.assign(s.accepted,{isAccepted:true,by:'INTEGRATION TEST',basicW:10401,basicCG:8487,basicWeightBasis:'MAINTENANCE',maintenanceBaseline:fleetMaintenanceBaseline(),maintenanceExceptions:[]});applyPreset(tail,'SAR3');s.fuel.total=0;return {accepted:s.accepted,wb:computeWB(tail)};});
   await gui.evaluate(()=>applyPreset('SAR3'));
   // Capture the old CURRENT interpretation before applying Recorded Basic Weight.
   const current=await gui.evaluate(()=>{CabinPlanning.setBaseline(state,{basis:'CURRENT',basicWeight:10401,basicCG:8487});return CabinPlanning.evaluate(state).wb;});
   await gui.evaluate(()=>delete state.planning);await gui.locator('#openPlanning').click();
   assert.equal(await gui.locator('#planningForm [name=basis]').inputValue(),'MAINTENANCE');
-  await gui.locator('#planningForm [name=tail]').selectOption('149920');await gui.locator('#planningForm [name=weight]').fill('10401');await gui.locator('#planningForm [name=cg]').fill('8487');await gui.locator('#planningForm [type=submit]').click();
+  await gui.locator('[data-tail-choice="149920"]').click();await gui.locator('#planningForm [name=weight]').fill('10401');await gui.locator('#planningForm [name=cg]').fill('8487');await gui.locator('#planningForm [type=submit]').click();
   const accepted=await gui.evaluate(()=>CabinPlanning.session(state).accepted);assert.deepEqual(accepted.maintenanceBaseline,sourceBaseline.accepted.maintenanceBaseline);
   const evidence={tail:'149920',role:'SAR3',basicWeight:10401,basicCG:8487,sourceConfigVersion:30,oldCurrent:current,checks:[]};
   async function compare(label){const actual=await gui.evaluate(()=>CabinPlanning.evaluate(state)),expected=await source.evaluate(()=>computeWB('149920'));assert.deepEqual(actual.issues,[]);for(const key of ['basicW','basicCG','roleFitAdjustmentW','roleFitAdjustmentM','seatStructureAdjustmentW','seatStructureAdjustmentM','roleFitCurrentW','roleFitCurrentM','opWExact','opM','opCG','nonFuelWExact','nonFuelM','auwExact','auwCG','fuelTotal'])near(actual.wb[key],expected[key],label+' '+key);assert.deepEqual(actual.wb.flags,expected.flags);assert.deepEqual(actual.wb.fuelTanks,expected.fuelTanks);evidence.checks.push({label,wb:actual.wb});return actual.wb;}

@@ -51,3 +51,8 @@ Thumbs.db
 !verification/active-dev-integration-check.cjs
 !verification/casevac-multiselect-check.cjs
 !verification/cg-layer-check.cjs
+!verification/session-navigation-check.cjs
+!verification/enter-workspace.cjs
+!verification/zero-quantity-check.cjs
+!verification/occupant-layer-check.cjs
+!verification/live-fidelity-check.cjs

@@ -3,7 +3,7 @@ const browsers=require(process.env.PLAYWRIGHT_MODULE||'playwright'),{createPrevi
 (async()=>{const server=createPreviewServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;const engine=process.env.PLAYWRIGHT_ENGINE||'chromium';
 try{browser=await browsers[engine].launch(engine==='chromium'?{channel:process.env.PLAYWRIGHT_CHANNEL||'msedge',headless:true}:{headless:true});
 for(const [width,height]of [[834,1194],[1194,834],[390,844]]){
-const page=await browser.newPage({viewport:{width,height},hasTouch:true}),errors=[];page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port);await page.waitForFunction(()=>!!window.CabinViewControls);await page.evaluate(()=>{applyPreset('SAR3');CabinPlanViewer.changeZoom(2);});await page.locator('#planViewport').scrollIntoViewIfNeeded();
+const page=await browser.newPage({viewport:{width,height},hasTouch:true}),errors=[];page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port);await require('./enter-workspace.cjs')(page);await page.waitForFunction(()=>!!window.CabinViewControls);await page.evaluate(()=>{applyPreset('SAR3');CabinPlanViewer.changeZoom(2);});await page.locator('#planViewport').scrollIntoViewIfNeeded();
 await page.evaluate(()=>{window.panEvents=[];const v=document.getElementById('planViewport');for(const type of ['gotpointercapture','lostpointercapture','pointercancel'])v.addEventListener(type,e=>panEvents.push({type,target:e.target.id||e.target.tagName,id:e.pointerId}));});
 assert.equal(await page.locator('#planViewport').evaluate(el=>getComputedStyle(el).touchAction),'pan-y');
 const positions=[];

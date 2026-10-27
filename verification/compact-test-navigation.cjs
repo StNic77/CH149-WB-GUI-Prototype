@@ -1,6 +1,7 @@
 /* Shared navigation for regression checks written before the compact area menu.
    Uses the visible cascade buttons, then the existing focused controls. */
 module.exports=async function prepare(page){
+ await require('./enter-workspace.cjs')(page);
  const locate=page.locator.bind(page);let previousMenu=null;
  page.locator=function(selector,...args){const locator=locate(selector,...args);
   for(const method of ['click','tap']){const activate=locator[method].bind(locator);locator[method]=async function(...options){
@@ -13,7 +14,7 @@ module.exports=async function prepare(page){
    if(compact){
     if(selector==='#fuelAlways'){await locate('#openFuel')[method]();return;}
     if(selector==='.layer-options>summary'){if(await locate('#layersControl').getAttribute('aria-expanded')!=='true')await locate('#layersControl')[method]();return;}
-    if(selector==='#backToCabin'||selector.includes('data-shelf-access="stbdAft"')){if(await locate('#viewControl').getAttribute('aria-expanded')!=='true')await locate('#viewControl')[method]();await locate('[data-viewtab="'+(selector==='#backToCabin'?'plan':'stbd')+'"]').click();return;}
+    if(selector==='#backToCabin'){if(await locate('#viewControl').getAttribute('aria-expanded')!=='true')await locate('#viewControl')[method]();await locate('[data-viewtab="'+(selector==='#backToCabin'?'plan':'stbd')+'"]').click();return;}
     if(selector==='#planWide'){await locate('#planViewport').scrollIntoViewIfNeeded();await locate('#wholeAircraft')[method]();return;}
     if(await locator.count()&&await locator.first().evaluate(el=>!!el.closest('#viewOptions'))&&!(await locator.first().isVisible()))await locate('#viewControl')[method]();
    }

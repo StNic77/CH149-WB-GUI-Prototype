@@ -15,7 +15,7 @@
 .marking-station .floor-space-cell,.marking-station .floor-area-target,.marking-station .live-cabin-object{pointer-events:none}
 .inspecting-bays .live-cabin-items{z-index:5}.inspecting-bays .cargo-layer{z-index:7;opacity:1}.inspecting-bays .cargo-symbol,.inspecting-bays .ramp-area-layer .floor-space-cell{pointer-events:auto}
 .inspecting-bays #floorSelectionOutline:not([hidden]),.inspecting-bays #floorPreviewOutline:not([hidden]){display:block}
-#planShelfAccess{position:absolute;inset:0;z-index:6;pointer-events:none}#planShelfAccess[hidden]{display:none}#planShelfAccess button{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;font:10px 'Segoe UI',sans-serif;color:#164a52;background:#eaf7f2df;border:1px solid #397e73;border-radius:4px;padding:3px 5px}
+#planShelfAccess{position:absolute;inset:0;z-index:4;pointer-events:none}#planShelfAccess[hidden]{display:none}#planShelfAccess button{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;font:10px 'Segoe UI',sans-serif;color:#164a52;background:#eaf7f2df;border:1px solid #397e73;border-radius:4px;padding:3px 5px}
 .marking-station #planShelfAccess,.placing-floor-cargo #planShelfAccess,.locating-seat #planShelfAccess{pointer-events:none}.marking-station #planShelfAccess button,.placing-floor-cargo #planShelfAccess button,.locating-seat #planShelfAccess button{pointer-events:none}
 @media(max-width:650px){.image-layers{margin-left:0;gap:9px}.image-menu button{min-height:36px}#imageMenuBody{padding:10px}.image-layer details p{left:-35px;right:auto}}
 .image-back-button{display:block;margin:0 14px 12px;padding:10px 16px;min-height:44px;border:0;border-radius:7px;background:#205f68;color:white;font:650 14px 'Segoe UI',sans-serif;cursor:pointer}.image-back-button[hidden]{display:none}
@@ -29,3 +29,10 @@
 #imageMenuBody #casevacPanel .floor-actions:has([data-casevac-rack]){display:flex;flex-wrap:wrap;gap:6px}
 @media(max-width:650px){#imageMenuBody{padding:10px}[data-primary-actions=true],.shelf-item-focus{top:-10px}#imageMenuBody button,#imageMenuBody input,#imageMenuBody select{min-height:44px;font-size:14px}.image-back-button{width:calc(100% - 28px)}}
 @media(max-width:650px){#imageMenuBody input,#imageMenuBody select{font-size:16px}}
+
+#planShelfAccess [data-shelf-access$="Aft"]{min-width:0;min-height:0;padding:0;background:transparent;border-color:transparent}#planShelfAccess button:hover{background:#d5eee4df}#planShelfAccess button:focus-visible{outline:3px solid #146a8a;outline-offset:3px}
+#planCabinet,#planCabinet:hover,#planCabinet.selected{background:transparent;border:0;box-shadow:none;text-shadow:none}
+#planCabinet span{display:block;left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);padding:4px 7px;border:1px solid #286f83;border-radius:4px;background:#eaf7fc;color:#174f60;font:750 11px/1 'Segoe UI',sans-serif;white-space:nowrap}
+#planCabinet:focus-visible{outline:none}#planCabinet:hover span,#planCabinet:focus-visible span{outline:2px solid #1b786c;outline-offset:2px}
+
+#planShelfAccess [data-shelf-access$="Aft"]:hover,#planShelfAccess [data-shelf-access$="Aft"]:focus-visible{background:transparent;border-color:#2b8b76;outline:1px solid #2b8b76;outline-offset:1px}

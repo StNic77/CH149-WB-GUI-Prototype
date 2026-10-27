@@ -135,7 +135,7 @@ body{padding-bottom:calc(var(--aircraft-ribbon-height,110px) + 16px)}
 .cg-layer-active .live-cabin-active #cabinImage{opacity:0!important}
 .cg-layer-active #liveCabinBackground{opacity:.45}
 .cg-layer-active #liveCabinItems{opacity:.65}
-.cg-layer-active :is(#seatLayer,#seatPanel,#seatReferenceNotice,#floorAreaLayer,#floorSelectionOutline,#floorPreviewOutline,#bayLayer,#bayPanel,#equipmentMarkerLayer,#imageGestureHint,.photo-chip){display:none!important}
+.cg-layer-active :is(#seatLayer,#liveOccupantLayer,#seatPanel,#seatReferenceNotice,#floorAreaLayer,#floorSelectionOutline,#floorPreviewOutline,#bayLayer,#bayPanel,#equipmentMarkerLayer,#imageGestureHint,.photo-chip){display:none!important}
 .cg-layer-active #liveCabinItems :is([data-live-object^="seat-"],[data-live-object="c3-position"],.live-occupancy-marker){display:none!important}
 .cg-layer-summary{margin:10px 0;padding:12px;border:1px solid #a9c8ce;border-radius:8px;background:#f5fbfc;color:#173f49}
 #cgLayerSummary[hidden]{display:none}

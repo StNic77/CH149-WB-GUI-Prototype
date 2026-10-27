@@ -3,7 +3,7 @@ const browsers=require(process.env.PLAYWRIGHT_MODULE||'playwright'),{createPrevi
 (async()=>{const server=createPreviewServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;
  try{const engine=process.env.PLAYWRIGHT_ENGINE||'chromium';browser=await browsers[engine].launch(engine==='chromium'?{channel:process.env.PLAYWRIGHT_CHANNEL||'msedge',headless:true}:{headless:true});
  for(const [width,height]of [[1440,1000],[744,1133],[1133,744],[390,844]]){
-  const page=await browser.newPage({viewport:{width,height},hasTouch:width<1200}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.setDefaultTimeout(10000);await page.goto('http://127.0.0.1:'+server.address().port);await page.waitForFunction(()=>!!window.CabinActions);
+  const page=await browser.newPage({viewport:{width,height},hasTouch:width<1200}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.setDefaultTimeout(10000);await page.goto('http://127.0.0.1:'+server.address().port);await require('./enter-workspace.cjs')(page);await page.waitForFunction(()=>!!window.CabinActions);
   await page.evaluate(()=>{applyPreset('CASEVAC');CabinPlanning.setBaseline(state,{basis:'MAINTENANCE',basicWeight:10401,basicCG:8487,tail:'149920'});CabinEquipment.refresh();CabinCasevac.open('FWD_STBD');});
   const before=await page.evaluate(()=>({signature:CabinEquipment.signature(state),wb:CabinPlanning.evaluate(state).wb}));
   const select=id=>page.locator('[data-casevac-select="'+id+'"]');

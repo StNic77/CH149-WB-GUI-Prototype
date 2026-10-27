@@ -8,6 +8,7 @@
  for(const item of Object.values(config.missionEquip))item.unitWeight??=(item.w??0)/(item.defaultQuantity??1);
  const store={sessions:{}},reference=window.CabinPlanningReferenceFactory(config,store);
  const dictionary=set=>Object.fromEntries([...set].map(key=>[key,true]));
+ const occupantType=(seat,kind)=>kind==='Crew'||kind!=='Passenger'&&(seat.startsWith('C')||kind==='SAR Tech')?'crew':'pax';
  function session(state){
   const p=state.planning||{},basis=p.basis||'MAINTENANCE',baseline=p.baseline||(basis==='MAINTENANCE'?reference.fleetMaintenanceBaseline():{});
   const s={tail:p.tail||'preview',preset:state.preset,accepted:{isAccepted:true,basicW:p.basicWeight||0,basicCG:p.basicCG||0,basicWeightBasis:['CURRENT','MAINTENANCE'].includes(basis)?'MAINTENANCE':'RFM',maintenanceBaseline:baseline,maintenanceExceptions:[]},roleFit:dictionary(state.roleFit),seats:dictionary(state.seats),mission:dictionary(state.mission),missionLoads:{},roleFitDeclarations:{},roleFitDeclarationOrigins:{},patientOccupants:{...state.patients},occupants:{},bays:{},cargo:[],zones:[],customExceptions:[],fuel:{total:p.fuel??0,landing:0,manualTanks:false,tanks:{}}};
@@ -15,7 +16,7 @@
    const on=state.roleFit.has(key),included=['CURRENT','MAINTENANCE'].includes(basis)&&baseline.roleFit?.[key];
    s.roleFitDeclarations[key]=on?(included?'ACCOUNTED':'ADD'):(included?'REMOVE':'EXCLUDED');s.roleFitDeclarationOrigins[key]='manual';
   }
-  for(const [seat,kind]of Object.entries(state.occupants||{}))if(kind)s.occupants[seat]={type:kind==='Crew'||kind!=='Passenger'&&(seat.startsWith('C')||kind==='SAR Tech')?'crew':'pax'};
+  for(const [seat,kind]of Object.entries(state.occupants||{}))if(kind)s.occupants[seat]={type:occupantType(seat,kind)};
   for(const key of state.mission){
    const item=config.missionEquip[key];if(!item)continue;
    const allocations=item.defaultAllocations?.length?item.defaultAllocations:[{quantity:item.defaultQuantity??1,stow:item.stow,customArm:item.customArm}];
@@ -54,5 +55,5 @@
   const assigned=missionRows(state).filter(r=>r.stowId===id&&r.quantity>0),total=rows.reduce((n,r)=>n+Number(r.weight),0)+assigned.reduce((n,r)=>n+r.w,0),limit=source.bayLimits[id]??null;
   return {id,total,limit,rows,assigned,excess:limit===null?null:Math.max(0,total-limit),remaining:limit===null?null:limit-total,level:limit!==null&&total>limit+1e-9?'caution':limit===null||assigned.some(r=>r.error)?'unreviewed':'ok'};
  }
- window.CabinPlanning=Object.freeze({session,missionRows,evaluate,shelf,bay,source,setBaseline});
+ window.CabinPlanning=Object.freeze({session,missionRows,evaluate,shelf,bay,source,setBaseline,occupantType});
 })();

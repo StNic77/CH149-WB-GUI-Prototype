@@ -13,6 +13,10 @@
   const viewport=document.getElementById('planViewport');
   function currentAsset(){return window.CabinPlanViewer?.getState().asset;}
   function c3Point() {
+    // Confirmed seat centre: 4559 mm, on the aircraft centreline. Use the same
+    // station calibration as C1/C2 and other seats, rather than older photo marks.
+    const mapping=window.CabinBayLayer?.getDisplayMapping();
+    if(mapping)return {x:mapping.forwardX+(all.C3.arm-4875)/6518*(mapping.aftX-mapping.forwardX),y:mapping.centerY};
     const active=currentAsset(),assets=window.CH149_PLAN_REGISTRATION.assets;
     const sources=Object.values(assets).sort((a,b)=>Number(b===active)-Number(a===active));
     for(const source of sources){
@@ -125,10 +129,16 @@
     const xAt=arm=>mapping.forwardX+(arm-4875)/6518*(mapping.aftX-mapping.forwardX);
     for(const id of [...ordered(Object.keys(data.paxSeats)),...ordered(Object.keys(data.crewSeats))]) {
       if(rules.blockers(state,id).length)continue;
+      // An absent seat must not cover equipment currently using that position.
+      // Its permitted folded installation remains available through Area options.
+      if(!state.seats.has(id)&&rules.occupancyBlockers(state,id).length)continue;
       if(!state.seats.has(id)&&rules.conflicts(state.seats,id).length)continue;
       const seat=all[id],port=/Port/i.test(seat.name),stbd=/Stbd/i.test(seat.name);
-      const isCrew=!!data.crewSeats[id],offset=(isCrew?68:118)*mapping.sourceScale;
-      const point=id==='C3'?c3Point():null;
+      // Share the live seat/occupant centre; labels remain below occupant symbols.
+      const isCrew=!!data.crewSeats[id],folded=state.seats.has(id)&&rules.occupancyBlockers(state,id).length>0;
+      const displayScale=document.getElementById('liveCabinToggle').checked?window.CH149_PLAN_REGISTRATION.assets.BASELINE.scale:mapping.sourceScale;
+      const offset=(!isCrew&&folded?84:65)*displayScale;
+      const point=id==='C3'?c3Point():window.CabinLive?.getSeatPoint(id);
       const y=point?.y??mapping.centerY+(port?offset:stbd?-offset:0);
       const button=document.createElement('button');button.type='button';button.className='seat-marker';button.dataset.seatMarker=id;
       button.classList.toggle('installed',state.seats.has(id));
