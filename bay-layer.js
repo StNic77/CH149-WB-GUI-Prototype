@@ -116,7 +116,6 @@
       forwardMarked: reviewed.forward !== undefined, aftMarked: reviewed.aft !== undefined };
   }
   function markMode(value) {
-    if(value)window.CabinSeatEditor?.finishLocating();
     marking = value;
     document.getElementById('bayMarkForward').setAttribute('aria-pressed', String(value === 'forward'));
     document.getElementById('bayMarkAft').setAttribute('aria-pressed', String(value === 'aft'));

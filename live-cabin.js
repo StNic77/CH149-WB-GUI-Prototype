@@ -9,7 +9,7 @@
  const layer=document.createElement('div');layer.id='liveCabinItems';layer.className='live-cabin-items';layer.hidden=true;sheet.append(layer);
  const occupants=document.createElement('div');occupants.id='liveOccupantLayer';occupants.className='live-occupant-layer';occupants.hidden=true;sheet.append(occupants);
  const referenceLabels=document.createElement('div');referenceLabels.id='referenceItemLabels';referenceLabels.hidden=true;sheet.append(referenceLabels);
- const referenceFit=document.createElement('button');referenceFit.id='referenceFitMarker';referenceFit.type='button';referenceFit.textContent='Sea tray removed';referenceFit.hidden=true;referenceFit.title='The sea tray is removed from the current fit. This is the Role reference image.';referenceFit.onclick=()=>window.CabinEquipmentUI.openRole('RF_AIRCRAFT_SYSTEMS_SEA_TRAY');document.getElementById('planViewport').append(referenceFit);
+ const referenceFit=document.createElement('button');referenceFit.id='referenceFitMarker';referenceFit.type='button';referenceFit.textContent='Sea tray removed';referenceFit.hidden=true;referenceFit.title='The sea tray is removed from the current fit. This is the Role reference image.';referenceFit.onclick=()=>window.CabinEquipmentUI.openRole('RF_AIRCRAFT_SYSTEMS_SEA_TRAY');sheet.append(referenceFit);
  const label=document.createElement('label'),toggle=document.createElement('input');toggle.type='checkbox';toggle.id='liveCabinToggle';toggle.checked=true;label.append(toggle,'Live equipment');document.getElementById('planTools').append(label);
  const occupantLabel=document.createElement('label'),occupantToggle=document.createElement('input');occupantToggle.type='checkbox';occupantToggle.id='occupantToggle';occupantToggle.checked=true;occupantLabel.append(occupantToggle,'Occupants');document.getElementById('planTools').append(occupantLabel);occupantToggle.onchange=()=>document.body.classList.toggle('occupants-hidden',!occupantToggle.checked);
  const notice=document.createElement('p');notice.id='liveCabinNotice';notice.className='live-cabin-notice';notice.hidden=true;notice.textContent='Live cabin · equipment and seats follow your changes. P2 and P3 stay in the background. Other equipment remains available in the contents lists.';document.getElementById('seatReferenceNotice').before(notice);
@@ -66,6 +66,7 @@
  function render(){
   if(!bridge)return;const state=bridge.state(),mapping=window.CabinBayLayer?.getDisplayMapping(),active=toggle.checked&&available&&!!mapping;
   const traySource=visualLayouts[state.preset]?.seaTray;referenceFit.hidden=active||!available||!mapping||!traySource||state.roleFit.has('RF_AIRCRAFT_SYSTEMS_SEA_TRAY');
+  if(!referenceFit.hidden){const source=reg.assets[state.preset],[sx,sy,w,h]=traySource;Object.assign(referenceFit.style,{left:percent(source.x+(sx+w*.44)*source.scale,reg.width),top:percent(source.y+(sy+h*.16)*source.scale,reg.height)});}
   referenceLabels.hidden=active||!available||!mapping;referenceLabels.replaceChildren();
   background.hidden=layer.hidden=notice.hidden=!active;occupants.hidden=!available||!mapping;wrap.classList.toggle('live-cabin-active',active);seatPoints.clear();if(!available||!mapping)return;
   sourceBackground(state.preset);

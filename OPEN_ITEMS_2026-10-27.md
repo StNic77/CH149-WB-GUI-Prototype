@@ -1,16 +1,26 @@
+> Superseded on 28 October 2026: use OPEN_ITEMS_2026-10-28.md. The dated content below is historical evidence, not the current backlog or release state.
+
+## Current detail-image decision — 28 October 2026
+
+The standard-role image availability matrix is implemented locally: all details for SAR-3; Cabinet/Forward/Ramp for SAR-10; Forward/Ramp for Transport and CASEVAC. Unavailable images are disabled with explanatory helpers; underlying equipment, contents and W&B remain available. Generated trials remain outside the repository. Future image work: add permanently installed P2/P3 to the Ramp Shelves reference for every configuration; keep the current ramp image available meanwhile. See DETAIL_IMAGE_APPLICABILITY_2026-10-28.md. Broader image/symbol improvements remain deferred.
+
+## Future work agreed — iPad landscape text-entry menus
+
+Extend the approved Fuel landscape menu approach to all menus/forms containing editable text or numeric fields on iPad in landscape orientation. Adapt each form to use the available width with compact rows of fields and actions, keeping the complete active field/value visible above the on-screen keyboard and Apply/Close/Cancel reachable. Preserve drafts, whole-value numeric selection, normal subsequent caret editing and stable menu placement, with viewport adjustment only as needed. Portrait retains its existing layout. Verify representative forms, field switching, keyboard opening/dismissal and rotation on a physical iPad. This is future work only; no further menu implementation is part of the current Sea Tray/C3 package.
+
 > Release update — 27 October 2026: the user authorized commit and push of the wider landscape Fuel menu (Fuel only), the full CG chart retaining both conditions independently of image selection, and these updated handoff documents. Physical iPad usability remains unconfirmed. The dated reference ZIP is an unchanged snapshot of earlier checkpoint 39b9b7f.
 
 # Outstanding work — 27 October 2026
 
-Latest status: user likes the wider Fuel landscape layout. Whole-value numeric selection and stable menu placement during entry are implemented for the newly authorized release. Confirm them on the actual iPad. Only Fuel has the wider layout; extension to other forms is still open. Ramp hinge moment is the agreed label; user confirms existing limits are correct. No numerical change is included. Earlier unpushed notes below are historical. Use the v2 package for the refreshed source/doc snapshot.
+Latest status: user likes the wider Fuel landscape layout. Whole-value numeric selection and stable menu placement during entry are implemented for the newly authorized release. Confirm them on the actual iPad. Only Fuel currently has the wider layout; extending its approach to all iPad landscape menus with text/numeric entry is now agreed future work. Ramp hinge moment is the agreed label; user confirms existing limits are correct. No numerical change is included. Earlier unpushed notes below are historical. Use the v2 package for the refreshed source/doc snapshot.
 
 Latest device feedback: iPad entry menus remain clipped and awkward. Keyboard/menu usability is still unresolved. User authorized a local wider-landscape Fuel trial, now implemented with main entries/actions in rows and five tank columns; portrait remains stacked. Native review is pending. Full-envelope independence from image selection has also been implemented locally (both markers, labels and ranges always shown). Both changes are newer than the pushed checkpoint and reference ZIP.
 
 Baseline: pushed application 39b9b7f. This is a discussion/backlog document, not authorization to implement every item. Items refer to the latest consolidated open list; the prior selected implementation scope was earlier-list 1–9, 11–13 and 16. All of that code is implemented; physical iPad acceptance remains open.
 
-1. Physical iPad/Safari acceptance: full input box and entered value with keyboard open, menus, ramp shelves, portrait/landscape, zoom and touch. Use DEVICE_CHECK_2026-10-27.md.
+1. Extend the approved Fuel landscape layout approach to all iPad landscape menus with text/numeric entry (future implementation), then physical iPad/Safari acceptance: full input box and entered value with keyboard open, menus, ramp shelves, portrait/landscape, zoom and touch. Use DEVICE_CHECK_2026-10-27.md.
 2. User/device review of the latest implemented fixes: CG trace/Both/condition emphasis; P7; alternative seats; SWS reinstall; stretcher/rack markers; Bay Cells priority. Changes are now committed and pushed, not pending publication.
-3. Move Sea tray removed directly onto the tray in reference mode. Currently shown in image corner.
+3. Completed locally: Sea tray removed now sits on the depicted tray and follows pan/zoom. Live-cell selection opens the installed tray from B3 Centre/Stbd, B4 Centre/Stbd and B5 Centre. Selection and display preserve W&B; physical device review remains available.
 4. Review artwork placement/scale and exposed floor under removals for custom/unpictured fits.
 5. Make detail-view imagery and equipment symbology follow role, fit, stowage and removed state consistently. Specifically SAR-10 Pax Port Aft shows the guideline against the shared reference image; user supplied an example. Review images and symbols together, not by assuming the pictured fit is installed. Latest stretcher/rack associations are implemented but this broader consistency work remains open.
 6. Discuss/implement a clickable-zone highlight layer, hidden by default and remembering preference. Areas remain clickable with highlights off. No implementation yet.

@@ -36,8 +36,8 @@
     viewport.setAttribute('tabindex', hasPlan ? '0' : '-1');
     activeAsset = isPlan ? registration.assets[preset || 'BASELINE'] : null;
     image.removeAttribute('style'); target.removeAttribute('style');
-    image.hidden = isPlan && !hasPlan;
-    viewport.hidden = isPlan && !hasPlan;
+    image.hidden = !hasPlan;
+    viewport.hidden = !hasPlan;
     if (isPlan && hasPlan && activeAsset) {
       const asset = activeAsset;
       image.style.left = percent(asset.x,registration.width);

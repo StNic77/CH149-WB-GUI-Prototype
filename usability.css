@@ -95,3 +95,18 @@ body:not(:has(#imageMenu:not([hidden]))):is(.compact-view-controls-active) :is(#
 #casevacPanel .floor-choice label{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 0}
 #casevacAddSelected{min-height:44px;padding:10px 14px;border:1px solid #216c64;border-radius:6px;background:#277e74;color:white;font:600 14px "Segoe UI",sans-serif;cursor:pointer}
 #casevacAddSelected:disabled{opacity:.5;cursor:default}
+
+/* Image availability is separate from loading capability. */
+.viewtab:disabled,.area-button:disabled,[data-image-unavailable=true]{opacity:.45;filter:grayscale(1);cursor:default}.detail-image-help{font-size:12px;line-height:1.4;margin:6px 0;color:#53636c}.detail-image-unavailable #aircraftTouchControls{display:none!important}.detail-image-unavailable #planUnavailable p{max-width:48ch;margin:8px auto}.detail-image-unavailable .reference-state-note{display:none}
+
+/* Compact load entry on landscape tablets; field values and actions stay together. */
+.load-landscape :is(#areaLoadForm,#cargoEditForm,.equipment-extra-weight form,.shelf-weight-entry form){display:grid;grid-template-columns:140px minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:end}
+.load-landscape :is(#areaLoadForm,#cargoEditForm,.equipment-extra-weight form,.shelf-weight-entry form)>*{grid-column:1/-1;min-width:0}
+.load-landscape :is(#areaLoadForm,#cargoEditForm)>label:has(>input[name=weight]),.load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form>label{grid-column:1;grid-row:1;margin:0;display:flex;flex-direction:column;gap:4px}
+.load-landscape :is(#areaLoadForm,#cargoEditForm)>.floor-actions{display:contents}
+.load-landscape :is(#areaLoadForm,#cargoEditForm)>.floor-actions>button[type=submit],.load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form>button{grid-column:2;grid-row:1;margin:0;min-height:44px;width:auto}
+.load-landscape #areaCancelLoad{grid-column:3;grid-row:1;margin:0;min-height:44px}
+.load-landscape #cargoEditForm>.floor-actions>button[type=submit]{grid-column:2/-1}
+.load-landscape #cargoEditForm :is(#cargoReposition,#cargoRemove){grid-column:1/-1;min-height:44px}
+.load-landscape :is(#areaLoadForm,#cargoEditForm,.equipment-extra-weight form,.shelf-weight-entry form) input[type=number]{width:140px;max-width:100%;min-width:0;box-sizing:border-box;font-size:16px;min-height:44px}
+.load-landscape #cargoEditForm>label:has(>input[name=arm]){width:140px;max-width:100%}

@@ -1,3 +1,21 @@
+## 28 October 2026 — configuration-dependent detail reference images
+
+Applied the user-agreed applicability matrix: SAR-3 retains every detail; SAR-10 retains Cabinet, Forward Shelves and Ramp Shelves; Transport/CASEVAC retain Forward and Ramp Shelves. Aft cabin imagery is unavailable outside SAR-3 among these standard roles. Unavailable choices are greyed out with helpers, while direct location/equipment access uses an image-unavailable explanation and retains all loading/W&B controls. No source or generated imagery is changed or added. Ramp imagery remains usable; future corrected imagery must include permanently installed P2/P3 in every role. See DETAIL_IMAGE_APPLICABILITY_2026-10-28.md. This supersedes proposals to use the experimental generated SAR-10 view in the application. The user will commit/push the combined changes.
+
+## 27 October 2026 — remove C3 position-review tools
+
+Removed Locate C3, Finish locating C3, their status text, click-to-reposition handler and saved visual-mark lookup. C3 retains its confirmed calibrated centreline position at seat station 4559 mm and existing occupant arm. Normal seat installation, assignment and occupant controls remain. Removed obsolete call sites and position-editor styling. This joins the Sea Tray increment; the user will commit and push the combined changes. Nothing has been staged, committed or pushed by the assistant.
+
+## 27 October 2026 — Sea Tray cell selection and removed-state label
+
+Implemented the two agreed Sea Tray changes. The confirmed interaction footprint is B3 Centre/Stbd, B4 Centre/Stbd and B5 Centre. With Live equipment enabled, an ordinary click/tap or keyboard activation of an exposed occupied cell opens the existing installed Sea Tray controls. Area options retains the originating cell and existing cargo/bay/raft choices; explicit cargo placement bypasses tray selection. The tray artwork never intercepts cells, including Bay review. Existing seats and equipment above it retain direct selection priority.
+
+In reference view, Sea tray removed is positioned on the depicted tray at the user-marked upper area using the role's existing image registration. It follows image pan/zoom and opens the existing fitting controls. Installation, Live equipment and CG visibility retain their existing label behavior. No source masses, arms, calculations, installed location, artwork footprint or image assets changed.
+
+Verification: sea-tray-selection-check passes SAR-3/SAR-10 at desktop, tablet portrait/landscape and phone sizes using mouse/touch plus keyboard. It checks all five cells with Bay boundaries off/on, original-cell return, cargo placement, W&B/state preservation, label registration through zoom, removal/reinstallation and overlying Stokes selection. Existing live-fidelity-check and image-workspace-check pass. Asset URL integrity and whitespace checks pass. Browser emulation is not physical iPad acceptance.
+
+Generated Port Aft trials and their app integration are excluded at the user's request; originals remain active. Trials are preserved outside the repository in ../Port Aft Image Trials 2026-10-27. This repository increment contains Sea Tray behavior, related location wording, checks and continuity notes; the subsequent user-requested C3 position-review cleanup is also included. No publication is included.
+
 > Package status, 27 October 2026: application 39b9b7f is committed and pushed for device checks. This documentation refresh is local and newer than the release. Physical iPad/Safari acceptance and hosted deployment confirmation remain open. Read CABIN_UI_DEVELOPMENT_HANDOFF.md and OPEN_ITEMS_2026-10-27.md for current consolidated status; older dated release statements below are historical.
 
 # CH-149-615 graphical prototype — Development History
@@ -346,3 +364,13 @@ User requested commit and push of the accumulated local revision after iterative
 Reference ZIPs/directories and generated review images are excluded from the commit. Active Dev and original reference images are unchanged. Local automated checks cover the implemented paths; physical iPad keyboard behavior remains a device-acceptance item. Push success is verified separately in the chat and does not by itself verify hosted deployment.
 
 Pre-commit validation completed: the targeted new artwork, reference-label, occupant-layer, zero-quantity, entry/resume and CG checks passed. Remaining registered usability, fuel/planning engine parity, hosted calibration, cargo, refinement, aircraft summary, ramp/slot, loading workspace and iPad-size stale-asset checks also passed in the local Chromium/Edge engine. Asset URL integrity and whitespace checks passed. Native iPad keyboard and Safari-device acceptance remain outstanding.
+
+## 28 October 2026 — full next-chat package refresh
+
+Updated current handoff, continuation, open list, plan/backlog, run guide and verification/device references. Recommended next discussion: extend the approved Fuel landscape input-menu approach across other iPad text/numeric menus. Recorded all parked decisions, accepted standard occupant weights, external image-trial exclusion and future ramp P2/P3 imagery. Package source includes current uncommitted working tree; no staging/commit/push or new implementation in this documentation pass. Earlier dated packs remain unchanged.
+
+## 28 October 2026 — compact landscape load menus
+
+Implemented the user-selected first group: Add/Edit Cargo, Add/Edit Bay Weight including Ramp, and both additional shelf-weight entry routes. Landscape touch tablets at widths of at least 700 px use 140 px numeric inputs (roughly seven characters with native control padding), with the primary action alongside; new floor loads also retain Cancel on that row. Descriptions and optional arm details stay separate. Existing edit removal/reposition actions retain their behavior. Portrait and desktop retain their layouts. No calculation, mass, arm or validation changes.
+
+The shared menu uses up to 620 px for these forms and retains anchored placement while typing. Targeted browser checks cover Mini/larger tablet landscape, portrait and desktop, saved bay/shelf weights and alignment. Physical Safari keyboard acceptance remains pending. This follows the current reference pack; older next-work descriptions record the previous plan.

@@ -1,3 +1,5 @@
+> Superseded on 28 October 2026: use VERIFICATION_STATUS_2026-10-28.md. The dated content below is historical evidence, not the current backlog or release state.
+
 # Verification and provenance — 27 October 2026
 
 ## Latest authorized revision after 7dd6568

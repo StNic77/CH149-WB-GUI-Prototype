@@ -4,58 +4,15 @@
   const layer=document.createElement('div');layer.id='seatLayer';layer.className='seat-layer';
   document.getElementById('planSheet').append(layer);
   const toggle=document.getElementById('seatToggle'),panel=document.getElementById('seatPanel');
-  let getState=null, available=false, locating=false, suppressLocateClick=false;
-  // User accepted the existing cockpit-jump panel as the common image baseline.
-  // Keep older browser marks untouched under v1; new deliberate adjustments use v2.
-  const positionKey='ch149-cabin-prototype.c3-position-review.v2';
-  let c3Positions={};
-  try {const saved=JSON.parse(localStorage.getItem(positionKey));if(saved?.schema===1&&saved.records&&typeof saved.records==='object')c3Positions=saved.records;} catch {}
+  let getState=null, available=false;
   const viewport=document.getElementById('planViewport');
-  function currentAsset(){return window.CabinPlanViewer?.getState().asset;}
   function c3Point() {
-    // Confirmed seat centre: 4559 mm, on the aircraft centreline. Use the same
-    // station calibration as C1/C2 and other seats, rather than older photo marks.
+    // Confirmed seat centre: 4559 mm, on the aircraft centreline.
     const mapping=window.CabinBayLayer?.getDisplayMapping();
     if(mapping)return {x:mapping.forwardX+(all.C3.arm-4875)/6518*(mapping.aftX-mapping.forwardX),y:mapping.centerY};
-    const active=currentAsset(),assets=window.CH149_PLAN_REGISTRATION.assets;
-    const sources=Object.values(assets).sort((a,b)=>Number(b===active)-Number(a===active));
-    for(const source of sources){
-      const point=c3Positions[source.file];
-      if(point&&JSON.stringify(point.size)===JSON.stringify(source.size)&&Number.isFinite(point.x)&&Number.isFinite(point.y)&&point.x>=0&&point.x<=source.size[0]&&point.y>=0&&point.y<=source.size[1])return {x:source.x+point.x*source.scale,y:source.y+point.y*source.scale};
-    }
-    const baseline=assets.BASELINE;
+    const baseline=window.CH149_PLAN_REGISTRATION.assets.BASELINE;
     return {x:baseline.x+574*baseline.scale,y:baseline.y+403*baseline.scale};
   }
-  function finishLocating() {
-    locating=false;viewport.classList.remove('locating-seat');
-    document.getElementById('seatFinishLocate').hidden=true;
-    document.getElementById('seatLocateC3').setAttribute('aria-pressed','false');
-    if(document.getElementById('seatLocationStatus').textContent.startsWith('C3 position marked'))document.getElementById('seatLocationStatus').textContent='C3 visual position saved. Use Locate C3 to adjust it; catalogue arms are unchanged.';
-  }
-  document.getElementById('seatLocateC3').onclick=()=>{
-    if(!available){document.getElementById('seatLocationStatus').textContent='Open an available plan to locate C3.';return;}
-    window.CabinBayLayer.finishMarking();locating=true;
-    viewport.classList.add('locating-seat');
-    document.getElementById('seatLocateC3').setAttribute('aria-pressed','true');
-    document.getElementById('seatFinishLocate').hidden=false;
-    document.getElementById('seatLocationStatus').textContent='Click C3 on the plan. Click again to refine, then Finish locating C3. Its catalogue arm will stay unchanged.';
-    select('C3');
-  };
-  document.getElementById('seatFinishLocate').onclick=finishLocating;
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&locating)finishLocating();});
-  function locatePoint(event) {
-    if(event.type==='click'&&suppressLocateClick){suppressLocateClick=false;event.preventDefault();event.stopImmediatePropagation();return;}
-    if(!locating||!available||(event.clientX===0&&event.clientY===0&&event.detail===0))return;
-    const source=currentAsset(),rect=document.getElementById('cabinImage').getBoundingClientRect();
-    const x=(event.clientX-rect.left)/rect.width*source.size[0],y=(event.clientY-rect.top)/rect.height*source.size[1];
-    if(x<0||y<0||x>source.size[0]||y>source.size[1])return;
-    event.preventDefault();if(event.type==='click')event.stopImmediatePropagation();
-    c3Positions[source.file]={size:source.size,x,y,review:'User-identified visual centre; catalogue arms unchanged'};
-    let saved=true;try {localStorage.setItem(positionKey,JSON.stringify({schema:1,records:c3Positions}));} catch {saved=false;}
-    document.getElementById('seatLocationStatus').textContent=`C3 position marked${saved?' and saved in this browser':''}. Click again to refine, then Finish locating C3. Seat and occupant arms are unchanged.`;
-    renderLayer();
-  }
-  viewport.addEventListener('click',locatePoint,true);
   const ordered=ids=>ids.sort((a,b)=>Number(a.slice(1))-Number(b.slice(1)));
   const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function expectedSeats(state) {
@@ -173,15 +130,14 @@
     window.CabinFloorArea?.render();
     window.CabinAircraftSummary?.render();
   }
-  toggle.onchange=()=>{if(!toggle.checked)finishLocating();render();};
+  toggle.onchange=()=>render();
   let touch=null;
   viewport.addEventListener('pointerdown',event=>{
-    suppressLocateClick=false;
     const id=event.target.closest('[data-seat-marker]')?.dataset.seatMarker;
-    if(event.pointerType==='touch'&&(id||locating))touch={id,pointer:event.pointerId,x:event.clientX,y:event.clientY,moved:false};
+    if(event.pointerType==='touch'&&id)touch={id,pointer:event.pointerId,x:event.clientX,y:event.clientY,moved:false};
   });
   viewport.addEventListener('pointermove',event=>{if(touch?.pointer===event.pointerId&&Math.hypot(event.clientX-touch.x,event.clientY-touch.y)>=7)touch.moved=true;});
-  viewport.addEventListener('pointerup',event=>{if(touch?.pointer===event.pointerId&&!touch.moved){if(locating){locatePoint(event);suppressLocateClick=true;}else if(touch.id)select(touch.id);}touch=null;});
+  viewport.addEventListener('pointerup',event=>{if(touch?.pointer===event.pointerId&&!touch.moved){if(touch.id)select(touch.id);}touch=null;});
   viewport.addEventListener('pointercancel',()=>{touch=null;});
-  window.CabinSeatEditor={select,connect(reader){getState=reader;},render,renderLayer,getC3Point:c3Point,finishLocating,setView(value){finishLocating();available=value;render();}};
+  window.CabinSeatEditor={select,connect(reader){getState=reader;},render,renderLayer,getC3Point:c3Point,setView(value){available=value;render();}};
 })();

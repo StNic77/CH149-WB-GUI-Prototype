@@ -1,3 +1,5 @@
+> Superseded on 28 October 2026: use DEVICE_CHECK_2026-10-28.md. The dated content below is historical evidence, not the current backlog or release state.
+
 # Device review sheet — 39b9b7f
 
 Latest feedback/release: the user likes Fuel's wider landscape layout delivered after this baseline. The next authorized revision adds numeric select-all and prevents desktop/large-tablet focus recentering, while retaining necessary keyboard visibility adjustment. Verify on-device that tapping a populated field replaces the full value and that opening/typing ramp cargo does not jump unnecessarily. Other menus have not received the wider Fuel layout. Ramp limits are user-confirmed correct; Ramp hinge moment is a wording change only. Pending rows below remain a historical baseline checklist; use the refreshed v2 source snapshot/current git log.

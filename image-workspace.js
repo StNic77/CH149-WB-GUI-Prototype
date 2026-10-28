@@ -33,7 +33,10 @@
  }
  function position(){frame=0;if(host.hidden)return;promoteActions();const box=viewport.getBoundingClientRect(),margin=8,visible=window.visualViewport,viewWidth=visible?.width||innerWidth,viewHeight=(visible?.height||innerHeight)-(document.getElementById('liveAircraftStrip')?.getBoundingClientRect().height||0),viewLeft=visible?.offsetLeft||0,viewTop=visible?.offsetTop||0;
   const fuelLandscape=current==='fuelPanel'&&viewWidth>=700&&matchMedia('(orientation: landscape)').matches;host.classList.toggle('fuel-landscape',fuelLandscape);
-  const preferredWidth=fuelLandscape?880:current==='cargoPanel'?520:420;
+  const compactLandscape=viewWidth>=700&&matchMedia('(orientation: landscape) and (any-pointer: coarse)').matches;
+  host.classList.toggle('load-landscape',compactLandscape);
+  const loadEditor=compactLandscape&&!!document.getElementById(current)?.querySelector('#areaLoadForm,#cargoEditForm,.equipment-extra-weight,.shelf-weight-entry');
+  const preferredWidth=fuelLandscape?880:loadEditor?620:current==='cargoPanel'?520:420;
   const editing=host.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');
   if(editing){keepEditorVisible();window.CabinKeyboardMenus?.schedule();return;}
   if(fuelLandscape){host.style.width=Math.min(preferredWidth,viewWidth-16)+'px';host.style.left=(viewLeft+(viewWidth-parseFloat(host.style.width))/2)+'px';host.style.top=(viewTop+8)+'px';host.style.maxHeight=Math.max(60,(visible?.height||innerHeight)-16)+'px';return;}
@@ -68,7 +71,7 @@
  wrap(window.CabinPTA,'open','ptaPanel',id=>({area:moduleArea(id||'BAY6_PORT',['BAY5_PORT','BAY55_PORT','BAY6_PORT']),label:'PTA cot'}));
  wrap(window.CabinStokes,'open','stokesPanel',side=>{const other=side==='RAMP'?'CABIN':'RAMP',prefix='ME_SAR_MISSION_EQUIP_STOKES_LITTER_',actual=state().mission.has(prefix+side)?side:state().mission.has(prefix+other)?other:side;return {area:actual==='RAMP'?'RAMP':moduleArea('BAY3_CENTRE',['BAY3_CENTRE','BAY4_CENTRE']),label:'Stokes litter'};});
  wrap(window.CabinRampArea,'open','rampAreaPanel',()=>({area:'RAMP'}));
- wrap(window.CabinFloorEquipment,'openTray','floorEquipmentPanel',()=>({area:moduleArea('BAY3_CENTRE',['BAY3_CENTRE','BAY4_CENTRE','BAY5_CENTRE']),label:'Sea Tray'}));
+ wrap(window.CabinFloorEquipment,'openTray','floorEquipmentPanel',id=>({area:window.CabinFloorEquipment.trayAreas.includes(id)?id:moduleArea('BAY3_CENTRE',window.CabinFloorEquipment.trayAreas),label:'Sea Tray'}));
  wrap(window.CabinFloorEquipment,'openRaft','floorEquipmentPanel',id=>({area:(id||window.CabinFloorEquipment.raftLocation(state()))===window.CabinFloorEquipment.locations[1]?'BAY4_STBD':'BAY3_STBD',label:'Life raft and stowage'}));
  wrap(window.CabinCasevac,'open','casevacPanel',(id='FWD_STBD')=>({area:areaAt(window.CH149_DATA.roleFit[window.CabinCasevac.key(id)].arm,id.endsWith('PORT')?'Port':'Stbd'),label:'CASEVAC rack and patients'}));
  for(const name of ['open','openBay','openCargoArea'])wrap(window.CabinCargo,name,'cargoPanel',id=>({area:name==='open'?window.CabinCargo.get(state(),id)?.area:id,label:name==='openBay'?'Bay weight':'Cargo and bay loads'}));
@@ -97,10 +100,10 @@
  document.getElementById('floorCellsToggle').onchange=event=>viewport.classList.toggle('floor-cells-hidden',!event.target.checked);
  // Shelf access points refer to known fixtures; they do not define loading footprints.
  const shelfLayer=document.createElement('div');shelfLayer.id='planShelfAccess';document.getElementById('planSheet').append(shelfLayer);
- for(const [id,label,view]of [['forward','Forward shelves','forward'],['rampPort','Port ramp shelves','ramp'],['rampStbd','Stbd ramp shelves','ramp'],['portAft','Port Aft View','pta'],['stbdAft','Starboard Aft View','stbd']]){const b=document.createElement('button');b.type='button';b.dataset.shelfAccess=id;b.textContent='';b.title='Open '+label;b.setAttribute('aria-label','Open '+label);b.onclick=()=>window.CabinViewControls.chooseView(view);shelfLayer.append(b);}
+ for(const [id,label,view]of [['forward','Forward shelves','forward'],['rampPort','Port ramp shelves','ramp'],['rampStbd','Stbd ramp shelves','ramp'],['portAft','Port Aft View','pta'],['stbdAft','Starboard Aft View','stbd']]){const b=document.createElement('button');b.type='button';b.dataset.shelfAccess=id;b.dataset.detailView=view;b.textContent='';b.title='Open '+label;b.setAttribute('aria-label','Open '+label);b.onclick=()=>window.CabinViewControls.chooseView(view);shelfLayer.append(b);}
  const forwardLabel=document.createElement('span');forwardLabel.className='reference-name-label';forwardLabel.textContent='Fwd shelves';shelfLayer.querySelector('[data-shelf-access=forward]').append(forwardLabel);
  function renderAccess(){const m=window.CabinBayLayer.getDisplayMapping();shelfLayer.hidden=state().view!=='plan'||!m;if(!m)return;
-  for(const b of shelfLayer.children){const id=b.dataset.shelfAccess,forward=id==='forward',aft=id.endsWith('Aft'),x=forward?m.forwardX+(5375-4875)/6518*(m.aftX-m.forwardX):aft?m.aftX-40*m.sourceScale:m.aftX+(m.rampAftX-m.aftX)*.48,y=m.centerY+(['rampStbd','stbdAft'].includes(id)?-120:120)*m.sourceScale;b.style.left=x/m.width*100+'%';b.style.top=y/m.height*100+'%';b.style.width=(aft?60:120)*m.sourceScale/m.width*100+'%';b.style.height=(aft?34:80)*m.sourceScale/m.height*100+'%';}
+  for(const b of shelfLayer.children){window.CabinDetailImages.decorate(b,b.dataset.detailView,state().preset);const id=b.dataset.shelfAccess,forward=id==='forward',aft=id.endsWith('Aft'),x=forward?m.forwardX+(5375-4875)/6518*(m.aftX-m.forwardX):aft?m.aftX-40*m.sourceScale:m.aftX+(m.rampAftX-m.aftX)*.48,y=m.centerY+(['rampStbd','stbdAft'].includes(id)?-120:120)*m.sourceScale;b.style.left=x/m.width*100+'%';b.style.top=y/m.height*100+'%';b.style.width=(aft?60:120)*m.sourceScale/m.width*100+'%';b.style.height=(aft?34:80)*m.sourceScale/m.height*100+'%';}
  }
  window.CabinImageMenu={showSeat,showLocation,showDetail,close,show,keepEditorVisible,anchorAtElement(element){if(element){const r=element.getBoundingClientRect();lastPoint={x:r.left+r.width/2,y:r.top+r.height/2};lastTrigger=element;}},setAnchor(x,y){anchor={x,y};},retarget(panel,root,label){if(!host.hidden&&current===panel&&root!==area)show(panel,root,label);},renderAccess,onView(){close();back.hidden=state().view==='plan';renderAccess();},suspend(){placementHidden=!host.hidden;host.hidden=true;},resume(){if(placementHidden&&current){host.hidden=false;placementHidden=false;schedule();}},getState:()=>({open:!host.hidden,current,area,item})};
  back.hidden=state().view==='plan';

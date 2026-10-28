@@ -15,7 +15,7 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 @media(max-width:1050px){main{grid-template-columns:1fr}.side{max-height:unset;min-height:400px}.photo-wrap{height:48vh}}@media(max-width:650px){main{padding:8px}.toolbar{padding:9px}.toolbar strong{width:100%}.photo-wrap{min-height:240px}.axis-places{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 <link rel="stylesheet" href="workspace.css?v=e0f15a871d25">
-<link rel="stylesheet" href="plan-viewer.css?v=62555d0a4926">
+<link rel="stylesheet" href="plan-viewer.css?v=6a282f3c0cf4">
 <link rel="stylesheet" href="floor-area.css?v=1783c052e9d7">
 </head>
 <body>
@@ -48,7 +48,6 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
     </section>
     <section class="seat-panel" id="seatPanel" aria-label="Seat positions and installation" hidden>
       <div class="seat-panel-head"><strong>Seat positions</strong><span id="seatStateLabel"></span></div>
-      <div class="seat-location-tools"><button type="button" class="secondary" id="seatLocateC3">Locate C3 on the plan</button><button type="button" class="secondary" id="seatFinishLocate" hidden>Finish locating C3</button><span id="seatLocationStatus" role="status"></span></div>
       <p class="quiet">Select a marker or position below. Filled markers mean installed; outlined markers mean available. Mutually excluded seats are hidden on the plan. Amber dashed markers mean installed seats folded up for a basket. Marker positions show seat-arm references, not measured seat outlines.</p>
       <p class="quiet">Shared seating spaces: C5 or P13/P14 · C6 or P7/P8. A passenger pair can be installed together. Occupants must be cleared before replacing their seats.</p>
       <p id="seatInstalledCount"></p><div id="seatMenu"></div><p id="seatEditMessage" role="status"></p>
@@ -92,10 +91,10 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <script src="ramp-limits.js?v=6746961a7ff7"></script>
 <script src="bay-review-draft.js?v=48b86acdf67d"></script>
 <script src="station-calibration.js?v=2ae760681605"></script>
-<script src="bay-layer.js?v=606740f174bf"></script>
+<script src="bay-layer.js?v=ce061511d25c"></script>
 <script src="seat-rules.js?v=565892582908"></script>
-<script src="seat-editor.js?v=51b078a8d8ca"></script>
-<script src="floor-area.js?v=82e0534f0fc7"></script>
+<script src="seat-editor.js?v=88d68f514aaa"></script>
+<script src="floor-area.js?v=f899cc40eb96"></script>
 <script src="cabinet-regions.js?v=545f68265ea6"></script>
 <script src="cabinet-zones.js?v=2e563c88f99a"></script>
 <script src="forward-shelf-definition.js?v=d0f8d82b9e5b"></script>
@@ -108,21 +107,22 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <script src="stbd-overhead-regions.js?v=47ff528afab2"></script>
 <script src="shelf-zones.js?v=f1b9e460b074"></script>
 <link rel="stylesheet" href="basket-editor.css?v=09e85393c869">
-<script src="basket-editor.js?v=ea0b87cc6c8f"></script>
+<script src="basket-editor.js?v=5e08b8f5cac5"></script>
 <link rel="stylesheet" href="pta-editor.css?v=3735ce58747c">
-<script src="pta-editor.js?v=373c733df89d"></script>
+<script src="pta-editor.js?v=efc495e34270"></script>
 <link rel="stylesheet" href="stokes-editor.css?v=3b237312a6b6">
 <script src="stokes-editor.js?v=46d2943a22b0"></script>
-<link rel="stylesheet" href="live-cabin.css?v=d8d154767843">
+<link rel="stylesheet" href="live-cabin.css?v=98f8dbe1a8db">
 <script src="live-visual-layout.js?v=0f174d2eb069"></script>
-<script src="live-cabin.js?v=fcb363ff4f54"></script>
+<script src="live-cabin.js?v=c3d81c41203f"></script>
 <link rel="stylesheet" href="ramp-area.css?v=f469962e1787">
 <script src="ramp-area.js?v=e79a4663cbdc"></script>
-<script src="floor-equipment.js?v=706a6fdb3e6d"></script>
+<script src="floor-equipment.js?v=930056897284"></script>
 <script src="casevac-editor.js?v=475519371a8e"></script>
 <link rel="stylesheet" href="cargo-layer.css?v=c3f77bdba681">
 <script src="cargo-layer.js?v=7ea66a3ef707"></script>
-<script src="plan-viewer.js?v=432dce095920"></script>
+<script src="plan-viewer.js?v=9aa0201872cc"></script>
+<script src="detail-image-policy.js?v=4da3f575960d"></script>
 <script>
 const D=window.CH149_DATA;
 const IM={plan:'images/SAR_3_Pax_clean.png',cabinet:'images/SAR Cabinet.png',forward:'images/Bay 1 Shelves and Sensor WS.png',pta:'images/PTA View Port.png',ramp:'images/Rear Shelves.png',stbd:'images/Team member View STBD.png'};
@@ -161,16 +161,16 @@ function applyPreset(key){
  window.CabinPresetRules.apply(key,state);for(const id of ['C1','C2','P2','P3'])state.seats.add(id);state.selectedSeat=null;document.querySelector('#seatEditMessage').textContent='';recalculateItems();render();
 }
 function findKey(fragment){return [...state.mission].find(k=>k.includes(fragment));}
-function locFor(item){if(item.key==='RF_AIRCRAFT_SYSTEMS_SEA_TRAY')return {id:'SEA_TRAY_AREA',label:'B3/B4/B5 Centre',arm:D.roleFit[item.key].arm,view:'plan',type:'fit'};const linked=window.CabinBasket.resolvedLocation(state,item.key);if(linked)return linked;const loc=LOC.find(x=>x.id===item.loc);if(loc)return loc;const m=D.stowage[item.loc];if(m)return {id:item.loc,label:m.name,arm:m.arm,view:'cabinet',type:'generic'};return {id:item.loc,label:item.loc||'Unplaced',arm:byId(item.key).arm??null,view:'plan',type:'generic'};}
+function locFor(item){if(item.key==='RF_AIRCRAFT_SYSTEMS_SEA_TRAY')return {id:'SEA_TRAY_AREA',label:'B3/B4 Centre and Stbd, B5 Centre',arm:D.roleFit[item.key].arm,view:'plan',type:'fit'};const linked=window.CabinBasket.resolvedLocation(state,item.key);if(linked)return linked;const loc=LOC.find(x=>x.id===item.loc);if(loc)return loc;const m=D.stowage[item.loc];if(m)return {id:item.loc,label:m.name,arm:m.arm,view:'cabinet',type:'generic'};return {id:item.loc,label:item.loc||'Unplaced',arm:byId(item.key).arm??null,view:'plan',type:'generic'};}
 function fmtKg(n){return Number(n||0).toFixed(1).replace(/\.0$/,'')+' kg'}
 function configName(){return state.preset?D.presets[state.preset]?.name||state.preset:'No preset'}
 function renderConfigButtons(){const host=document.querySelector('#configButtons');const configs=Object.entries(D.presets).filter(([,p])=>p.active!==false).sort((a,b)=>(a[1].displayOrder??999)-(b[1].displayOrder??999));host.innerHTML=`<button class="config ${state.preset?'':'active'}" data-preset="">No Role Config</button>`+configs.map(([key,p])=>`<button class="config ${state.preset===key?'active':''}" data-preset="${key}">${p.name||key}</button>`).join('');host.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>applyPreset(b.dataset.preset));}
-function renderViews(){document.querySelector('#viewTabs').innerHTML='<label class="mobile-view-picker">Views<select id="viewPicker" aria-label="Aircraft view">'+VIEWS.map(([id,label])=>`<option value="${id}" ${state.view===id?'selected':''}>${label}</option>`).join('')+'</select></label>'+VIEWS.map(([id,label])=>`<button class="viewtab ${state.view===id?'active':''}" aria-pressed="${state.view===id}" data-viewtab="${id}">${label}</button>`).join('');document.querySelectorAll('[data-viewtab]').forEach(b=>b.onclick=()=>setView(b.dataset.viewtab));document.getElementById('viewPicker').onchange=e=>setView(e.target.value);}
+function renderViews(){document.querySelector('#viewTabs').innerHTML='<label class="mobile-view-picker">Views<select id="viewPicker" aria-label="Aircraft view">'+VIEWS.map(([id,label])=>`<option value="${id}" ${state.view===id?'selected':''}>${label}</option>`).join('')+'</select></label>'+VIEWS.map(([id,label])=>`<button class="viewtab ${state.view===id?'active':''}" aria-pressed="${state.view===id}" data-viewtab="${id}">${label}</button>`).join('');document.querySelectorAll('[data-viewtab]').forEach(b=>b.onclick=()=>setView(b.dataset.viewtab));document.getElementById('viewPicker').onchange=e=>setView(e.target.value);window.CabinDetailImages.updateControls(state.preset);}
 const AREAS=[['cabinet','SAR Equipment Storage Cabinet','Open cabinet shelf view'],['forward','Port forward shelves','Open shelf view'],['pta','Port Aft View','Open port aft view'],['ramp','Ramp shelves','Open ramp close-up'],['stbd','Starboard Aft View','Open starboard aft view']];
 const LOCATION_GROUPS={cabinet:'SAR Equipment Storage Cabinet',forward:'Port forward shelves',pta:'Port Aft View',ramp:'Rear cabin & ramp',stbd:'Starboard Aft View'};
 function renderLocationGroups(){const host=document.querySelector('#locationGroups');host.innerHTML=Object.entries(LOCATION_GROUPS).map(([view,label])=>{const items=LOC.filter(l=>l.view===view);return `<details class="location-group"><summary>${label} · ${items.length} locations</summary><div class="location-choices">${items.map(l=>`<button class="location-choice ${state.selectedLoc===l.id?'active':''}" data-location="${l.id}" data-location-view="${view}">${l.label}<small>${l.arm} mm app arm</small></button>`).join('')}</div></details>`}).join('');host.querySelectorAll('[data-location]').forEach(b=>b.onclick=()=>{state.selectedLoc=b.dataset.location;setView(b.dataset.locationView)});}
-function renderAreaNav(){const host=document.querySelector('#areaButtons');host.innerHTML=(state.view==='plan'?AREAS:[['plan','2D cabin plan','Return to role-specific top-down plan'],...AREAS]).map(([id,label,sub])=>`<button class="area-button ${state.view===id?'active':''}" data-area="${id}">${label}<small>${sub}</small></button>`).join('');host.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>setView(b.dataset.area));document.querySelector('#areaNavTitle').textContent=state.view==='plan'?'Select a named cabin area or browse all locations below':'Switch area · select a shelf or zone below the close-up';renderLocationGroups();}
-function setView(id){state.view=id;const names={plan:['2D cabin plan','The selected Role Config determines this reference plan','2D PLAN'],cabinet:['SAR Equipment Storage Cabinet · close-up','Select a named app shelf location below the photo','DETAIL VIEW'],forward:['Port forward shelves · close-up','Select a named shelf below the photo','DETAIL VIEW'],pta:['Port Aft View','Choose a PTA, cabin Stokes or Port overhead location below','DETAIL VIEW'],ramp:['Rear ramp · shelves and raised ramp','Select a named ramp shelf or litter stow below','DETAIL VIEW'],stbd:['Starboard Aft View','Reference image includes example installed equipment','REFERENCE']};const n=names[id];const planSrc=state.preset?PLAN_IMAGES[state.preset]:'images/unconfigured-baseline-v2.png';const hasPlan=id!=='plan'||!!planSrc;const img=document.querySelector('#cabinImage');img.style.display=hasPlan?'':'none';if(hasPlan)img.src=id==='plan'?planSrc:IM[id];else img.removeAttribute('src');img.alt=n[0];document.querySelector('#planUnavailable').classList.toggle('show',id==='plan'&&!planSrc);document.querySelector('#viewTitle').textContent=n[0];document.querySelector('#viewSub').textContent=n[1];document.querySelector('#viewBadge').textContent=n[2];document.querySelector('#photoChip').textContent=id==='plan'?(state.preset?`${configName()} · clean plan reference`:'No Role Config · draft unconfigured baseline'):'Actual render · reference close-up';document.querySelector('#photoCaption').textContent=id==='plan'?(state.preset?'This clean plan follows the selected Role Config. Click a highlighted area or browse all app locations below.':'Draft baseline: C1/C2, P2/P3 and retained shelving. Removed areas contain inferred floor detail; review against the original plan.'):'Use the grouped location controls below the image to select an app location. The close-up is visual context; it does not define the W&B arm.';document.querySelector('.photo-wrap').classList.toggle('plan-view',id==='plan');const rolePreset=state.preset&&D.presets[state.preset];const cabinetKey='RF_SAR_EQUIPMENT_FWD_SAR_CABINET';const cabinetInstalled=state.roleFit.has(cabinetKey);document.querySelector('#planCabinet').classList.toggle('show',id==='plan'&&hasPlan&&cabinetInstalled);document.querySelectorAll('.hotspot').forEach(h=>h.style.display='none');renderViews();renderAreaNav();renderDetail();window.CabinPlanViewer.setView({view:id,preset:state.preset,hasPlan,cabinetInstalled});}
+function renderAreaNav(){const host=document.querySelector('#areaButtons');host.innerHTML=(state.view==='plan'?AREAS:[['plan','2D cabin plan','Return to role-specific top-down plan'],...AREAS]).map(([id,label,sub])=>`<button class="area-button ${state.view===id?'active':''}" data-area="${id}">${label}<small>${sub}</small></button>`).join('');host.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>setView(b.dataset.area));document.querySelector('#areaNavTitle').textContent=state.view==='plan'?'Select a named cabin area or browse all locations below':'Switch area · select a shelf or zone below the close-up';renderLocationGroups();window.CabinDetailImages.updateControls(state.preset);}
+function setView(id){state.view=id;const names={plan:['2D cabin plan','The selected Role Config determines this reference plan','2D PLAN'],cabinet:['SAR Equipment Storage Cabinet · close-up','Select a named app shelf location below the photo','DETAIL VIEW'],forward:['Port forward shelves · close-up','Select a named shelf below the photo','DETAIL VIEW'],pta:['Port Aft View','Choose a PTA, cabin Stokes or Port overhead location below','DETAIL VIEW'],ramp:['Rear ramp · shelves and raised ramp','Select a named ramp shelf or litter stow below','DETAIL VIEW'],stbd:['Starboard Aft View','Reference image includes example installed equipment','REFERENCE']};const n=names[id];const planSrc=state.preset?PLAN_IMAGES[state.preset]:'images/unconfigured-baseline-v2.png';const imageStatus=window.CabinDetailImages.info(id,state.preset);const hasPlan=id==='plan'?!!planSrc:imageStatus.available;const img=document.querySelector('#cabinImage');img.style.display=hasPlan?'':'none';if(hasPlan)img.src=id==='plan'?planSrc:IM[id];else img.removeAttribute('src');img.alt=n[0];const unavailable=document.querySelector('#planUnavailable');unavailable.classList.toggle('show',!hasPlan);if(!hasPlan)unavailable.querySelector('div').innerHTML='<b>Reference image unavailable</b><p>'+(imageStatus.reason||'No matching plan image is available for this Role Config yet.')+'</p><p>Equipment, contents and W&B controls remain available.</p>';document.body.classList.toggle('detail-image-unavailable',id!=='plan'&&!hasPlan);document.querySelector('#viewTitle').textContent=n[0];document.querySelector('#viewSub').textContent=n[1];document.querySelector('#viewBadge').textContent=n[2];document.querySelector('#photoChip').textContent=id==='plan'?(state.preset?`${configName()} · clean plan reference`:'No Role Config · draft unconfigured baseline'):'Actual render · reference close-up';document.querySelector('#photoCaption').textContent=id==='plan'?(state.preset?'This clean plan follows the selected Role Config. Click a highlighted area or browse all app locations below.':'Draft baseline: C1/C2, P2/P3 and retained shelving. Removed areas contain inferred floor detail; review against the original plan.'):'Use the grouped location controls below the image to select an app location. The close-up is visual context; it does not define the W&B arm.';document.querySelector('.photo-wrap').classList.toggle('plan-view',id==='plan');const rolePreset=state.preset&&D.presets[state.preset];const cabinetKey='RF_SAR_EQUIPMENT_FWD_SAR_CABINET';const cabinetInstalled=state.roleFit.has(cabinetKey);document.querySelector('#planCabinet').classList.toggle('show',id==='plan'&&hasPlan&&cabinetInstalled);document.querySelectorAll('.hotspot').forEach(h=>h.style.display='none');renderViews();renderAreaNav();renderDetail();window.CabinPlanViewer.setView({view:id,preset:state.preset,hasPlan,cabinetInstalled});}
 function renderTargets(){document.querySelector('#dropTargets').innerHTML=LOC.filter(l=>['basket','litter','patient','shelf'].includes(l.type)).map(l=>`<button class="drop" data-dest="${l.id}"><b>${l.label}</b><small>W&amp;B arm ${l.arm} mm · drop here</small></button>`).join('');document.querySelectorAll('[data-dest]').forEach(b=>{b.ondragover=e=>{e.preventDefault();b.classList.add('over')};b.ondragleave=()=>b.classList.remove('over');b.ondrop=e=>{e.preventDefault();b.classList.remove('over');moveItem(e.dataTransfer.getData('text/plain'),b.dataset.dest)};b.onclick=()=>{const l=LOC.find(x=>x.id===b.dataset.dest);if(l?.view)setView(l.view);state.selectedLoc=l.id;renderDetail();if(l?.type==='patient')window.CabinPTA.open();else if(l?.type==='litter')window.CabinStokes.open(l.id==='RAMP_STOW'?'RAMP':'CABIN');};});}
 function itemCard(o,compact=false){const l=locFor(o);const badge=o.source==='role'?'Role-Fit':'Mission load';const key=o.source==='mission'?o.key:o.key;return `<article class="item" draggable="${o.source==='mission'}" data-item="${key}"><div class="item-top"><span class="item-name">${o.name}</span><span class="tag ${o.source==='role'?'fit':'load'}">${badge}</span></div><div class="item-meta">${fmtKg(o.mass)} · ${l.label} · arm ${l.arm??'—'} mm</div>${o.source==='mission'?`<div class="actions"><button class="smallbtn" data-move="${key}">Choose location</button><button class="smallbtn" data-remove="${key}">Remove</button>${o.kind==='litter'?`<button class="smallbtn" data-patient-litter="${key}">Add patient</button>`:''}</div>`:''}</article>`;}
 function renderItems(){
@@ -273,12 +273,12 @@ applyPreset('');
 <script src="cg-envelope.js?v=17880cee8a21"></script>
 <script src="loading-feedback.js?v=743b9b2b5ef5"></script>
 <script src="shelf-editor.js?v=1e0df028d323"></script>
-<script src="image-workspace.js?v=d9ab24ea18da"></script>
+<script src="image-workspace.js?v=bad85702da4a"></script>
 <link rel="stylesheet" href="aircraft-summary.css?v=babceb5f96f1">
 <script src="aircraft-summary.js?v=c83203308d91"></script>
 <script src="planning-ui.js?v=1ad4f3fec8d8"></script>
-<link rel="stylesheet" href="usability.css?v=ed7bd446db79">
-<script src="equipment-ui.js?v=57759caf29b2"></script>
+<link rel="stylesheet" href="usability.css?v=e8fb38538de9">
+<script src="equipment-ui.js?v=ef8fec684f80"></script>
 <script src="touch-workspace.js?v=fee64bc41bc7"></script>
 <script src="compact-workspace.js?v=40f40307e282"></script>
 <script src="fuel-ui.js?v=68d6f57679fd"></script>

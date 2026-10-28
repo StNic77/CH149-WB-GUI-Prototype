@@ -1,150 +1,26 @@
-> Release update — 27 October 2026: the user authorized commit and push of the wider landscape Fuel menu (Fuel only), the full CG chart retaining both conditions independently of image selection, and these updated handoff documents. Physical iPad usability remains unconfirmed. The dated reference ZIP is an unchanged snapshot of earlier checkpoint 39b9b7f.
+# Current improvement backlog — 28 October 2026
 
-> Package status, 27 October 2026: application 39b9b7f is committed and pushed for device checks. This documentation refresh is local and newer than the release. Physical iPad/Safari acceptance and hosted deployment confirmation remain open. Read CABIN_UI_DEVELOPMENT_HANDOFF.md and OPEN_ITEMS_2026-10-27.md for current consolidated status; older dated release statements below are historical.
+Current as of 28 October 2026. Base Git commit: 25a6bb1161fb90b4dc977ab00bc4ccfbe85910c7 (main). The source snapshot includes the current UNCOMMITTED working-tree changes; it is not a pushed release. The user will commit and push. Hosting and physical iPad acceptance have not been verified. Historical documents and reference images are context, not new task authorization.
 
-# CH-149-615 current backlog
+OPEN_ITEMS_2026-10-28.md is the current consolidated list. NEXT_LOGICAL_WORK_2026-10-28.md is the recommended next discussion. DEVELOPMENT_HISTORY.md preserves earlier decisions and experiments; old backlogs in dated packs are historical.
 
-## Latest authorized release — 27 October 2026
+## Next selected direction: iPad landscape input menus
 
-The user approved the landscape Fuel layout (Fuel only), reported focus-triggered centering disruptive on desktop/large tablets, and requested selecting the whole numeric value on entry. These are implemented: select-all on first focus/tap or Tab; normal later caret editing; anchored menus while typing with only necessary keyboard/viewport adjustment. User confirms the existing ramp limits are correct and approves replacing the inherited proxy wording with Ramp hinge moment. Limits, aggregation and calculations are unchanged. Commit/push is now authorized for these changes. Older local/unpushed statements below describe the prior review stage.
+Extend Fuel's user-approved wider layout approach to all menus containing text/numeric fields, while preserving anchored placement, drafts, numeric selection/caret behavior, keyboard visibility, validation and portrait. Inventory cargo/load editors, aircraft planning, quantities/contents, additional weights and search fields. Discuss the first group before implementing. Actual iPad/Safari remains the acceptance target.
 
-## Device feedback after 39b9b7f — 27 October 2026
+## Completed local package
 
-After pushed landscape trial 7dd6568, the user approved the landscape menu layout and requested whole-value selection on entry. Implemented locally for all editable numeric inputs: first focus/tap selects the complete number for replacement; keyboard Tab does the same. Subsequent editing retains normal caret behavior. Read-only/calculated fields are excluded. Real typing/backspace/Tab checks pass in Chromium across desktop/tablet/phone test sizes; native iPad selection still needs device confirmation. Not yet committed or pushed.
+Sea Tray selection through five cells, non-blocking artwork, on-tray removed marker; removal of C3 position-review tools; configuration-dependent detail-image availability with explanatory helpers and unchanged W&B. Details and verification are in the current handoff and applicability report. The user will commit/push; source remains uncommitted at package creation.
 
-The user then reported that entering ramp cargo weight snapped the menu to the centre, especially disruptive on desktop/large tablets. Removed focus-triggered recentering: menus keep their opened position and width while typing; viewport constraints adjust only when necessary to fit available keyboard space. The wider landscape Fuel layout still opens as before. Reproduced ramp point selection/new cargo and existing cargo editing with stable position checks at 1440x1000 desktop, 1366x1024 touch and 1133x744 touch; reduced keyboard bounds, Fuel layout and session navigation checks pass. These fixes are local and unpushed.
+## Visual decisions
 
-The user tested the iPad and reports that entry menus remain clipped and difficult to use, especially Fuel on iPad Mini in landscape. The keyboard/menu issue is not accepted as fixed; automated viewport checks did not establish native usability. The user selected a wider landscape Fuel menu for local trial: distribution/total/landing fuel in one row, Apply/Close in a row, manual tank quantities across five columns, explanations collapsed. It stays wide during focused input; portrait stays stacked. Local width, row, reduced-keyboard bounds, rotation and fuel apply/close checks pass. Native iPad usability remains open; custom keypad/full-screen editor/side panel remain alternatives if this trial is insufficient.
+- SAR-3: all reference details. SAR-10: Cabinet/Forward/Ramp. Transport/CASEVAC: Forward/Ramp. Aft pictures are disabled outside SAR-3 among standard roles.
+- Ramp picture is still usable; future imagery should add permanently installed P2/P3 in every role.
+- Real interior references are preferred long term. Generated trials are a demonstration and remain outside repo/package.
+- SAR Cabinet shelf-content symbols/placement are low priority. Guideline imagery work is held. Clickable highlights and exposed-floor perfection are parked. Naming, sponsons, rack contents/dependencies, final stretcher stowage and a placement editor are not selected.
 
-New local CG refinement: the full envelope always displays both Takeoff and Landing markers, weight/CG labels and each available weight-specific range, independently of image Takeoff/Landing/Both selection. Both live information rows retain full prominence. This is newer than pushed 39b9b7f and the dated reference ZIP; included in the newly authorized device-check release.
+## Capability integration
 
-## Current status — 27 October 2026 (supersedes older status below)
+Preserve source definitions/accounting/calculations/fuel with prototype physical/occupancy guards. Remaining: live editor/tail propagation and exceptions, expanded comparisons, acceptance/recovery, confirmed footprint eligibility, source output identities, reporting/certification and offline lifecycle. Policy decisions are listed in OPEN_ITEMS_2026-10-28.md.
 
-Published baseline: `6dc42c3`. The latest authorized scope is outstanding-list items 1–9, 11–13 and 16, locally reviewed and now authorized for commit/push to support device checks.
-
-Implemented locally, awaiting user review:
-
-- 1: Full CG envelope renders the existing automatic fuel solver's burn trace from departure to fuel at landing. Manual tank mode explicitly reports the trace unavailable; it does not invent a manual burn order.
-- 2–3: Takeoff/Landing selection subdues and reduces the other marker; Both shows both labels and each condition's allowable band. Cabin bands use blue above and purple below the centreline; markers retain their actual calibrated arms. The full chart uses matching colours and weight-specific slices.
-- 4: Input editing uses the available visual viewport, releases sticky action/footer rows, and scrolls the whole input into the visible menu body. Tests cover 330 px and 220 px keyboard-reduced viewports with an offset and retained entry text.
-- 5: Ramp shelf taps within 23 screen pixels of a reviewed shelf edge select the nearest shelf, using original touch coordinates and excluding pans/cancelled gestures. Existing outlines and loading locations are unchanged. View offers Adjust ramp shelf areas using the existing review page.
-- 7: P7 uses P8's row, proportions and artwork convention, including its native Transport crop when available. P7 retains its own longitudinal position and source arm; all standard-role defaults remain unchanged.
-- 8: When neither alternative is installed, one shared seat-choice control opens the alternatives at the existing shared seating position. Individual installed/available labels return once an alternative is chosen. No seat arm is moved to solve label overlap.
-- 9: Position lists disable C6 versus P7/P8 and C5 versus P13/P14 with an explicit exclusion message. The plan already hides excluded markers; underlying atomic replacement and occupied-seat protections remain.
-- 11: An absent SWS retains an interactive empty image position; reference mode offers SWS +. Reinstallation opens the same Role Fit controls and restores the existing load.
-- 12–13: Port Aft stretcher association moved onto the pictured stretcher; installed O₂ rack has its symbol over the user-circled rack. Symbols open the corresponding controls and follow installed state.
-- 16: Bay Cells render above Bay Boundaries and remain selectable; seats, occupants and live item interactions retain their higher layers.
-
-Still open within the selected scope:
-
-- 6: Physical iPad Safari keyboard, menus and touch acceptance. Automated desktop-browser viewport/touch checks are not a substitute for an actual iPad check.
-
-Additional user review note — 27 October 2026: SAR-10 Pax Port Aft detail currently shows the guideline symbol against the shared reference image. Review detail-view images and equipment symbology together so each role and installed/stowed state has the appropriate picture, symbols and associations. The supplied screenshot is a reference for future correction; no imagery or symbology change is included for this note.
-
-Remaining discussion/deferred items: Sea tray removed label directly on the tray (10); custom/unpictured equipment placement and cleared-floor review (14); role/state-aware detail imagery (15); remembered clickable-zone highlight layer, hidden by default (17); SAR Cabinet shelf-content symbols (18); Live equipment naming (19); future rack stowage/dependencies (20); final stretcher stowage confirmation (21); sponsons/contents/arms (22); placement editor (23); complete Active Dev parity (24); fleet/tail editing and operational acceptance (25); individual occupant weights (26); eligibility/footprint validation (27); Role reset/fit-only, negative adjustments, cargo-arm bounds and renewed-acceptance fuel policies (28); operational outputs/certification/invalidation (29); offline delivery/update/rollback/device acceptance (30).
-
-Updated 26 October 2026 after the user's latest iPad/workflow feedback. Previous published checkpoint: 0458550. Deployment was not independently verified in this session. Reference-pack ZIPs remain historical snapshots. The user subsequently authorized the entry page, local resume, keyboard fix, aft navigation and agreed wording for local review. The user has now authorized commit and push of this reviewed revision. The earlier hold is superseded for this scope only.
-
-## Local implementation review — 26 October 2026
-
-- Fresh entry: tail buttons, 149SIM display name for 149920, Basic Weight basis defaulting to Recorded, Basic Weight/CG/initial fuel in one row, Role, and Accept aircraft opening the image workspace.
-- Entry has only total fuel: no reserve or distribution control. The exact user wording reads: "Initial fuel uses automatic distribution. Check actual fuel distribution in the aircraft and adjust in the Fuel menu if required, to ensure an accurate CG".
-- Image-page controls remain editable. The fuel menu title is Fuel planning and the landing field is Fuel at landing (reserve) — kg. Live CG helper explains the capped landing fuel and unchanged non-fuel load.
-- A compatible saved local session resumes directly to the image workspace. Return to Start page retains the existing aircraft until a replacement is accepted; Keep current session resumes it, while entering new details and selecting Accept aircraft starts over; incompatible/corrupt snapshots return to entry. This is prototype local persistence, not completion of source operational acceptance, output certification or live editor propagation.
-- Port/Starboard aft image targets are enabled on the correct sides; they share view selection with View controls. The equipment-menu Starboard aft parent action now navigates to the view.
-- Desktop entry no longer inherits the cabin's two-column main layout. Focused menu/dialog fields are kept visible within the visual viewport during simulated keyboard shrink. Actual iPad Safari keyboard acceptance remains open.
-
-- Further local refinements: zero quantities appear blank and empty fields count as zero wherever permitted; Occupants layer hides default/added crew, passenger and patient badges without changing state or W&B. Seat indicators are centred on the seats above all aircraft/equipment images and below the separate occupant drawing layer. C4/C5/C6 are checked in SAR-3/SAR-10. Crew classification matches W&B, including SAR Tech positions, with only Crew/Passenger/Patient icons, also in the key. The starboard basket menu has a Starboard Aft View button. C3 alone is repositioned from its confirmed seat centre at 4559 mm using the common station calibration, just forward of Bay 1 on the centreline. C1/C2 retain 3673 mm; their images and all other seat-image positions are unchanged. Catalogue occupant arms are unchanged. Aft targets use the user-circled edge areas with hover labels only; equipment retains selection priority.
-- DISCUSSION ONLY: clickable-zone highlight visibility layer. User preference is hidden by default and remembered. Proposed behavior is shading/outlines only, all navigation still clickable, temporary hover/focus reveal. No new highlight layer has been implemented.
-
-## Artwork refinement — local review
-
-- Full SAR cabinet fill/outline replaced by a compact SAR Cabinet label in reference mode; live mode shows only the selectable artwork. Aft access zones have no fill and only light hover/focus outlines.
-- Added original-image visual crop/placement definitions for pictured SAR seats and fixtures and Transport passenger seats. Labels follow visual seat centres; the numerical aircraft model is unchanged. The role reference image now supplies the surrounding artwork and floor panels; only the individual item regions are removed from that backdrop and rendered as stateful components. The full PTA aft moulding is retained. Liferaft placements use the native Transport/CASEVAC images. Hidden floor under removals and custom/unpictured arrangements still need visual review.
-- Dive Bottle / O2 Rack is currently an empty Role Fit fitting only. The user explicitly clarified that neither AviOx nor operational dive-kit bottle loads control its depiction, and there are no contents to put in it yet. The subsequent original-reference clarification supersedes the empty-frame clipping: retain the full pictured fitting artwork, without creating bottle loads. Future stowage identity/dependencies are deferred; do not invent contents or extra mass. Default Transport and CASEVAC do not carry the fitting. Their prototype default states and W&B now exclude it; existing saves receive a one-time default correction, and later manual installations remain supported and persist.
-- Sensor Workstation now renders independently from C4 using its existing Role Fit key. Present in standard SAR-3/SAR-10, absent in standard Transport/CASEVAC; custom install/removal updates the picture and uses the existing 46.69 kg at 5830 mm.
-- Keep the name Live equipment. The user rejected Current cabin and asked to hold naming for later discussion.
-
-## Latest local reference-view refinements
-
-- Deployed Stokes uses crisp open-frame vector artwork based on the provided litter references, replacing the blurred crop and colour-key filter. Existing position, dimensions, deployment/patient actions and W&B remain unchanged.
-- With Live equipment off, a removed sea tray is explicitly marked Sea tray removed in the image corner. The Role reference picture remains intact; clicking the marker opens its fitting controls.
-- Reference-mode labels are Fwd shelves (the retained fixed fixture), SWS, O₂ rack and Basket. SWS/rack/basket labels appear only for installed items and open their item controls. Basket’s old symbol is replaced by text in this mode. The labels hide with Live equipment on and during CG display.
-
-## Original requests and remaining device review
-
-### 1. iPad keyboard obscures menu text entry
-
-User-reported behavior: opening a menu with a text/number entry and the on-screen keyboard resizes or repositions the menu so the entry becomes obscured. Root cause has not yet been reproduced or established.
-
-Desired behavior: keep the focused field and caret visible while typing, with menu contents scrollable and Apply/Cancel reachable. Preserve the draft, focus and selected aircraft state as the keyboard opens/closes. Review keyboard/visual-viewport sizing, menu position and scrolling together rather than introducing isolated closing exceptions.
-
-Validation should cover actual iPad Safari in portrait/landscape, keyboard opening/closing, switching fields and long menus, including cargo weights/arms, fuel/reserve and equipment quantities. Desktop emulation alone does not establish native keyboard behavior. Suggested first usability fix when implementation resumes.
-
-### 2. Fresh-session entry page; resume directly into the image workspace
-
-The user proposes a separate initial entry point for a fresh session containing:
-
-- Tail number selection.
-- Initial Basic Weight and CG, retaining Recorded Basic Weight as the default and the explicit alternative basis choices.
-- Initial Role selection, including the existing No Role Config option.
-- A short explanation of the image workspace and the operator's next steps: inspect/change configuration, people, loads and fuel, and watch live W&B/CG feedback.
-- A clear action to enter the image workspace.
-
-All existing controls remain available in their current image-workspace positions. The entry page and image controls must edit the same aircraft state and use the same validation/accounting rules, without a second baseline or hidden reset.
-
-A valid persisted session should reopen directly into its image workspace. Persistence, tail-specific restore, invalid/stale-session handling and explicit Start fresh remain prerequisites and design work; current prototype session edits still reset on reload. Preserve existing warnings/Cancel behavior for Role changes and accepted-information changes. Do not implement an automatic resume that bypasses required aircraft-information review.
-
-This is a user-proposed workflow direction, not a finished page design. Discuss the entry/resume flow before building it.
-
-### 3. Product direction: make load/fuel consequences immediately understandable
-
-The user described live CG visualization as a major benefit for the Flight Engineer: seeing the effects of moving loads and changing fuel, rather than discovering them only in final totals. Carry this forward as a design objective, not as a separate unscoped rewrite.
-
-Preserve live takeoff/estimated-landing markers, weight-dependent allowable ranges, clear out-of-limit feedback, numerical margins, the true cabin reference and the enlarged CG strip/full-envelope comparison. Keep landing assumptions and current aircraft state clear. Evaluate later interaction changes by how well they make loading consequences understandable.
-
-## Completed or resolved in this session
-
-- Confirmed prototype starting commit a2c3e18 and clean Active Dev starting state; Active Dev was not edited.
-- Added the Recorded Basic Weight basis as the default, using source inclusion definitions; RFM remains explicit.
-- Reproduced/explained the 579.57 kg SAR-3 difference as differing inclusion assumptions. The first independent source-app comparison passes for matching baseline, graphical quantity change, cancellation, rejected operations, removal/reinstall and automatic/manual fuel. This is a bounded first slice, not complete editor/tail integration.
-- Implemented CASEVAC patient multi-select across racks, one Add Selected Patients action, automatic closing after success, and occupied/unavailable-position guards.
-- Added bold green/amber/red AUW status; bold green valid CG and red OUT CG/value; Fwd/Mid/Aft associated with AUW CG.
-- Implemented the cabin-centreline CG band selected by takeoff/landing weight, both calibrated markers, Focus CG, layer suppression/restoration and reserve-based landing estimate.
-- Added the enlarged live CG strip: separate takeoff/landing ranges and margins, shared arm scale, and expandable complete weight-versus-CG envelope. Verified the 301 kg ramp-load case, including CG movement, changing limits and aft-limit exceedance.
-- Confirmed the RFM no-role example is correct: 10098 + P2/P3 seat structures (9.35 kg each) = 10116.70 kg, displayed as 10117 kg. The user confirmed those seats remain additive under the RFM basis despite permanent installation. No inclusion-flag change is required.
-- Committed and pushed the application, verification checks and review documents as 0458550. New feedback/document updates after that commit remain local.
-
-## Remaining implementation work
-
-| Workstream | What remains |
-|---|---|
-| iPad text-entry usability | Reproduce and fix keyboard/menu occlusion, then verify on a physical iPad. |
-| Entry page and persistent sessions | Agree fresh/resume journeys; implement a shared initial-data entry page, tail/session persistence, recovery and explicit Start fresh. |
-| Full Active Dev integration | Connect live fleet/tail editor definitions and accepted state to the graphical workflow; retain maintenance exceptions, custom exceptions and accounting distinctions. Current functions/catalogue are pinned snapshots. |
-| Broader workflow equivalence | Extend component/state comparisons across all roles, split/group allocations, containers/fittings, seats/people/patients, cargo/bay loads and fuel. Preserve the prototype's stronger physical guards. |
-| People and eligible locations | Enter individual weights; complete eligible-location and footprint review without inventing capacities/geometry. |
-| Operational outputs | Integrate MCDU/briefing/clearance/PDF, preserve Operating Weight versus AUW distinctions, and implement certification/invalidation. Preserve Cargo 1–4 identities in source output mapping. |
-| Delivery and acceptance | Complete initial device download, update checking, accessible previous-version fallback, persistence/recovery and physical-device/output acceptance. Ordinary browser caching is not the requested offline delivery feature. |
-
-## Decisions still to discuss
-
-- Whether a separately named fit-only Role operation is useful alongside the accepted full Role reset; keep current behavior until agreed.
-- Whether negative corrections belong in ordinary cargo or a separate adjustment mechanism.
-- The authoritative general cabin cargo-arm bounds; retain precise entered-arm cargo and separate configured-arm bay loading.
-- How renewed aircraft acceptance should handle entered fuel/manual tank quantities; preserve the existing retained-fuel expectation until the lifecycle is deliberately reconciled.
-
-See PROTOTYPE_ACTIVE_DEV_COMPARISON_2026-10-26.md for evidence and the recommended behavior to preserve from each app.
-
-## Original eleven findings — current disposition
-
-The accepted compact Role/Layers/View controls, contents/quantity editing, image framing, symbols, fuel strip, ramp menus, hidden hand/zoom controls and detail return are implemented. The visible global Undo remains removed. Touch behavior remains one-finger page scrolling, two-finger image pan/pinch, with centered reset. Do not reopen those settled design discussions because older reference packs describe them as pending. The new keyboard issue above is a concrete device finding to address separately.
-
-## Parked / future visual work
-
-- Configuration-aware detail reference images, including conditional ramp Stokes imagery.
-- Confirm final stretcher position, possibly behind PTA; current symbol remains B6 Port aft with its prior accounting arm.
-- Verify sponsons and eligible contents/arms; keep empty/hidden until confirmed.
-- Tentative symbol/placement editor remains unapproved.
-
-Preserve fixed geometry/arms, independent cargo/bay accounting, group selection scope, fitting/occupant/patient guards, warning-versus-mandatory-limit distinctions and explicit unknown capacities.
+Standard crew/passenger/patient weights are the accepted model. Actual per-person weight editing is unnecessary; do not reopen it as a missing capability.
