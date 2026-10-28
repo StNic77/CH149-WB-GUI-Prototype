@@ -24,8 +24,11 @@ const {createPreviewServer}=require('../preview-server.cjs');
      await page.evaluate(on=>{bayToggle.checked=on;bayToggle.dispatchEvent(new Event('change'));},boundaries);
      assert.equal(await page.locator('[data-live-object=sea-tray]').evaluate(n=>getComputedStyle(n).pointerEvents),'none');
      for(const id of cells){
-      await cellClick(id);assert.equal(await page.evaluate(()=>CabinImageMenu.getState().current),'floorEquipmentPanel');
-      assert.equal(await page.evaluate(()=>CabinImageMenu.getState().area),id);assert.match(await page.locator('#floorEquipmentPanel').textContent(),/Sea Tray/);
+      await cellClick(id);assert.equal(await page.evaluate(()=>CabinImageMenu.getState().current),'floorAreaPanel');
+      assert.equal(await page.evaluate(()=>CabinImageMenu.getState().area),id);
+      await page.locator('.cascade-choice').filter({hasText:/^Sea Tray$/}).click();
+      assert.equal(await page.evaluate(()=>CabinImageMenu.getState().current),'floorEquipmentPanel');
+      assert.match(await page.locator('#floorEquipmentPanel').textContent(),/Sea Tray/);
       assert.deepEqual(await snapshot(),before);
       await page.locator('#floorEquipmentArea').click();assert.equal(await page.evaluate(()=>CabinImageMenu.getState().current),'floorAreaPanel');assert.equal(await page.evaluate(()=>CabinFloorArea.getSelection().space),id);
      }
@@ -33,7 +36,8 @@ const {createPreviewServer}=require('../preview-server.cjs');
     // Keyboard selection and explicit cargo placement share cells without stealing each other's flow.
     await page.evaluate(()=>CabinImageMenu.close());await page.locator('[data-floor-space=BAY3_STBD]').focus();await page.keyboard.press('Enter');
     assert.equal(await page.evaluate(()=>CabinImageMenu.getState().area),'BAY3_STBD');
-    await page.locator('#floorEquipmentArea').click();await page.locator('.cascade-choice').filter({hasText:/Cargo/}).click();
+    assert.equal(await page.evaluate(()=>CabinImageMenu.getState().current),'floorAreaPanel');
+    await page.locator('.cascade-choice').filter({hasText:/Cargo/}).click();
     if(await page.locator('#areaIndividualCargo').isVisible())await page.locator('#areaIndividualCargo').click();await cellClick('BAY4_STBD');
     assert.equal(await page.evaluate(()=>CabinFloorArea.getSelection().cargoPointChosen),true);assert.equal(await page.evaluate(()=>CabinImageMenu.getState().current),'floorAreaPanel');
     await page.keyboard.press('Escape');assert.deepEqual(await snapshot(),before);

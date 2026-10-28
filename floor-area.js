@@ -60,12 +60,7 @@
     window.CabinRampArea?.close();
     window.CabinFloorEquipment?.close();window.CabinCasevac?.close();
     const choosing=placingCargo; if(choosing)rememberDraft();selectedSpace=space;
-    // Resolve a normal live-cell selection to its installed floor covering.
-    // Programmatic Area options and explicit cargo placement keep their own flow.
-    const equipment=window.CabinFloorEquipment;
-    if(!choosing&&event&&document.getElementById('liveCabinToggle').checked&&equipment.trayAreas.includes(space.id)&&bridge.state().roleFit.has(equipment.trayKey)){
-      equipment.openTray(space.id);return;
-    }
+    // Floor coverings remain choices in the cell menu, not selection targets.
     const m=window.CabinBayLayer.getDisplayMapping(),rect=document.getElementById('planSheet').getBoundingClientRect();
     if(choosing&&event&&event.detail!==0&&rect.width&&rect.height){({fraction,lateral}=pointAt(event,space));}
     else {fraction=.5;lateral=.5;}
