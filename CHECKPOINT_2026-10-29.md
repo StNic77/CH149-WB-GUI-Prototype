@@ -38,3 +38,9 @@ The phone landscape ribbon is approximately 48 CSS pixels high in the emulated v
 Every workspace entry now scrolls Role/Layers/View to the top after layout settles. The header and introduction remain reachable by scrolling upward. iPad spacing was preserved; no tablet re-sizing controller was retained. The user's supplied iPad landscape photo is the accepted visual baseline: controls at top, large centered image, complete fuel strip above full ribbon, edge sizing controls, collapsed summary. Future phone adjustments must remain separate.
 
 Final checks: phone-ribbon-check passed all five viewports, with explicit phone-landscape fit/ribbon-height assertions. session-navigation-check passed desktop, both iPad mini orientations and phone portrait using More for phone tools. Sea Tray and fuel-landscape checks also passed during this refinement. Real device testing remains necessary.
+
+## Standard iPhone ribbon approved for testing
+
+Default iPhone ribbon is one horizontal line: OpW/CG weight/arm, Fuel, AUW/CG weight/arm plus uppercase band, and More. It uses current computed values, with no changes to the calculations. More restores the full values in normal source order: six columns in phone landscape, three columns/two rows in portrait, plus Planning/Fuel/Start tools. Less returns to the compact line. Extra inline text is hidden in the expanded, iPad and desktop layouts. iPad/desktop appearance remains unchanged.
+
+Phone fitting now uses measured viewport/control/ribbon dimensions converted to pixel values; the prior multiplied CSS calculation was removed from the phone sizing rule. Expanded-ribbon overlap assertions were added, including 874x402 alongside 844x390 and portrait; six viewport checks passed. Planning and fuel model regressions passed. Screenshots were inspected in compact and expanded phone states. This is Chromium browser evidence; actual iPhone Safari testing remains necessary and is not represented as passed.
