@@ -7,11 +7,11 @@
 - In-view Cabin CG bands, Longitudinal CG envelope replacement, CG-only visibility and direct return controls.
 - Removed O₂-rack access, SWS label behavior, Ramp shelves label/naming, modest Stokes vector detail, station labels with leaders, B5.5 and full bay demarcations.
 - iPad landscape photo is accepted layout reference. iPhone uses compact OpW/CG–Fuel–AUW/CG ribbon, responsive More/Less details, pinch zoom and no sizing panel. Image size is stable across browser-height changes; user reported refresh is good.
-- Shared phone/iPad keyboard visibility fix implemented and being published for device checking. Start entry tests and relevant editor/layout regressions pass in emulation; actual device keypad confirmation pending.
+- Automatic page-input keyboard alignment was withdrawn after unpredictable real-iPhone jitter. Pre-change keyboard handling is restored; exact above-keypad placement is deferred. Emulation now checks absence of repeated app-driven page scrolling, not successful alignment.
 
 ## Next selected work
 
-1. Finish device feedback on keyboard clearance and current phone/iPad layout.
+1. Confirm the keyboard-alignment rollback eliminates the jitter on iPhone. Revisit exact above-keypad placement only with real Safari verification.
 2. Equipment quantity/contents controls — inspect and agree the bounded UI change first.
 3. Aircraft Planning and catalogue/search usability remain pending; not silently included in this checkpoint.
 

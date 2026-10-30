@@ -56,3 +56,10 @@ Phone-ribbon regression now changes viewport height at constant width and scroll
 Shared keyboard handling now covers page inputs as well as floating editors/dialogs on coarse-pointer phone/tablet devices. On a reduced visible viewport, page fields are scrolled to just above the keyboard; temporary bottom scroll space allows this even on short Start pages and is removed when editing ends. Numeric whole-value selection and subsequent caret editing remain intact. No aircraft calculations or image layout changed.
 
 Entry keyboard checks pass Basic Weight, Basic CG and Fuel at 390x844, 844x390, 744x1133 and 1133x744; temporary scroll-space cleanup is checked. Fuel landscape, compact load, anchored menu entry and phone ribbon/session/CG regressions passed. Actual iPhone/iPad keyboard behavior remains for device verification. User reported the preceding iPhone refresh is good.
+
+
+## Keyboard alignment withdrawn after real iPhone regression
+
+The user reported unpredictable vertical jitter when selecting inputs on build 905a50b, sometimes stopping after switching to Basic CG and then returning. Browser-emulation passes did not establish Safari stability. The automatic page-input positioning and temporary keyboard spacer have therefore been removed completely; keyboard-menus.js is restored byte-for-byte from pre-change commit 8cbff6d. Existing floating-editor visibility handling and numeric selection behavior remain. The requested exact page-field alignment above the keypad is deferred until a real Safari workflow can be verified. No attempted one-shot alignment remains in the deployed correction.
+
+The entry keyboard check now verifies that repeated visual-viewport resize/scroll events do not invoke app-driven page scrolling and that input values remain intact, rather than claiming above-keypad placement. Phone/iPad layout remains separate and unchanged.
