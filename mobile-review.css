@@ -144,3 +144,15 @@ body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded){grid-template-c
 
 @media(min-width:651px) and (max-height:500px){body.phone-ribbon #liveAircraftStrip.phone-ribbon-expanded #liveAircraftValues{grid-template-columns:repeat(6,minmax(0,1fr))}body.phone-ribbon #liveAircraftStrip.phone-ribbon-expanded{max-height:120px}}
 #liveAircraftValues .phone-inline-metric{display:none}
+
+body.phone-landscape-fit{padding-bottom:calc(var(--aircraft-ribbon-height,48px) + 80px)!important}
+/* The collapsed phone ribbon hugs its contents rather than covering screen width. */
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded){left:50%;right:auto;bottom:max(3px,env(safe-area-inset-bottom));transform:translateX(-50%);width:max-content;max-width:calc(100% - 12px);box-sizing:border-box;grid-template-columns:minmax(0,1fr) 52px;padding:1px 4px;gap:6px;border:1px solid #70b1a6;border-radius:5px}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #liveAircraftValues{gap:12px}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #phoneRibbonToggle{min-height:36px;margin:0;padding:0 3px}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #phoneRibbonToggle::before{content:'';position:absolute;inset:-4px 0;pointer-events:auto}
+body.phone-ribbon #phoneRibbonToggle{position:relative}
+body.phone-ribbon{padding-bottom:calc(var(--aircraft-ribbon-height,40px) + env(safe-area-inset-bottom) + 8px)!important}
+body.phone-landscape-fit{padding-bottom:calc(var(--aircraft-ribbon-height,40px) + env(safe-area-inset-bottom) + 80px)!important}
+
+@media(max-width:650px){body.phone-ribbon:not(.cg-layer-active) .photo-wrap.plan-view{height:var(--phone-photo-height,390px)}}
