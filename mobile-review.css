@@ -59,7 +59,7 @@
 @media(max-height:500px){.cg-envelope-active .photo-wrap.plan-view{height:340px;min-height:340px!important}}
 
 @media(max-width:1190px){#liveAircraftStrip{position:static!important}body{padding-bottom:0!important}}
-#planSheet{height:auto;aspect-ratio:2560/1216;top:50%;bottom:auto;translate:0 -50%}
+.photo-wrap.plan-view #planSheet{height:auto;aspect-ratio:2560/1216;top:50%;bottom:auto;translate:0 -50%}
 @media(max-width:650px){.photo-wrap.plan-view{aspect-ratio:auto;width:100%;min-width:0}}
 
 #cgEnvelopeView .cg-full-envelope{max-width:none}
@@ -118,7 +118,7 @@ body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #phoneRibbonTog
  body.phone-ribbon #cabinMain{padding:0 4px;gap:0}
  body.phone-ribbon #compactViewControls{position:sticky;top:0;z-index:30;padding:2px 4px}
  body.phone-ribbon:not(.cg-layer-active) .photo-wrap.plan-view{height:var(--phone-photo-height,240px);min-height:0!important;aspect-ratio:auto}
- body.phone-ribbon:not(.cg-layer-active) #planSheet{width:var(--phone-sheet-width,500px);left:50%;top:calc(50% - 33px);translate:-50% -50%}
+ body.phone-ribbon:not(.cg-layer-active) .photo-wrap.plan-view #planSheet{width:var(--phone-sheet-width,500px);left:50%;top:calc(50% - 33px);translate:-50% -50%}
 }
 
 @media(max-width:650px){body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) .aircraft-ribbon-metric{grid-template-columns:1fr;gap:0}body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #liveAircraftValues strong{display:block}}
@@ -156,3 +156,5 @@ body.phone-ribbon{padding-bottom:calc(var(--aircraft-ribbon-height,40px) + env(s
 body.phone-landscape-fit{padding-bottom:calc(var(--aircraft-ribbon-height,40px) + env(safe-area-inset-bottom) + 80px)!important}
 
 @media(max-width:650px){body.phone-ribbon:not(.cg-layer-active) .photo-wrap.plan-view{height:var(--phone-photo-height,390px)}}
+
+.equipment-standard-warning{margin:8px 0;padding:8px 10px;border:1px solid #b56b16;border-left:4px solid #b56b16;border-radius:5px;background:#fff4df;color:#663c09;font-size:12px;line-height:1.4}.equipment-standard-warning p{margin:6px 0 0}.equipment-standard-warning ul{margin:6px 0;padding-left:20px}

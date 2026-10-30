@@ -72,3 +72,13 @@ Thumbs.db
 !verification/phone-ribbon-check.cjs
 
 !verification/entry-keyboard-check.cjs
+
+!verification/detail-zone-alignment-check.cjs
+
+!verification/equipment-reinstall-check.cjs
+
+!verification/nvg-stowed-quantity-check.cjs
+
+!verification/standard-topup-check.cjs
+
+!verification/standard-elsewhere-warning-check.cjs

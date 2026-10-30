@@ -63,3 +63,48 @@ Entry keyboard checks pass Basic Weight, Basic CG and Fuel at 390x844, 844x390, 
 The user reported unpredictable vertical jitter when selecting inputs on build 905a50b, sometimes stopping after switching to Basic CG and then returning. Browser-emulation passes did not establish Safari stability. The automatic page-input positioning and temporary keyboard spacer have therefore been removed completely; keyboard-menus.js is restored byte-for-byte from pre-change commit 8cbff6d. Existing floating-editor visibility handling and numeric selection behavior remain. The requested exact page-field alignment above the keypad is deferred until a real Safari workflow can be verified. No attempted one-shot alignment remains in the deployed correction.
 
 The entry keyboard check now verifies that repeated visual-viewport resize/scroll events do not invoke app-driven page scrolling and that input values remain intact, rather than claiming above-keypad placement. Phone/iPad layout remains separate and unchanged.
+
+## Detail-image / selectable-zone alignment correction
+
+User reported resized detail images and misaligned cabinet zones across devices, then confirmed desktop fixed during local investigation. The cabin-only aspect-ratio/position rule had been scoped to all #planSheet elements, including detail images. Both general cabin sizing and phone cabin sizing are now restricted to .photo-wrap.plan-view, restoring the detail image and overlay to the same full viewport coordinate plane. Saved compartment polygons, image files, calibration and W&B data were not edited.
+
+New detail-zone-alignment-check verifies matching image-plane/viewport bounds for Cabinet, Forward, Ramp, Port Aft and Starboard Aft detail views, then taps interior points in all nine cabinet polygons and checks the selected location at desktop, iPad mini portrait/landscape and iPhone portrait/landscape sizes. All five sizes passed. Detail-image-policy and phone-ribbon regressions passed. Cabinet overlay screenshot was visually inspected. Actual device confirmation remains necessary; local correction is not yet committed/pushed.
+
+## Quantity top-ups / reinstall search
+
+User reproduced Cabinet → Zone G → Edit contents → remove one Penetration Kit, then could not find pen to reinstall one. The Available list excluded any item still present at the selected location, so a partial removal hid the entire item from search. The shared available-catalogue path now retains ordinary installed items for all locations/groups and search/category modes; existing local items default to one unit to add. The item-details Add more section is also available when units already exist in the current location, with Add here for an explicit location or existing destination selection elsewhere. Existing installed/allocation quantity controls and multi-select behavior remain.
+
+The same shared UI is used by cabinet and shelf contents routes. Dedicated basket/litter/raft and structural fitting controls remain guarded. Install standard contents retains its prior missing-item semantics. Catalogue masses/arms, maximum quantities, eligibility/destination checks, load accounting and calculations were not changed.
+
+The new equipment-reinstall-check verifies removal 2→1, search pen, reinstall exactly one, return to the original AUW, then item-details Add more of one in the same location. It passed desktop, iPad mini portrait/landscape and iPhone portrait/landscape. The expected single-kit change is 14.35 kg from the existing catalogue. The compact-contents check now expects installed items to remain listed as available for top-up. This is local work, not committed/pushed.
+
+## Simplified Units stowed editor
+
+Per user instruction, the shared installed-contents editor keeps one Units stowed control, Remove all of this item, and expandable Move units. The separate Units to remove/move per-selected-row spinner is removed. Selecting an item opens its stowed-quantity controls; Apply/Cancel are hidden until a draft changes the quantity. The batch action is labelled Remove selected items, and continues to act on all units of the selected rows; partial quantity changes use Units stowed and partial moves use expandable Move units. This shared code applies across cabinet/shelf contents and item-allocation views. No aircraft state changes occur until Apply, removal or movement is confirmed through its existing action.
+
+NVG regression covers Units stowed 4→3→4 with exact source weight restoration and other-location allocations unchanged; it also confirms batch removal clears selected-location units while retaining other-location NVGs. Passed desktop, iPad portrait/landscape and iPhone portrait/landscape. Reinstall, compact contents and zero-quantity regressions passed. Local only; this and the detail-zone correction remain uncommitted/unpublished.
+
+## Quantity review follow-up
+
+User agreed to removing duplicate Add more for an item already allocated to the current explicit location. Units stowed is now the only quantity-edit path there; Install/Add more remains for missing items or where a destination is needed.
+
+Install standard contents now computes each location's shortage against its existing catalogue/default allocations, adds only positive deficits and leaves excess quantities untouched. Selecting it opens an inline helper listing additions, explaining that it adds equipment rather than retrieving units from elsewhere, showing the shared preview, and requiring Install missing quantities or Cancel. Other locations remain unchanged. Existing destination/max-quantity guards are still used.
+
+User independently reported successful moves of both Penetration Kits from Zone G to PTA cot and back, then one to Bay 6 and back. Record this flow as positive user feedback; device/OS/orientation were not specified. Remaining device review includes the simplified quantity controls and helper. No keyboard-alignment change is included; the jitter rollback remains intact.
+
+Standard-topup checks pass helper-before-mutation, cancellation, partial shortage restoration, excess preservation and other-location retention at desktop, iPad mini portrait/landscape and iPhone portrait/landscape sizes. Reinstall and Units stowed regressions also run with the duplicate Add more removed. Local only, uncommitted/unpublished.
+
+## Standard shelf plus equipment elsewhere warning
+
+Clarified requirement: warn when a location has (or a top-up would restore) its standard complement while units of those same items remain at non-standard locations elsewhere. This supersedes the briefly trialled interpretation of a local-only over-standard count. The helper now identifies the standard count here and actual quantities/locations elsewhere before confirmation. A persistent warning remains on the location contents page after adding, explaining that the remote units remain aboard and counted. Standard allocations elsewhere (such as the normal second NVG shelf) do not trigger this warning.
+
+Exact regression: move one of four Zone E NVGs to Bay 6 (leaving the standard one in the other lockbox unchanged), select Install standard contents, verify preview says four here plus one in Bay 6 without changing state, Cancel leaves state intact, confirm adds only the missing one while retaining the Bay 6 unit, and verify the warning persists. Passed desktop, iPad mini portrait/landscape and iPhone portrait/landscape. User reported 'it worked'; device/orientation were not specified. Local work remains uncommitted/unpublished.
+
+
+## Cabinet / quantity device-test publication
+
+User authorized commit/push for device testing. This checkpoint includes detail-image overlay alignment; single Units stowed editing with contextual Apply/Cancel; full-item batch selection; expandable partial moves; reinstall/search availability for items already present; missing-standard-quantity top-ups with helper/confirmation; and warnings for standard contents here plus the same equipment at non-standard locations elsewhere. Aircraft source definitions, calibration, weights/arms and calculation engines remain untouched. Stable keyboard rollback remains in place.
+
+Current final checks cover detail-plane geometry and all nine cabinet taps; pen-kit partial removal/reinstall; NVG editing and batch removal; standard shortage top-ups, extras preservation, helper cancellation and non-standard-elsewhere warnings; compact contents, zero removal, detail image applicability, phone ribbon and planning/fuel regressions. This is emulated browser evidence; real phone/iPad testing remains necessary.
+
+Sea Strip is future work and Mountain Strip is tentative, with removal behavior undefined. No strip controls or actions are implemented.
