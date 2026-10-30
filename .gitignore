@@ -70,3 +70,5 @@ Thumbs.db
 !verification/boundary-callout-check.cjs
 
 !verification/phone-ribbon-check.cjs
+
+!verification/entry-keyboard-check.cjs

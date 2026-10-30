@@ -50,3 +50,9 @@ Phone fitting now uses measured viewport/control/ribbon dimensions converted to 
 Removed fitting based on visible browser height. Phone aircraft sizing now follows content width, so Safari toolbar-height changes do not shrink/grow the aircraft. Portrait image height is also width-based rather than svh-based. Scrolling remains available; the page cannot force Safari's toolbar to retract on taps. Pinch zoom remains intentional. The default phone ribbon now hugs its text/More button with minimal padding instead of covering the whole screen width. More retains the responsive full values/tools layout. iPad/desktop rules remain unchanged.
 
 Phone-ribbon regression now changes viewport height at constant width and scrolls the page, checking that sheet width/height, photo height and zoom stay unchanged; pinch zoom is checked separately. Passed desktop, phone portrait, two landscape phone sizes, and both iPad mini orientations. This is emulation, not physical Safari confirmation. Wider image and normal document scrolling take priority over forcing every control and image into a browser-height-dependent box.
+
+## Input clearance above mobile keyboards
+
+Shared keyboard handling now covers page inputs as well as floating editors/dialogs on coarse-pointer phone/tablet devices. On a reduced visible viewport, page fields are scrolled to just above the keyboard; temporary bottom scroll space allows this even on short Start pages and is removed when editing ends. Numeric whole-value selection and subsequent caret editing remain intact. No aircraft calculations or image layout changed.
+
+Entry keyboard checks pass Basic Weight, Basic CG and Fuel at 390x844, 844x390, 744x1133 and 1133x744; temporary scroll-space cleanup is checked. Fuel landscape, compact load, anchored menu entry and phone ribbon/session/CG regressions passed. Actual iPhone/iPad keyboard behavior remains for device verification. User reported the preceding iPhone refresh is good.
