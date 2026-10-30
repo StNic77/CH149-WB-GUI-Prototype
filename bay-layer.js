@@ -168,7 +168,13 @@
       guide.style.left = percent(x,registration.width); guide.style.top = percent(top-70,registration.height);
       guide.style.height = percent(height+140,registration.height);
       const label = document.createElement('span'); label.textContent = `X${station}`; guide.title = position==='boundary' ? `Station X${station}` : a[position+'Marked'] ? 'Confirmed joint' : a.inherited ? 'Baseline joint' : 'Joint awaiting confirmation';
-      guide.append(label); layer.append(guide);
+      // Keep calibrated station guides intact; only move their captions.
+      const upper=index%2===0,captionY=upper?110:1000,markerY=upper?top-70:top+height+70;
+      const leader=document.createElement('i');leader.className='bay-station-leader';
+      Object.assign(leader.style,{left:percent(x,registration.width),top:percent(Math.min(captionY,markerY),registration.height),height:percent(Math.abs(markerY-captionY),registration.height)});
+      label.className='bay-station-caption';label.dataset.stationLabel=station;
+      Object.assign(label.style,{left:percent(x,registration.width),top:percent(captionY,registration.height)});
+      guide.append(document.createElement('b'));layer.append(leader,guide,label);
     }
     inspect();
     window.CabinSeatEditor?.renderLayer();

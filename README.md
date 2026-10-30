@@ -6,7 +6,7 @@ The accepted image-first interface is on `main`. See [LOADING_WORKSPACE_CHANGES.
 
 ## iPhone / iPad review
 
-Open [the hosted prototype](https://stnic77.github.io/CH149-WB-GUI-Prototype/) on the device. The 25 October device-test release includes compact space menus, immediate multi-select, Role/Layers/View controls, a hideable handed sizing rail, collapsible summary, revised ramp menu and fuel strip, direct 2D return from details, and fuel retention across Role changes. This is a prototype for usability review. Session edits reset on reload.
+Open [the hosted prototype](https://stnic77.github.io/CH149-WB-GUI-Prototype/) on the device. The 25 October device-test release includes compact space menus, immediate multi-select, Role/Layers/View controls, a hideable handed sizing rail, collapsible summary, revised ramp menu and fuel strip, direct 2D return from details, and fuel retention across Role changes. This is a prototype for usability review. Valid working sessions are saved in this browser when storage is available. Returning to Start retains current aircraft inputs and loading; Clear all data resets the session with confirmation.
 
 ## Run the demo
 

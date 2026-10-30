@@ -4,7 +4,7 @@
  const photo=document.querySelector('.photo-wrap'),bar=document.createElement('section');bar.id='compactViewControls';bar.setAttribute('aria-label','Aircraft viewing controls');
  bar.innerHTML='<div class="view-control-row"><button id="roleControl" aria-controls="roleOptions">Role</button><button id="layersControl" aria-controls="layerOptionsPanel">Layers</button><button id="viewControl" aria-controls="viewOptions">View</button></div><div id="roleOptions" hidden></div><div id="viewOptions" hidden></div><div id="layerOptionsPanel" hidden><div id="layerButtons" role="group" aria-label="Image layers"></div></div>';
  const return2D=document.createElement('button');return2D.type='button';return2D.id='detailReturn2D';return2D.textContent='2D view';return2D.setAttribute('aria-label','Return to 2D view');return2D.hidden=true;return2D.onclick=()=>chooseView('plan');photo.append(return2D);
- photo.before(bar);let open=S().preset?'':'role',lastRole=S().preset,pending=null,completed=0,controlsHidden=false;
+ photo.before(bar);let open='',lastRole=S().preset,pending=null,completed=0,controlsHidden=false;
  const retired=document.createElement('div');retired.id='retiredViewControls';retired.hidden=true;document.body.append(retired);
  const configs=$('configButtons'),oldToolbar=configs.closest('.toolbar');$('roleOptions').append(configs);oldToolbar.hidden=true;
  $('viewOptions').append($('viewTabs'));retired.append($('planTools'));
@@ -33,12 +33,12 @@
   dock.dataset.placement='side';slot.dataset.hand=hand;slot.hidden=true;dock.style.maxHeight=Math.max(100,bottom-minTop)+'px';const height=dock.getBoundingClientRect().height;dock.style.top=Math.max(8,Math.min(Math.max(8,bottom-height),Math.max(minTop,r.top+(S().view==='plan'?0:52))))+'px';handKey.textContent=hand==='right'?'Left hand':'Right hand';handKey.setAttribute('aria-label','Use '+(hand==='right'?'left':'right')+'-hand controls');
  }
 
- function sync(){return2D.hidden=S().view==='plan';dock.classList.toggle('sizing-controls-collapsed',controlsHidden);visibilityKey.textContent=controlsHidden?'Show controls':'Hide controls';visibilityKey.setAttribute('aria-expanded',String(!controlsHidden));const s=S();if(s.preset!==lastRole){lastRole=s.preset;open=s.preset?'':'role';}
+ function sync(){return2D.hidden=S().view==='plan';dock.classList.toggle('sizing-controls-collapsed',controlsHidden);visibilityKey.textContent=controlsHidden?'Show controls':'Hide controls';visibilityKey.setAttribute('aria-expanded',String(!controlsHidden));const s=S();if(s.preset!==lastRole){lastRole=s.preset;open='';}
   rampAdjust.hidden=s.view!=='ramp';
   $('roleControl').textContent='Role · '+roleName()+(open==='role'?' ▴':' ▾');$('viewControl').textContent='View · '+(viewNames[s.view]||s.view)+(open==='view'?' ▴':' ▾');$('layersControl').textContent='Layers'+(open==='layers'?' ▴':' ▾');
   for(const [name,id]of [['role','roleOptions'],['view','viewOptions'],['layers','layerOptionsPanel']]){const active=open===name;$(id).hidden=!active;$(name==='role'?'roleControl':name==='view'?'viewControl':'layersControl').setAttribute('aria-expanded',String(active));}
   const revealViews={cabinetZoneReveal:'cabinet',forwardShelfReveal:'forward',rampShelfReveal:'ramp',portOverheadReveal:'pta',stbdOverheadReveal:'stbd'};
-  for(const [id,,planOnly]of toggles){const input=$(id),b=bar.querySelector('[data-layer-for="'+id+'"]');if(!input||!b)continue;const applicable=id.endsWith('Reveal')?revealViews[id]===s.view:id==='equipmentMarkerToggle'?s.view!=='cabinet':planOnly?s.view==='plan':true,cgHidden=document.body.classList.contains('cg-layer-active')&&['seatToggle','occupantToggle','floorCellsToggle','bayToggle','equipmentMarkerToggle'].includes(id);b.hidden=!applicable;b.setAttribute('aria-pressed',String(input.checked&&!cgHidden));b.disabled=input.disabled||cgHidden;b.title=cgHidden?'Hidden while Longitudinal CG is shown.':'';}
+  for(const [id,,planOnly]of toggles){const input=$(id),b=bar.querySelector('[data-layer-for="'+id+'"]');if(!input||!b)continue;const applicable=id.endsWith('Reveal')?revealViews[id]===s.view:id==='equipmentMarkerToggle'?s.view!=='cabinet':planOnly?s.view==='plan':true,cgHidden=document.body.classList.contains('cg-layer-active')&&id!=='cgLayerToggle'&&id!=='liveCabinToggle';b.hidden=!applicable;b.setAttribute('aria-pressed',String(input.checked&&!cgHidden));b.disabled=input.disabled||cgHidden;b.title=cgHidden?'Hidden while Longitudinal CG is shown.':'';}
   if(key)key.hidden=false;
   for(const b of configs.querySelectorAll('[data-preset]')){b.setAttribute('aria-pressed',String(b.dataset.preset===s.preset));b.onclick=()=>requestRole(b.dataset.preset);}
   placeDock();
@@ -68,5 +68,11 @@
  function watchFinal(event){const button=event.submitter||event.target.closest?.('button');if(!button||!button.closest('#imageMenu')||button.disabled)return;const before=signature(),count=completed,label=button.textContent.trim(),subject=window.CabinImageMenu.getState().item||'';setTimeout(()=>{if(count===completed&&signature()!==before&&!window.CabinEquipmentUI.isIntermediate?.())complete((label+(subject?' · '+subject:'')).replace(/\s+/g,' ')+'. Aircraft updated.');},0);}
  document.addEventListener('click',watchFinal,true);document.addEventListener('submit',watchFinal,true);
  bar.addEventListener('keydown',e=>{if(e.key==='Escape'&&open){const focus=open==='role'?'roleControl':open==='view'?'viewControl':'layersControl';open='';sync();window.CabinImageMenu.resume();$(focus).focus();}});
- window.CabinViewControls={sync,requestRole,chooseView,placeDock,getState:()=>({open,pending,controlsHidden,placement:dock.dataset.placement})};renderConfigButtons();renderViews();sync();
+ function reset(){open='';controlsHidden=matchMedia('(max-width:650px)').matches;window.CabinCGOverlay.reset();window.CabinImageMenu.close();
+  const defaults=new Set(['liveCabinToggle','occupantToggle','floorCellsToggle','cargoToggle','fuelLayerToggle']);
+  for(const [id]of toggles){const input=$(id);if(!input)continue;input.checked=defaults.has(id);input.dispatchEvent(new Event('change',{bubbles:true}));}
+  for(const details of document.querySelectorAll('#aircraftSummary details'))details.open=false;
+  window.CabinSummaryControls?.reset();setView('plan');window.CabinPlanViewer.fit();sync();
+ }
+ window.CabinViewControls={reset,applyRole,sync,requestRole,chooseView,placeDock,getState:()=>({open,pending,controlsHidden,placement:dock.dataset.placement})};renderConfigButtons();renderViews();sync();
 })();

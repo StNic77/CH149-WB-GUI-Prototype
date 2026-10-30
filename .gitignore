@@ -65,3 +65,6 @@ Thumbs.db
 !verification/detail-image-policy-check.cjs
 
 !verification/load-landscape-check.cjs
+
+!verification/mobile-session-cg-check.cjs
+!verification/boundary-callout-check.cjs

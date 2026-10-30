@@ -22,6 +22,7 @@ module.exports=async function prepare(page){
     const card=await locator.first().evaluate(el=>{const c=el.closest('.floor-choice');return c?[...document.querySelectorAll('#floorAreaPanel .floor-choice')].indexOf(c):-1;});
     if(card>=0){await locate('#floorAreaPanel .cascade-choice').nth(card)[method]();if(!await locator.count()||!await locator.first().isVisible())return;}
    }
+   if(await locator.count()&&await locator.first().evaluate(el=>!!el.closest('#aircraftSummary'))&&!await locate('#aircraftSummary').isVisible())await locate('#summaryToggle').click();
    const result=await activate(...options);await page.waitForTimeout(5);return result;
   };}
   for(const method of ['check','uncheck']){const activate=locator[method].bind(locator);locator[method]=async function(...options){if(await locator.count()){const id=await locator.first().getAttribute('id'),button=id?locate('[data-layer-for="'+id+'"]'):null;if(button&&await button.count()){if(await locate('#layersControl').getAttribute('aria-expanded')!=='true')await locate('#layersControl').click();if(await locator.isChecked()!==(method==='check'))await button.click();return;}if(await locator.first().evaluate(el=>!!el.closest('.layer-options:not([open])')))await locate('.layer-options>summary').click();}return activate(...options);};}

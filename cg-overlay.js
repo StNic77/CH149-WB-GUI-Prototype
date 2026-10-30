@@ -11,8 +11,9 @@
  const toggle=document.getElementById('cgLayerToggle'),summary=document.createElement('section');
  summary.id='cgLayerSummary';summary.className='cg-layer-summary';
  summary.setAttribute('aria-label','Takeoff and estimated landing centre of gravity');
- document.querySelector('.photo-wrap').after(summary);
- let condition='takeoff';
+ const photo=document.querySelector('.photo-wrap');photo.append(summary);
+ const envelopeView=document.createElement('section');envelopeView.id='cgEnvelopeView';envelopeView.hidden=true;envelopeView.setAttribute('aria-label','CG envelope');photo.append(envelopeView);
+ let condition='takeoff',presentation='cabin',wasEnabled=false,previousLive=true;
  const number=n=>Math.round(n).toLocaleString('en-CA');
  function node(name,attrs,parent){const el=document.createElementNS(ns,name);for(const [key,value]of Object.entries(attrs))el.setAttribute(key,value);parent.append(el);return el;}
  function projection(mapping){
@@ -73,13 +74,20 @@
  }
  function render(){
   const state=window.CabinImageState(),enabled=toggle.checked&&state.view==='plan',mapping=window.CabinBayLayer.getDisplayMapping();
+  if(enabled&&!wasEnabled){wasEnabled=true;previousLive=document.getElementById('liveCabinToggle').checked;document.getElementById('liveCabinToggle').checked=true;document.getElementById('liveCabinToggle').dispatchEvent(new Event('change'));}
+  if(!enabled&&wasEnabled){wasEnabled=false;document.getElementById('liveCabinToggle').checked=previousLive;document.getElementById('liveCabinToggle').dispatchEvent(new Event('change'));presentation='cabin';}
+  wasEnabled=enabled;
   document.body.classList.toggle('cg-layer-active',enabled&&!!mapping);
+  document.body.classList.toggle('cg-envelope-active',enabled&&presentation==='envelope');
+  envelopeView.hidden=!enabled||presentation!=='envelope';envelopeView.replaceChildren();
   summary.hidden=!enabled;layer.style.display=enabled&&mapping?'':'none';layer.replaceChildren();summary.replaceChildren();
   if(!enabled)return;
   const heading=document.createElement('div');heading.className='cg-layer-heading';
-  const title=document.createElement('strong');title.textContent='Longitudinal CG';
+  const title=document.createElement('strong');title.textContent=presentation==='envelope'?'Longitudinal CG envelope':'Longitudinal CG';
   const fuelButton=document.createElement('button');fuelButton.type='button';fuelButton.textContent='Fuel / reserve';fuelButton.onclick=()=>window.CabinFuelUI.open();
-  heading.append(title,fuelButton);summary.append(heading);
+  const exit=document.createElement('button');exit.type='button';exit.id='cgExit2D';exit.textContent='2D Cabin';exit.onclick=()=>{toggle.checked=false;toggle.dispatchEvent(new Event('change',{bubbles:true}));window.CabinViewControls?.chooseView('plan');};
+  const switcher=document.createElement('button');switcher.type='button';switcher.id='cgPresentation';switcher.textContent=presentation==='cabin'?'CG Envelope':'Cabin CG';switcher.setAttribute('aria-pressed',String(presentation==='envelope'));switcher.onclick=()=>{presentation=presentation==='cabin'?'envelope':'cabin';render();};
+  heading.append(title,switcher,exit,fuelButton);summary.append(heading);
   const choices=document.createElement('div');choices.className='cg-condition-choices';
   for(const [key,label]of [['takeoff','Takeoff range'],['landing','Landing range'],['both','Both']]){
    const button=document.createElement('button');button.type='button';button.dataset.cgCondition=key;button.textContent=label;
@@ -91,8 +99,10 @@
   summary.append(choices);
   const result=window.CabinCGEnvelope.flight(state);
   if(!mapping||!result.ready){const note=document.createElement('p');note.textContent=!mapping?'Aircraft station alignment is unavailable.':result.reason;summary.append(note);return;}
-  drawCabin(result,mapping);
-  summary.append(window.CabinCGStrip.render(result,condition,key=>{condition=key;render();},summary.clientWidth-24));
+  if(presentation==='cabin')drawCabin(result,mapping);
+  else envelopeView.append(window.CabinCGStrip.envelope(result,envelopeView.clientWidth,envelopeView.clientHeight));
+  if(presentation==='cabin')summary.append(window.CabinCGStrip.render(result,condition,key=>{condition=key;render();},summary.clientWidth-24));
+ else {const warning=document.createElement('p');warning.className='cg-envelope-warning';warning.textContent=(result.manual?'Manual tanks: burn trace unavailable; landing uses mapped distribution. ':'')+(result.shortfall?'Reserve shortfall: '+number(result.shortfall)+' kg. ':'')+[result.takeoff,result.landing].filter(p=>p.cgStatus==='out'||p.weightStatus==='overweight'||!p.limits).map(p=>'Check '+number(p.weight)+' kg: '+p.cgStatus+' CG / '+p.weightStatus).join(' · ');summary.append(warning);}
   const note=document.createElement('p');note.className='cg-layer-note';
   note.textContent='The shaded cabin band uses the selected condition’s weight. Both markers stay at their calibrated arm on the aircraft centreline; each is checked against its own weight’s limits. Focus CG enlarges the true spacing. Landing uses '+number(result.landingFuel)+' kg fuel, capped at fuel aboard, from your selected '+number(result.reserve)+' kg fuel at landing (reserve); non-fuel loads stay unchanged. All CG values update live with aircraft weight, fuel and load-position changes.'+(result.shortfall?' Reserve shortfall: '+number(result.shortfall)+' kg.':'')+(result.manual?' Manual tanks: estimated landing uses the normal mapped fuel distribution.':'');summary.append(note);
  }
@@ -101,5 +111,5 @@
  window.CabinAircraftSummary.render=function(...args){const result=oldSummary(...args);render();return result;};
  const oldView=window.CabinImageMenu.onView;
  window.CabinImageMenu.onView=function(...args){const result=oldView(...args);render();return result;};
- window.CabinCGOverlay=Object.freeze({render});render();new ResizeObserver(render).observe(viewport);
+ window.CabinCGOverlay=Object.freeze({render,reset(){condition='takeoff';presentation='cabin';toggle.checked=false;render();}});render();new ResizeObserver(render).observe(viewport);
 })();

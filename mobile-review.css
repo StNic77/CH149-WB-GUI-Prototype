@@ -1,0 +1,74 @@
+/* Local mobile/CG review. All dimensions here are display-only. */
+.cg-layer-active .photo-wrap.plan-view{height:580px;min-height:580px!important;background:#fff}
+#cgLayerSummary{position:absolute;inset:8px;z-index:12;margin:0;padding:0;border:0;background:transparent;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+#cgLayerSummary[hidden]{display:none}
+#cgLayerSummary button,#cgLiveStrip,#cgLayerSummary details{pointer-events:auto}
+.cg-layer-heading{justify-content:flex-start;flex-wrap:wrap;gap:6px;background:#fffffff2;padding:4px;border-radius:6px}
+.cg-layer-heading strong{margin-right:auto;font-size:14px}
+#cgLayerSummary button{min-height:44px}
+.cg-condition-choices{margin:0;gap:4px;flex-wrap:wrap;align-self:flex-start;background:#fffffff2;border-radius:6px}
+#cgLiveStrip{margin-top:auto;padding:7px;background:#fffffff5;display:grid;grid-template-columns:1fr 1fr;gap:6px;min-width:0}
+#cgLiveStrip>h3,#cgLiveStrip>.cg-strip-explanation,#cgFullEnvelopeDetails{display:none}
+#cgLiveStrip .cg-strip-row{margin:0;padding:5px;min-width:0}
+#cgLiveStrip .cg-strip-row[data-selected=true]{padding:4px}
+#cgLiveStrip .cg-strip-select{font-size:12px;gap:2px;min-height:44px}
+#cgLiveStrip .cg-strip-track{height:29px}
+#cgLiveStrip .cg-strip-margins{font-size:11px;line-height:1.25}
+#cgLiveStrip .cg-strip-axis,#cgLiveStrip .cg-strip-axis-label{grid-column:1/-1;margin:0 8px;font-size:10px}
+#cgLayerSummary>.cg-layer-note{position:absolute;top:100%;margin-top:12px;display:none}
+#cgEnvelopeView{position:absolute;inset:106px 12px 180px;z-index:11;display:flex;align-items:center;justify-content:center;background:white;pointer-events:none}
+#cgEnvelopeView .cg-full-envelope{width:100%;height:100%;max-width:760px;object-fit:contain}
+.cg-envelope-active #planViewport{visibility:hidden;pointer-events:none}
+.cg-layer-active :is(#cargoLayer,#fuelQuantityLayer,#fuelLayerMode,#planGuides,#referenceItemLabels,#equipmentDetailTargets){display:none!important}
+.cg-layer-active #liveCabinItems{pointer-events:none}
+.cg-layer-active #liveCabinItems>*{pointer-events:none!important}
+.cg-layer-active .cg-cabin-condition-label,.cg-layer-active .cg-cabin-range-label{display:none}
+.cg-layer-active #aircraftTouchControls{display:none!important}
+.reference-item-label[data-reference-item=sensor-workstation]{transform:translate(-50%,-50%)}
+.live-fitting-label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#f5fcffed;border:1px solid #286f83;color:#174f60;border-radius:3px;padding:2px 4px;font:750 12px/1.2 'Segoe UI',sans-serif;white-space:nowrap}
+[data-live-object=oxygen-access]{border:1px dashed #286f83!important;background:#f4fafb99!important;min-height:30px!important}
+#sessionEntry #clearAllData{margin-left:auto;border-color:#a12835;color:#a12835;background:#fff}
+@media(max-width:1190px){
+ .app-header{min-height:54px;padding:7px 16px}.brand-mark{width:34px;height:34px;font-size:13px}.app-header p{display:none}
+ .workspace-intro{padding:12px 16px 8px}.workspace-intro .eyebrow,.workspace-intro p:last-child{display:none}.workspace-intro h2{font-size:20px}
+ #cabinMain{padding:8px 12px;gap:8px}.viewer-head{padding:7px 10px}.viewer-head .quiet{display:none}
+ .caption,.plan-help,#liveCabinNotice,.reference-state-note,.workspace-footer{display:none!important}
+}
+@media(max-width:650px){
+ .app-header{min-height:38px;padding:5px 10px}.brand{gap:7px}.brand-mark,.app-header .badge{display:none}.app-header h1{font-size:13px}
+ .workspace-intro{padding:6px 10px}.workspace-intro h2{font-size:16px}
+ #cabinMain{padding:4px;gap:5px}.viewer-head{display:none}#compactViewControls{padding:4px;gap:4px}.view-control-row{gap:4px}.view-control-row>button{min-height:44px;padding:6px;font-size:12px}
+ .photo-wrap.plan-view{height:clamp(280px,48svh,420px)}
+ .cg-layer-active .photo-wrap.plan-view{height:560px;min-height:560px!important}
+ #cgLayerSummary{inset:5px;gap:3px}.cg-layer-heading{gap:3px;padding:0}.cg-layer-heading strong{width:100%;font-size:12px}.cg-layer-heading button{flex:1;padding:4px!important;font-size:12px!important}
+ .cg-condition-choices{display:flex!important;gap:3px!important}.cg-condition-choices button{padding:4px!important;font-size:11px!important}
+ #cgLiveStrip{grid-template-columns:1fr;padding:5px;gap:3px}#cgLiveStrip .cg-strip-select{min-height:32px;font-size:11px;align-items:center}
+ #cgLiveStrip .cg-strip-track{height:25px}#cgLiveStrip .cg-strip-margins{font-size:10px}#cgLiveStrip .cg-strip-axis-label{display:none}
+ #cgEnvelopeView{inset:126px 6px 210px}
+ #liveAircraftValues{gap:3px!important;padding:4px!important}.aircraft-ribbon-metric{padding:3px 5px!important}.aircraft-ribbon-metric strong{font-size:13px!important}.aircraft-ribbon-metric small,.aircraft-ribbon-cg{font-size:10px!important}
+ #liveAircraftStrip .aircraft-ribbon-actions{gap:4px;padding:3px!important}#liveAircraftStrip .aircraft-ribbon-actions button{min-height:40px;padding:5px 8px;font-size:11px}
+ #sessionEntry{margin:6px;padding:12px}#sessionEntry h1{font-size:23px}#sessionEntry fieldset{margin:16px 0}
+}
+@media(max-height:500px) and (min-width:651px){.app-header,.workspace-intro{display:none}.cg-layer-active .photo-wrap.plan-view{height:500px;min-height:500px!important}}
+
+#cgEnvelopeView[hidden]{display:none}
+.cg-envelope-active #cgLiveStrip,.cg-envelope-active .cg-condition-choices{display:none!important}
+.cg-envelope-active #cgEnvelopeView{inset:72px 12px 36px}
+.cg-envelope-warning{margin-top:auto;background:#fff;color:#953223;font-size:12px}
+@media(max-width:650px){.cg-envelope-active #cgEnvelopeView{inset:100px 6px 42px}}
+@media(max-height:500px){.cg-envelope-active .photo-wrap.plan-view{height:340px;min-height:340px!important}}
+
+@media(max-width:1190px){#liveAircraftStrip{position:static!important}body{padding-bottom:0!important}}
+#planSheet{height:auto;aspect-ratio:2560/1216;top:50%;bottom:auto;translate:0 -50%}
+@media(max-width:650px){.photo-wrap.plan-view{aspect-ratio:auto;width:100%;min-width:0}}
+
+#cgEnvelopeView .cg-full-envelope{max-width:none}
+.cg-envelope-active #cgEnvelopeView{inset:68px 16px 24px}
+@media(max-width:650px){.cg-envelope-active #cgEnvelopeView{inset:94px 6px 38px}}
+.cg-envelope-active #cgEnvelopeView{bottom:52px}@media(max-width:650px){.cg-envelope-active #cgEnvelopeView{bottom:62px}}
+
+/* Station callouts are separate from the calibrated guide geometry. */
+.bay-station-leader{position:absolute;border-left:1px solid #9a6819;pointer-events:none}
+.bay-station-caption{position:absolute;transform:translate(-50%,-50%);font:650 clamp(9px,.85vw,12px) 'Segoe UI',sans-serif;color:#71480d;background:#fff8e9;border:1px solid #c6a56b;border-radius:3px;padding:3px 5px;white-space:nowrap;pointer-events:none;z-index:2}
+.bay-station b{position:absolute;left:-4px;top:50%;width:6px;height:6px;background:#9a6819;border-radius:50%}
+@media(pointer:coarse){#planShelfAccess [data-shelf-access$="Aft"]{min-width:24px;min-height:24px;touch-action:manipulation}}
