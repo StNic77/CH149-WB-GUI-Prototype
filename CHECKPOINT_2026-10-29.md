@@ -30,3 +30,11 @@ Phone ribbon now defaults to Operating weight/CG, Fuel and AUW/CG; More expands 
 Live ribbon remains fixed on mobile; page padding reserves its height. Bay 5.5 reads B5.5 and all bay sections have demarcations, including bays without tanks; tank labels/quantities exist only where tanks actually exist. Station positions and fuel calculations are unchanged. Short landscape pages may still need scrolling to view all image/fuel content above the ribbon.
 
 Verification: phone-ribbon-check passes desktop, phone portrait/landscape and iPad mini portrait/landscape, including expansion/collapse, unchanged loading, hidden phone sizing panel, tablet controls retained and dispatched two-touch pinch gesture zoom. Fuel/planning model, fuel landscape menus and Sea Tray regressions pass. Actual Safari/device feedback remains the next acceptance step.
+
+## Latest device-test refinement
+
+The phone landscape ribbon is approximately 48 CSS pixels high in the emulated viewport (safe-area insets can add device-dependent space). Labels and weights share a line; CG is beneath. Role/Layers/View, a fitted whole-aircraft image and a full-width proportional bay/fuel strip fit above it. More retains the additional values/tools. Portrait text remains stacked to avoid collisions. Source calculations and bay dimensions are unchanged.
+
+Every workspace entry now scrolls Role/Layers/View to the top after layout settles. The header and introduction remain reachable by scrolling upward. iPad spacing was preserved; no tablet re-sizing controller was retained. The user's supplied iPad landscape photo is the accepted visual baseline: controls at top, large centered image, complete fuel strip above full ribbon, edge sizing controls, collapsed summary. Future phone adjustments must remain separate.
+
+Final checks: phone-ribbon-check passed all five viewports, with explicit phone-landscape fit/ribbon-height assertions. session-navigation-check passed desktop, both iPad mini orientations and phone portrait using More for phone tools. Sea Tray and fuel-landscape checks also passed during this refinement. Real device testing remains necessary.

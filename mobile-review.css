@@ -106,3 +106,19 @@ body.phone-ribbon #aircraftRibbonWarning{grid-column:1/-1;font-size:11px}
 body.phone-ribbon #liveAircraftStrip{z-index:45}
 /* Phones use the existing two-finger image gesture instead of the sizing panel. */
 body.phone-ribbon #aircraftTouchControls{display:none!important}
+/* Compact phone ribbon: label and weight share a line, with CG below. */
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded){padding-top:1px;padding-bottom:max(1px,env(safe-area-inset-bottom));gap:2px}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) .aircraft-ribbon-metric{display:grid;grid-template-columns:auto 1fr;column-gap:4px;align-content:center}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #liveAircraftValues small{display:inline;align-self:center;line-height:1.1}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #liveAircraftValues strong{display:inline;font-size:12px;line-height:1.15;margin:0}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) .aircraft-ribbon-cg{grid-column:1/-1;line-height:1.1}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #phoneRibbonToggle{padding:0;min-height:44px;line-height:1}
+@media(min-width:651px) and (max-height:500px){
+ body.phone-ribbon .app-header,body.phone-ribbon .workspace-intro{display:none}
+ body.phone-ribbon #cabinMain{padding:0 4px;gap:0}
+ body.phone-ribbon #compactViewControls{position:sticky;top:0;z-index:30;padding:2px 4px}
+ body.phone-ribbon:not(.cg-layer-active) .photo-wrap.plan-view{height:calc(100svh - var(--aircraft-ribbon-height,48px) - 52px);min-height:0!important;aspect-ratio:auto}
+ body.phone-ribbon:not(.cg-layer-active) #planSheet{width:min(100%,calc((100svh - var(--aircraft-ribbon-height,48px) - 118px)*2.1053));left:50%;top:calc(50% - 33px);translate:-50% -50%}
+}
+
+@media(max-width:650px){body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) .aircraft-ribbon-metric{grid-template-columns:1fr;gap:0}body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #liveAircraftValues strong{display:block}}
