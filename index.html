@@ -14,7 +14,7 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 .hotspot{display:none!important}.photo-wrap.plan-view{height:auto;min-height:0;aspect-ratio:1550/694}.photo-wrap.plan-view img{width:100%;height:100%;object-fit:fill}.plan-target{display:none;position:absolute;left:31%;top:35%;width:9%;height:11%;border:3px solid #ffc644;background:#ffc64430;border-radius:7px;color:#13263a;font-weight:800;font-size:clamp(9px,1vw,13px);text-shadow:0 1px 2px white,0 0 5px white;box-shadow:0 0 0 2px #142a4270;cursor:pointer}.plan-target::after{content:"";position:absolute;inset:-7px;border:1px dashed #fff;border-radius:10px;pointer-events:none}.plan-target.show{display:block}.plan-target:hover,.plan-target.selected{background:#ffc6449c;box-shadow:0 0 0 3px #142a42,0 0 16px #ffc644}.plan-unavailable{display:none;min-height:300px;align-items:center;justify-content:center;text-align:center;padding:30px;background:#f3f6f8;color:var(--muted)}.plan-unavailable.show{display:flex}.area-nav{padding:10px 13px 12px;border-top:1px solid var(--line);background:#f8fafc}.area-nav-title{font-size:11px;color:var(--muted);margin:0 0 7px}.area-buttons{display:flex;flex-wrap:wrap;gap:7px}.area-button{border:1px solid #9aafc0;background:#fff;border-radius:8px;color:#213c53;padding:8px 11px;text-align:left;font-size:12px;font-weight:650}.area-button:hover,.area-button.active{border-color:var(--blue);background:#eaf4fb;color:#154e77}.area-button small{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:2px}.all-locations{margin-top:10px;border:1px solid var(--line);border-radius:8px;background:#fff}.all-locations>summary{padding:9px 10px;cursor:pointer;font-size:12px;font-weight:700;color:#344c61}.location-groups{padding:0 9px 9px;display:grid;gap:6px}.location-group{border:1px solid #e2e8ed;border-radius:7px}.location-group>summary{padding:7px 9px;cursor:pointer;font-size:11px;font-weight:650}.location-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:5px;padding:0 7px 7px}.location-choice{border:1px solid var(--line);border-radius:6px;background:#fff;text-align:left;padding:7px 8px;color:var(--ink);font-size:11px}.location-choice:hover,.location-choice.active{border-color:var(--teal);background:#e8f6f1}.location-choice small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
 @media(max-width:1050px){main{grid-template-columns:1fr}.side{max-height:unset;min-height:400px}.photo-wrap{height:48vh}}@media(max-width:650px){main{padding:8px}.toolbar{padding:9px}.toolbar strong{width:100%}.photo-wrap{min-height:240px}.axis-places{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
-<link rel="stylesheet" href="workspace.css?v=e0f15a871d25">
+<link rel="stylesheet" href="workspace.css?v=14fed39092e3">
 <link rel="stylesheet" href="plan-viewer.css?v=6a282f3c0cf4">
 <link rel="stylesheet" href="floor-area.css?v=1783c052e9d7">
 </head>
@@ -92,9 +92,9 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <script src="bay-review-draft.js?v=48b86acdf67d"></script>
 <script src="station-calibration.js?v=2ae760681605"></script>
 <script src="bay-layer.js?v=dd9c4673eab2"></script>
-<script src="seat-rules.js?v=565892582908"></script>
+<script src="seat-rules.js?v=b54bd74279c3"></script>
 <script src="seat-editor.js?v=88d68f514aaa"></script>
-<script src="floor-area.js?v=d6796dd18a8e"></script>
+<script src="floor-area.js?v=b8e5927eb987"></script>
 <script src="cabinet-regions.js?v=545f68265ea6"></script>
 <script src="cabinet-zones.js?v=2e563c88f99a"></script>
 <script src="forward-shelf-definition.js?v=d0f8d82b9e5b"></script>
@@ -114,11 +114,11 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <script src="stokes-editor.js?v=46d2943a22b0"></script>
 <link rel="stylesheet" href="live-cabin.css?v=98f8dbe1a8db">
 <script src="live-visual-layout.js?v=0f174d2eb069"></script>
-<script src="live-cabin.js?v=7520378e42a7"></script>
+<script src="live-cabin.js?v=001ae05f6de9"></script>
 <link rel="stylesheet" href="ramp-area.css?v=f469962e1787">
 <script src="ramp-area.js?v=e79a4663cbdc"></script>
 <script src="floor-equipment.js?v=930056897284"></script>
-<script src="casevac-editor.js?v=475519371a8e"></script>
+<script src="casevac-editor.js?v=b8145c4c5842"></script>
 <link rel="stylesheet" href="cargo-layer.css?v=c3f77bdba681">
 <script src="cargo-layer.js?v=7ea66a3ef707"></script>
 <script src="plan-viewer.js?v=9aa0201872cc"></script>
@@ -276,9 +276,9 @@ applyPreset('');
 <script src="image-workspace.js?v=0ebab6bf1ac9"></script>
 <link rel="stylesheet" href="aircraft-summary.css?v=babceb5f96f1">
 <script src="aircraft-summary.js?v=c83203308d91"></script>
-<script src="planning-ui.js?v=1ad4f3fec8d8"></script>
+<script src="planning-ui.js?v=f7f84be09c6b"></script>
 <link rel="stylesheet" href="usability.css?v=e8fb38538de9">
-<script src="equipment-ui.js?v=05a589401ce4"></script>
+<script src="equipment-ui.js?v=43075f0d9493"></script>
 <script src="touch-workspace.js?v=fee64bc41bc7"></script>
 <script src="compact-workspace.js?v=40f40307e282"></script>
 <script src="fuel-ui.js?v=3d3477ff6e94"></script>
@@ -289,9 +289,9 @@ applyPreset('');
 <script src="view-controls.js?v=5a1aba13e906"></script>
 <script src="summary-controls.js?v=3eae8117feb4"></script>
 <link rel="stylesheet" href="session-entry.css?v=5bdab619b3e5">
-<script src="session-entry.js?v=ed89555f23bc"></script>
+<script src="session-entry.js?v=c8ae068a7e5f"></script>
 <script src="keyboard-menus.js?v=ef59055632b0"></script>
-<link rel="stylesheet" href="mobile-review.css?v=ede7f7d0e141">
-<script src="phone-ribbon.js?v=539175c1c40b"></script>
+<link rel="stylesheet" href="mobile-review.css?v=3d8ff863bc7e">
+<script src="phone-ribbon.js?v=4248a9e32c1b"></script>
 </body>
 </html>

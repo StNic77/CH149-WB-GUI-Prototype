@@ -25,8 +25,6 @@
 .cg-layer-active .cg-cabin-condition-label,.cg-layer-active .cg-cabin-range-label{display:none}
 .cg-layer-active #aircraftTouchControls{display:none!important}
 .reference-item-label[data-reference-item=sensor-workstation]{transform:translate(-50%,-50%)}
-.live-fitting-label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#f5fcffed;border:1px solid #286f83;color:#174f60;border-radius:3px;padding:2px 4px;font:750 12px/1.2 'Segoe UI',sans-serif;white-space:nowrap}
-[data-live-object=oxygen-access]{border:1px dashed #286f83!important;background:#f4fafb99!important;min-height:30px!important}
 #sessionEntry #clearAllData{margin-left:auto;border-color:#a12835;color:#a12835;background:#fff}
 @media(max-width:1190px){
  .app-header{min-height:54px;padding:7px 16px}.brand-mark{width:34px;height:34px;font-size:13px}.app-header p{display:none}
@@ -158,3 +156,6 @@ body.phone-landscape-fit{padding-bottom:calc(var(--aircraft-ribbon-height,40px) 
 @media(max-width:650px){body.phone-ribbon:not(.cg-layer-active) .photo-wrap.plan-view{height:var(--phone-photo-height,390px)}}
 
 .equipment-standard-warning{margin:8px 0;padding:8px 10px;border:1px solid #b56b16;border-left:4px solid #b56b16;border-radius:5px;background:#fff4df;color:#663c09;font-size:12px;line-height:1.4}.equipment-standard-warning p{margin:6px 0 0}.equipment-standard-warning ul{margin:6px 0;padding-left:20px}
+
+.area-seat-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}.area-seat-row label{display:flex;gap:6px;align-items:center;min-height:44px;flex:1}.area-seat-row input[type=checkbox]{width:22px;height:22px;flex-shrink:0}.area-seat-row p{margin:0;flex:1}
+.live-cabin-active .live-cabin-object[data-live-object="sensor-access"],.live-cabin-active .live-cabin-object[data-live-object="oxygen-access"]{border:0!important;background:transparent!important;box-shadow:none!important}

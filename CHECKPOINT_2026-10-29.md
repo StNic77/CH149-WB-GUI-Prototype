@@ -108,3 +108,37 @@ User authorized commit/push for device testing. This checkpoint includes detail-
 Current final checks cover detail-plane geometry and all nine cabinet taps; pen-kit partial removal/reinstall; NVG editing and batch removal; standard shortage top-ups, extras preservation, helper cancellation and non-standard-elsewhere warnings; compact contents, zero removal, detail image applicability, phone ribbon and planning/fuel regressions. This is emulated browser evidence; real phone/iPad testing remains necessary.
 
 Sea Strip is future work and Mountain Strip is tentative, with removal behavior undefined. No strip controls or actions are implemented.
+
+## Aircraft-data editing consolidated on Start
+
+User selected Return to Start as the single aircraft-data editing route and requested removal of Unspecified aircraft. Removed the separate Planning data button/dialog and its unspecified option; the existing Return to Start action remains. Start already requires an actual listed tail and retains the selected Role/current Basic Weight/CG, fuel and basis. No calculation-model or source-data changes. Existing unchanged-entry/manual-fuel/loading retention and cancel-draft behavior remain.
+
+Associated tests use Start instead of the removed dialog. The legacy keyboard handler is left unchanged, including its now-inactive dialog selector, to avoid altering the stable keyboard rollback during this UI cleanup. Current work is local only; no commit/push was requested for this increment.
+
+## Multi-seat installation from area Seat positions
+
+User requested SAR-3 B3 Port → Seat positions → select P11 and P12 → Install together, retaining individual uninstall. Added selection for absent seats in the shared area menu and a single Install selected seats action. Selections dynamically exclude mutually exclusive alternatives and respect installed blockers. All selected installations are validated on a draft using the existing seat rules; only a fully valid batch is committed. No automatic replacement of conflicting seats. Occupants and equipment are not removed. Tests cover pair installation and 13.8 kg source seat-weight change, reciprocal crew/pax selection blocking, atomic rejection after a stale conflict and unchanged individual P11 removal with P12 retained, across five device sizes. Existing occupant and Sea Tray regressions passed.
+
+## Confirmed CASEVAC fit exclusions — 29 October 2026
+
+Rules supplied by the user, independent of Role selection:
+- FWD PORT: C5, P13, P14, PTA cot, P15, P16.
+- AFT PORT: PTA cot, P17, P18.
+- AFT STBD: Stbd basket, C6, P9, P10, P1, P8.
+- FWD STBD: SAR Cabinet, P4, P5, P6.
+
+P1 was explicitly confirmed as intentional and remains at its catalogue B5.5 Stbd station. P7 is B5 Stbd Fwd and is not substituted into the AFT STBD list. No seat geometry, mass or arm was altered.
+
+The prototype physical-rule module now enforces these relationships reciprocally for rack installation, seat installation (including new multi-install), and conflicting equipment installation/movement through existing shared guards. Blocked rack choices read unavailable, show the reason, and disable installation. Existing installed racks can still be removed after patients are cleared; new patient assignment is blocked for a conflicting rack state. Source configuration and calculation engines are untouched. Existing port-basket/PTA and seat alternative rules remain.
+
+## Removed fitting display
+
+Removed the SWS + and O₂ rack + labels and visible placeholder styling from Live Equipment. Invisible reinstall hit targets remain to preserve prior image-position access. Reference-view labels remain available with Live Equipment off. Transport and CASEVAC checks confirm absent fittings have no label, artwork or visible border, with equipment access retained.
+
+These increments, including the earlier Return to Start consolidation, remain local and uncommitted/unpublished pending review.
+
+## Start / seat installation / CASEVAC device-test publication
+
+User authorized commit and push. This increment packages the Return to Start-only aircraft-data route (no Planning data form or Unspecified aircraft), More reset when choosing tools/entering the workspace, compatible seat multi-install from area Seat positions, confirmed reciprocal CASEVAC fit restrictions and unavailable labels, and removal of absent SWS/O₂ labels/placeholders from Live Equipment. Invisible reinstall access remains. The previously stable keyboard rollback is unchanged.
+
+Checks completed during this increment: loading-workspace, iPad loading, session navigation, phone ribbon and Active Dev accepted-state parity after routing edits through Start; seat multi-install/exclusion/atomic rejection/single uninstall at all five sizes; all user-confirmed CASEVAC blockers and reciprocal guards plus removed-fitting display at all five sizes; CASEVAC patient multiselect, occupant visibility, Sea Tray cell access and planning/fuel regressions. Asset URLs and diff whitespace checks pass. Actual device review remains pending; no full historical suite pass is claimed. Source aircraft definitions, masses, arms, calibration and engine files remain unchanged.

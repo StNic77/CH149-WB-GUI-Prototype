@@ -18,9 +18,10 @@ The new keyboard auto-alignment was rolled back after real-iPhone jitter; the us
 ## Next selected work
 
 1. Complete device review of this cabinet/quantity checkpoint.
-2. Review Aircraft Planning layout.
-3. Finish broader catalogue/search usability review; the installed-item search exclusion is fixed.
-4. Expand matched-state comparisons before choosing an Active Dev integration slice.
+2. Finish broader catalogue/search usability review; the installed-item search exclusion is fixed.
+3. Expand matched-state comparisons before choosing an Active Dev integration slice.
+
+Aircraft Planning UI review resolved by user decision: use Return to Start for aircraft-data edits. The duplicate Planning data form and Unspecified aircraft option are removed locally; device publication/check remains pending.
 
 ## Later capability work
 

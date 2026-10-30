@@ -117,7 +117,6 @@
   occupants.replaceChildren();const keep=new Set(objects.map(o=>o.id));for(const [id,node]of nodes)if(!keep.has(id)){node.remove();nodes.delete(id);}
   for(const o of objects){let node=nodes.get(o.id);if(!node){node=document.createElement(o.action?'button':'div');if(o.action)node.type='button';node.className='live-cabin-object';node.dataset.liveObject=o.id;layer.append(node);nodes.set(o.id,node);}
    if(node.dataset.asset!==(o.asset||'')){node.replaceChildren(...(o.asset?[imageNode(assets[o.asset])]:[]));node.dataset.asset=o.asset||'';}
-   if(o.id==='sensor-access'||o.id==='oxygen-access'){let label=node.querySelector('.live-fitting-label');if(!label){label=document.createElement('span');label.className='live-fitting-label';node.append(label);}label.textContent=o.id==='oxygen-access'?'O₂ rack +':o.id==='sensor-access'?'SWS +':'SWS';}
    if(o.id.startsWith('seat-'))seatPoints.set(o.id.slice(5),{x:o.x,y:o.y});
    const occupancy=o.occupied?'patient':o.occupancy;
    let anchor=null;if(occupancy||o.patientTiers?.length){anchor=document.createElement('div');anchor.className='live-occupant-anchor';anchor.dataset.occupantObject=o.id;occupants.append(anchor);}

@@ -7,7 +7,7 @@ for(const [width,height]of [[1440,1000],[834,1194],[1194,834],[390,844],[844,390
 assert.equal(await page.locator('.workflow-nav').count(),0);assert.equal(await page.locator('#viewTabs button').count(),6);
 for(const id of ['stbd','pta','ramp','forward','cabinet','plan']){await page.locator('#viewControl').click();await page.locator(`[data-viewtab="${id}"]`).click();assert.equal(await page.evaluate(()=>state.view),id);assert.equal(await page.locator('#viewOptions').isVisible(),false);}
 await page.locator('[data-shelf-access="stbdAft"]').click();assert.equal(await page.evaluate(()=>state.view),'stbd');await page.locator('#backToCabin').click();assert.equal(await page.evaluate(()=>state.view),'plan');
-await page.locator('#openPlanning').click();await page.locator('#planningForm [name="weight"]').fill('10000');await page.locator('#planningForm [name="cg"]').fill('8000');await page.locator('#planningForm [type="submit"]').click();assert.match(await page.locator('#liveAircraftValues').textContent(),/AUW.*kg/);
+if(!await page.locator('#startFreshSession').isVisible())await page.locator('#phoneRibbonToggle').click();await page.locator('#startFreshSession').click();await page.locator('#entryTails [data-entry-choice="149920"]').click();await page.locator('#sessionEntryForm [name="weight"]').fill('10000');await page.locator('#sessionEntryForm [name="cg"]').fill('8000');await page.locator('#sessionEntryForm [type="submit"]').click();assert.match(await page.locator('#liveAircraftValues').textContent(),/AUW.*kg/);
 await page.evaluate(()=>{applyPreset('SAR3');state.floorLoads=[];renderSeats();});
 const key='ME_SAR_MISSION_EQUIP_NVG_SET_AND_CASE';
 

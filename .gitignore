@@ -82,3 +82,7 @@ Thumbs.db
 !verification/standard-topup-check.cjs
 
 !verification/standard-elsewhere-warning-check.cjs
+
+!verification/seat-multiselect-check.cjs
+
+!verification/casevac-fit-check.cjs
