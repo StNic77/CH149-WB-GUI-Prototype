@@ -72,3 +72,37 @@
 .bay-station-caption{position:absolute;transform:translate(-50%,-50%);font:650 clamp(9px,.85vw,12px) 'Segoe UI',sans-serif;color:#71480d;background:#fff8e9;border:1px solid #c6a56b;border-radius:3px;padding:3px 5px;white-space:nowrap;pointer-events:none;z-index:2}
 .bay-station b{position:absolute;left:-4px;top:50%;width:6px;height:6px;background:#9a6819;border-radius:50%}
 @media(pointer:coarse){#planShelfAccess [data-shelf-access$="Aft"]{min-width:24px;min-height:24px;touch-action:manipulation}}
+
+/* Keep live weights reachable while reserving room for the fixed ribbon. */
+@media(max-width:1190px){
+ #liveAircraftStrip{position:fixed!important}
+ body{padding-bottom:var(--aircraft-ribbon-height,150px)!important}
+ #planViewport{scroll-margin-bottom:calc(var(--aircraft-ribbon-height,150px) + 12px)}
+ .fuel-bay-label{font-size:10px;gap:0;padding:0;flex-direction:row}
+}
+.fuel-bay-demarcation{position:absolute;top:0;bottom:0;border-left:1px solid #91b3c5;border-right:1px solid #91b3c5;box-sizing:border-box;pointer-events:none}
+.fuel-bay-label{overflow:hidden}
+@media(max-height:600px) and (min-width:651px) and (max-width:1190px){
+ #liveAircraftValues{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+ #liveAircraftStrip{padding:4px 8px max(4px,env(safe-area-inset-bottom));gap:4px}
+ #liveAircraftValues strong{font-size:12px;margin-top:1px}
+ #liveAircraftValues small,.aircraft-ribbon-cg{font-size:10px}
+ #liveAircraftStrip .aircraft-ribbon-actions button{min-height:36px;padding:4px 8px}
+}
+/* Phone-specific presentation; tablet layouts retain their existing rules. */
+#phoneRibbonToggle[hidden]{display:none!important}
+body.phone-ribbon #liveAircraftStrip{grid-template-columns:minmax(0,1fr) 48px;gap:4px;padding:5px max(6px,env(safe-area-inset-right)) max(5px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));max-height:65svh;overflow:auto;overscroll-behavior:contain}
+body.phone-ribbon #liveAircraftValues{grid-column:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+body.phone-ribbon #liveAircraftValues .aircraft-ribbon-metric{padding:0 3px!important;order:2}
+body.phone-ribbon #liveAircraftValues :is([data-aircraft-metric=operating],[data-aircraft-metric=fuel],[data-aircraft-metric=auw]){order:0}
+body.phone-ribbon #liveAircraftValues small{min-height:0;font-size:10px}
+body.phone-ribbon #liveAircraftValues strong{font-size:13px;margin-top:1px}
+body.phone-ribbon #liveAircraftValues .aircraft-ribbon-cg{font-size:10px;margin-top:1px}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) #liveAircraftValues :is([data-aircraft-metric=basic],[data-aircraft-metric=cabin],[data-aircraft-metric=cargo]){display:none}
+body.phone-ribbon #liveAircraftStrip:not(.phone-ribbon-expanded) .aircraft-ribbon-actions{display:none}
+body.phone-ribbon #phoneRibbonToggle{grid-column:2;grid-row:1;align-self:center;min-height:44px;padding:4px;font-size:11px}
+body.phone-ribbon .aircraft-ribbon-actions{grid-column:1/-1;flex-wrap:wrap;justify-content:flex-start}
+body.phone-ribbon #aircraftRibbonWarning{grid-column:1/-1;font-size:11px}
+body.phone-ribbon #liveAircraftStrip{z-index:45}
+/* Phones use the existing two-finger image gesture instead of the sizing panel. */
+body.phone-ribbon #aircraftTouchControls{display:none!important}

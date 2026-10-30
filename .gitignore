@@ -68,3 +68,5 @@ Thumbs.db
 
 !verification/mobile-session-cg-check.cjs
 !verification/boundary-callout-check.cjs
+
+!verification/phone-ribbon-check.cjs

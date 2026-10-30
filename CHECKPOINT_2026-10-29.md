@@ -22,3 +22,11 @@ Remaining capability work from the reference pack: broader matched-state source 
 ## Device testing
 
 Use the hosted GitHub Pages prototype after its deployment completes, not the abandoned Desktop/511 App/cabin-mobile-review trial. Test Start/continue with manual fuel and loading, clear confirmation/cancel, image-opening defaults, CG/Envelope/2D switches, boundary callouts, rack removal/reinstall, equipment and aft-view touch access, and portrait/landscape rotation. Report OS/browser and orientation with any issue.
+
+## iPhone device-feedback refinement
+
+Phone ribbon now defaults to Operating weight/CG, Fuel and AUW/CG; More expands Basic, bay/cargo values and Planning/Fuel/Start tools, and Less collapses it. Warnings remain present. The phone sizing panel is hidden by explicit user request; existing pinch zoom remains. iPad retains its full ribbon and sizing controls. Phone detection uses coarse-pointer compact-width/short-landscape media conditions, not an iOS user-agent check.
+
+Live ribbon remains fixed on mobile; page padding reserves its height. Bay 5.5 reads B5.5 and all bay sections have demarcations, including bays without tanks; tank labels/quantities exist only where tanks actually exist. Station positions and fuel calculations are unchanged. Short landscape pages may still need scrolling to view all image/fuel content above the ribbon.
+
+Verification: phone-ribbon-check passes desktop, phone portrait/landscape and iPad mini portrait/landscape, including expansion/collapse, unchanged loading, hidden phone sizing panel, tablet controls retained and dispatched two-touch pinch gesture zoom. Fuel/planning model, fuel landscape menus and Sea Tray regressions pass. Actual Safari/device feedback remains the next acceptance step.

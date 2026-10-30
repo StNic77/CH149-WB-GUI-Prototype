@@ -68,7 +68,7 @@
  function watchFinal(event){const button=event.submitter||event.target.closest?.('button');if(!button||!button.closest('#imageMenu')||button.disabled)return;const before=signature(),count=completed,label=button.textContent.trim(),subject=window.CabinImageMenu.getState().item||'';setTimeout(()=>{if(count===completed&&signature()!==before&&!window.CabinEquipmentUI.isIntermediate?.())complete((label+(subject?' · '+subject:'')).replace(/\s+/g,' ')+'. Aircraft updated.');},0);}
  document.addEventListener('click',watchFinal,true);document.addEventListener('submit',watchFinal,true);
  bar.addEventListener('keydown',e=>{if(e.key==='Escape'&&open){const focus=open==='role'?'roleControl':open==='view'?'viewControl':'layersControl';open='';sync();window.CabinImageMenu.resume();$(focus).focus();}});
- function reset(){open='';controlsHidden=matchMedia('(max-width:650px)').matches;window.CabinCGOverlay.reset();window.CabinImageMenu.close();
+ function reset(){open='';controlsHidden=false;window.CabinCGOverlay.reset();window.CabinImageMenu.close();
   const defaults=new Set(['liveCabinToggle','occupantToggle','floorCellsToggle','cargoToggle','fuelLayerToggle']);
   for(const [id]of toggles){const input=$(id);if(!input)continue;input.checked=defaults.has(id);input.dispatchEvent(new Event('change',{bubbles:true}));}
   for(const details of document.querySelectorAll('#aircraftSummary details'))details.open=false;
