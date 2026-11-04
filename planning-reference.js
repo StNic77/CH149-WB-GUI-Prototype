@@ -794,5 +794,6 @@ function fleetMaintenanceBaseline(){
 }
 
 
-return {computeWB,missionRows,stowageLimits,computeRoleFitAdjustment,computeSeatTotals,fleetMaintenanceBaseline,accountingIssues,patientIssues};
+return {basicWeightBasis,computeBurnTrack,computeLandingPoint,computeMissionTotals,computePatientTotals,patientRows,roleFitAccountingRows,roleFitExpectation,roleFitIsInstalled,ROLE_FIT_LABELS,computeWB,missionRows,stowageLimits,computeRoleFitAdjustment,computeSeatTotals,fleetMaintenanceBaseline,accountingIssues,patientIssues};
 };
+

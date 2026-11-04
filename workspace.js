@@ -11,8 +11,8 @@
           [['Basic weight & CG', 'Awaiting accepted data'], ['Weight basis', 'Maintenance / RFM'], ['Baseline & exceptions', 'Review before acceptance'], ['Reference document', 'Source and revision']]]
       ], next: ['Explore cabin setup', 'cabin']
     },
-    cabin: { eyebrow: '02 / PREPARE THE CABIN', title: 'A clear view of your aircraft.',
-      description: 'Choose a role, explore the cabin and inspect its equipment.' },
+    cabin: { eyebrow: '02 / CONFIGURATION AND LOADING', title: 'Aircraft Configuration and Loading',
+      description: 'Review the selected role configuration. Use the aircraft image to adjust equipment, assign occupants, and enter loads. Review the live weight and CG as you make changes.' },
     balance: {
       eyebrow: '03 / REVIEW THE WHOLE LOAD', title: 'Every change, in balance.',
       description: 'Bring fuel, cabin loads and the predicted CG path into one review.',
@@ -34,7 +34,7 @@
         ['MCDU cross-check', 'Keep expected values and read-back values together, with any discrepancy visible.',
           [['Expected AUW / CG / fuel', 'Engine connection required'], ['Read-back values', 'Not entered'], ['Cross-check result', 'Not evaluated']]],
         ['Sign & flight record', 'Carry over certification conditions, sign-out and the existing report content.',
-          [['Required reviews', 'Not evaluated'], ['Certification', 'Unavailable in prototype'], ['PDF report', 'Not connected'], ['Session save / restore', 'Not connected']]]
+          [['Required reviews', 'Not evaluated'], ['Certification', 'Unavailable in prototype'], ['PDF report', 'Printable W&B report connected'], ['Session save / restore', 'Not connected']]]
       ], next: ['Return to cabin', 'cabin']
     },
     manage: {

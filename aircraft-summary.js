@@ -4,6 +4,7 @@
  const data=window.CH149_DATA,side=document.querySelector('#cabinMain>.side'),legacy=document.createElement('div');legacy.hidden=true;
  while(side.firstChild)legacy.append(side.firstChild);side.append(legacy);
  const heading=document.createElement('div');heading.className='side-head';heading.innerHTML='<h2>Aircraft summary</h2><p id="aircraftSummaryRole" class="sub"></p>';side.append(heading);
+
  const root=document.createElement('div');root.id='aircraftSummary';root.className='scroll aircraft-summary';side.append(root);
  const text=(tag,value)=>{const node=document.createElement(tag);node.textContent=value;return node;};
  const weight=w=>Number(w).toLocaleString('en-CA',{maximumFractionDigits:2})+' kg';
@@ -34,7 +35,7 @@
   root.replaceChildren();document.getElementById('aircraftSummaryRole').textContent=data.presets[s.preset]?.name||'No Role Config';
   function section(parent,id,title,summary){const node=document.createElement('details');node.dataset.summaryId=id;node.open=opened.has(id);const label=document.createElement('summary');label.append(text('strong',title),text('small',summary));node.append(label);parent.append(node);return node;}
   function row(parent,name,status,action,id){if(id&&/^(ME_|RF_)/.test(id)){const installed=s.mission.has(id)||s.roleFit.has(id),label=installed?'Installed':'Not installed';if(parent.dataset.lastInstallationGroup!==label){const heading=text('h4',label);heading.className='installation-group-heading';parent.append(heading);parent.dataset.lastInstallationGroup=label;}}const node=document.createElement(action?'button':'div');if(action){node.type='button';node.onclick=action;}node.className='summary-row';if(id)node.dataset.summaryItem=id;node.append(text('span',name),text('small',status));parent.append(node);return node;}
-  const accepted=section(root,'acceptance','Planning baseline',s.planning?.basicWeight?`${weight(s.planning.basicWeight)} · ${s.planning.basicCG} mm`:'Basic data not entered');accepted.append(text('p',s.planning?.basicWeight?'Planning data entered for this session; use Planning data to change its weight basis.':'Use Planning data in the live results strip to enter basic weight and CG.'));
+  const accepted=section(root,'acceptance','Aircraft Basic Weight and CG',s.planning?.basicWeight?`${weight(s.planning.basicWeight)} · ${s.planning.basicCG} mm`:'Basic data not entered');accepted.append(text('p',s.planning?.basicWeight?'Planning data entered for this session; use Planning data to change its weight basis.':'Use Planning data in the live results strip to enter basic weight and CG.'));
   const roleKeys=Object.keys(data.roleFit).filter(k=>data.roleFit[k].active!==false),fitChanges=roleKeys.filter(k=>s.roleFit.has(k)!==base.roleFit.has(k));
   const role=section(root,'role','Role Selected',`${data.presets[s.preset]?.name||'No Role Config'} · ${s.roleFit.size} fitted · ${fitChanges.length} edits`);role.append(text('p','Compared with the selected Role Config standard.'));
   const fits=new Map();for(const key of roleKeys){const item=data.roleFit[key];if(!item)continue;const group=item.group||groupPrefixes.find(([prefix])=>key.startsWith(prefix))?.[1]||'Other Equipment';if(!fits.has(group))fits.set(group,[]);fits.get(group).push(key);}
@@ -70,6 +71,11 @@
   for(const loc of LOC.filter(l=>['cabinet','shelf','storage'].includes(l.type)&&!window.CabinFloorEquipment.locations.includes(l.id))){const status=window.CabinPlanning.shelf(s,loc.id);const b=row(capacitySection,loc.label,(status.level==='caution'?'WARNING · ':'')+window.CabinLoadingFeedback.message(status),()=>{setView(loc.view);s.selectedLoc=loc.id;renderDetail();window.CabinImageMenu.showDetail(loc.id);});b.dataset.limitStatus=status.level;}
   for(const bay of window.CH149_BAY_DATA.bays.filter(b=>b.id!=='REAR')){const status=window.CabinPlanning.bay(s,bay.id);const b=row(capacitySection,bay.name,(status.level==='caution'?'WARNING · ':'')+window.CabinLoadingFeedback.message(status),()=>{setView('plan');window.CabinFloorArea.openById(bay.id+'_CENTRE');});b.dataset.limitStatus=status.level;}
   if(capacitySection.querySelector('[data-limit-status=caution]'))planning.querySelector('summary small').textContent+=' · Shelf/bay WARNING';
+  const certification=section(root,"certification","Certification","MCDU entries and cross-check");
+  certification.querySelector("summary").onclick=event=>{
+   event.preventDefault();
+   window.CabinWBReport.open();
+  };
   root.scrollTop=scroll;
  }
  window.CabinAircraftSummary={render,standard};render();

@@ -50,7 +50,7 @@
   if(!hasWork){applyRole(key);return;}pending=key;$('roleResetError').textContent='';$('confirmRoleReset').textContent='Change to '+(D.presets[key]?.name||'No Role Config')+' and reset';dialog.showModal();$('keepRoleSession').focus();
  }
  function cancelRole(){pending=null;open='';dialog.close();sync();window.CabinImageMenu.resume();$('roleControl').focus();announce('Current session kept. No aircraft changes made.');}
- function applyRole(key){const s=S(),before=structuredClone(s),p=s.planning,accepted=p?Object.fromEntries(['tail','source','basicWeight','basicCG','basis','baseline','fuel','fuelMode','tanks','reserve'].filter(k=>p[k]!==undefined).map(k=>[k,structuredClone(p[k])])):null;
+ function applyRole(key){const s=S(),before=structuredClone(s),p=s.planning,accepted=p?Object.fromEntries(['tail','source','basicWeight','basicCG','basis','baseline','fuelLog','fuel','fuelMode','tanks','reserve'].filter(k=>p[k]!==undefined).map(k=>[k,structuredClone(p[k])])):null;
   window.CabinImageMenu.close();for(const m of ['CabinCargo','CabinFloorArea','CabinBasket','CabinPTA','CabinStokes'])window[m]?.close?.();
   s.floorLoads=[];s.stowageLoads={};s.nextFloorLoadId=0;s.nextAllocationId=0;s.selectedLoc=null;for(const k of ['certification','certified','clearance'])delete s[k];if(accepted)s.planning=accepted;else delete s.planning;
   if(applyPreset(key)===false){for(const k of Object.keys(s))if(!(k in before))delete s[k];Object.assign(s,before);render();$('roleResetError').textContent='The new Role could not be applied. Your previous session was retained.';return false;}

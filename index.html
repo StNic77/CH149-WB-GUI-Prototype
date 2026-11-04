@@ -23,7 +23,7 @@ main{padding:15px;display:grid;grid-template-columns:minmax(540px,1fr) 360px;gap
 <header class="app-header"><div class="brand"><span class="brand-mark" aria-hidden="true">615</span><div><h1>CH-149 <span>/ Flight preparation</span></h1><p>Cabin workspace · development edition</p></div></div><span class="badge">Design prototype · saved on this device</span></header>
 <div class="app-layout">
 <div class="workspace-body">
-<section class="workspace-intro"><div><p class="eyebrow" id="workspaceEyebrow">02 / PREPARE THE CABIN</p><h2 id="workspaceHeading" tabindex="-1">A clear view of your aircraft.</h2><p id="workspaceDescription">Choose a role, open a view and edit the aircraft with live weight feedback.</p></div><div class="workspace-state"><span id="workflowStatus">Cabin interaction concept</span><small>Live planning results</small><a href="review.html">Review &amp; identify the original plan →</a></div></section>
+<section class="workspace-intro"><div><p class="eyebrow" id="workspaceEyebrow">02 / CONFIGURATION AND LOADING</p><h2 id="workspaceHeading" tabindex="-1">Aircraft Configuration and Loading</h2><p id="workspaceDescription">Review the selected role configuration. Use the aircraft image to adjust equipment, assign occupants, and enter loads. Review the live weight and CG as you make changes.</p></div><div class="workspace-state"><span id="workflowStatus">Cabin interaction concept</span><small>Live planning results</small><a href="review.html">Review &amp; identify the original plan →</a></div></section>
 <section id="stagePreview" class="stage-preview" hidden aria-labelledby="workspaceHeading"></section>
 <div id="cabinWorkspace">
 <div class="toolbar"><strong>Choose a Role Config</strong><div id="configButtons" style="display:flex;gap:8px;flex-wrap:wrap"></div><span class="grow"></span><span id="configSummary" class="quiet">No Role Config selected</span></div>
@@ -267,17 +267,19 @@ applyPreset('');
 <script src="fuel-reference.js?v=c1e465174de9"></script>
 <script src="fuel-model.js?v=365c39ddacee"></script>
 <script src="planning-source.js?v=77a9b507ceb0"></script>
-<script src="planning-reference.js?v=a1a684dbfa97"></script>
+<script src="planning-reference.js?v=b7658b8afe94"></script>
 <script src="equipment-actions.js?v=28183cceed96"></script>
-<script src="planning-model.js?v=629263e19ca0"></script>
+<script src="planning-model.js?v=3bcfaa954016"></script>
 <script src="cg-envelope.js?v=17880cee8a21"></script>
 <script src="loading-feedback.js?v=743b9b2b5ef5"></script>
 <script src="shelf-editor.js?v=1e0df028d323"></script>
 <script src="image-workspace.js?v=0ebab6bf1ac9"></script>
 <link rel="stylesheet" href="aircraft-summary.css?v=babceb5f96f1">
-<script src="aircraft-summary.js?v=c83203308d91"></script>
+<script src="aircraft-summary.js?v=206caea583dd"></script>
 <script src="planning-ui.js?v=f7f84be09c6b"></script>
-<link rel="stylesheet" href="usability.css?v=e8fb38538de9">
+<script src="jspdf.umd.min.js?v=98ccf17aa10c"></script>
+<script src="wb-report.js?v=14ae241e4b21"></script>
+<link rel="stylesheet" href="usability.css?v=e1d8249f155b">
 <script src="equipment-ui.js?v=43075f0d9493"></script>
 <script src="touch-workspace.js?v=fee64bc41bc7"></script>
 <script src="compact-workspace.js?v=40f40307e282"></script>
@@ -286,12 +288,13 @@ applyPreset('');
 <script src="cg-overlay.js?v=232267913d72"></script>
 <script src="equipment-markers.js?v=77b1eaeb580a"></script>
 <script src="destination-hints.js?v=c88a7fe866b4"></script>
-<script src="view-controls.js?v=5a1aba13e906"></script>
+<script src="view-controls.js?v=c621d7b56a6e"></script>
 <script src="summary-controls.js?v=3eae8117feb4"></script>
 <link rel="stylesheet" href="session-entry.css?v=5bdab619b3e5">
-<script src="session-entry.js?v=c8ae068a7e5f"></script>
+<script src="session-entry.js?v=b494104f1325"></script>
 <script src="keyboard-menus.js?v=ef59055632b0"></script>
 <link rel="stylesheet" href="mobile-review.css?v=3d8ff863bc7e">
 <script src="phone-ribbon.js?v=4248a9e32c1b"></script>
 </body>
 </html>
+

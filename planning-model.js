@@ -24,11 +24,12 @@
   }
   if(p.fuelMode==='manual'){s.fuel.manualTanks=true;s.fuel.tanks={...p.tanks};}
   s.fuel.landing=Math.min(p.reserve??300,p.fuel??0);
-  for(const row of state.floorLoads||[]){if(row.installed===false)continue;if(row.kind==='bay'){const space=window.CH149_FLOOR_SPACES.find(x=>x.id===row.area);s.bays[row.area==='RAMP'?'REAR':space?.bay]=row.weight;}else s.cargo.push({w:row.weight,arm:row.arm});}
+  for(const row of state.floorLoads||[]){if(row.installed===false)continue;if(row.kind==='bay'){const space=window.CH149_FLOOR_SPACES.find(x=>x.id===row.area),id=row.area==='RAMP'?'REAR':space?.bay;if(id)s.bays[id]=(s.bays[id]||0)+row.weight;}else s.cargo.push({w:row.weight,arm:row.arm});}
   for(const [id,w]of Object.entries(state.stowageLoads||{}))if(w>0)s.zones.push({id,w});
   return s;
  }
  function missionRows(state){return reference.missionRows(session(state));}
+ function reportData(state){const s=session(state);store.sessions[s.tail]=s;return {session:s,reference,config,release:()=>delete store.sessions[s.tail]};}
  function setBaseline(state,inputs){
   if(!['RFM','CURRENT','MAINTENANCE'].includes(inputs.basis)||!Number.isFinite(inputs.basicWeight)||inputs.basicWeight<=0||!Number.isFinite(inputs.basicCG)||inputs.basicCG<=0)return {ok:false,reason:'Enter a valid basic weight, CG and weight basis.'};
   if(inputs.tail&&!source.tails.active.includes(inputs.tail))return {ok:false,reason:'Choose a defined active aircraft.'};
@@ -55,5 +56,6 @@
   const assigned=missionRows(state).filter(r=>r.stowId===id&&r.quantity>0),total=rows.reduce((n,r)=>n+Number(r.weight),0)+assigned.reduce((n,r)=>n+r.w,0),limit=source.bayLimits[id]??null;
   return {id,total,limit,rows,assigned,excess:limit===null?null:Math.max(0,total-limit),remaining:limit===null?null:limit-total,level:limit!==null&&total>limit+1e-9?'caution':limit===null||assigned.some(r=>r.error)?'unreviewed':'ok'};
  }
- window.CabinPlanning=Object.freeze({session,missionRows,evaluate,shelf,bay,source,setBaseline,occupantType});
+ window.CabinPlanning=Object.freeze({session,missionRows,reportData,evaluate,shelf,bay,source,setBaseline,occupantType});
 })();
+
