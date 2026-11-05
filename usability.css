@@ -111,38 +111,83 @@ body:not(:has(#imageMenu:not([hidden]))):is(.compact-view-controls-active) :is(#
 .load-landscape :is(#areaLoadForm,#cargoEditForm,.equipment-extra-weight form,.shelf-weight-entry form) input[type=number]{width:140px;max-width:100%;min-width:0;box-sizing:border-box;font-size:16px;min-height:44px}
 .load-landscape #cargoEditForm>label:has(>input[name=arm]){width:140px;max-width:100%}
 
-/* Let the controls wrap when the stowage panel is too narrow. */
+/* Keep additional weight controls in explicit, shrink-safe grid areas. The
+   compact landscape view keeps the input and action together; other views use
+   separate stacked rows. */
 :is(.equipment-extra-weight,.shelf-weight-entry) form,
 .load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  gap: 6px 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "field" "status" "action";
+  align-items: stretch;
+  justify-items: stretch;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
-:is(.equipment-extra-weight,.shelf-weight-entry) form > label {
-  order: 0;
+:is(.equipment-extra-weight,.shelf-weight-entry) form > * {
+  position: static;
+  grid-column: 1;
+  grid-row: auto;
   min-width: 0;
   max-width: 100%;
   margin: 0;
+  align-self: stretch;
 }
-:is(.equipment-extra-weight,.shelf-weight-entry) form input,
+:is(.equipment-extra-weight,.shelf-weight-entry) form > label {
+  grid-area: field;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+}
+:is(.equipment-extra-weight,.shelf-weight-entry) form input[type=number],
 .load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form input[type=number] {
-  width: calc(8ch + 28px);
+  display: block;
+  grid-area: input;
+  width: 100%;
+  min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
+  font-size: 16px;
+  min-height: 44px;
 }
 :is(.equipment-extra-weight,.shelf-weight-entry) form > button,
 .load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form > button {
-  order: 1;
-  width: auto;
-  min-height: 36px;
-  padding: 4px 8px;
-  margin: 0;
+  display: block;
+  position: static;
+  grid-area: action;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 10px;
 }
 :is(.equipment-extra-weight,.shelf-weight-entry) form > p {
-  order: 2;
-  flex-basis: 100%;
-  margin: 0;
+  grid-area: status;
+}
+.load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form {
+  grid-template-columns: minmax(0, 140px) minmax(0, 1fr);
+  grid-template-areas:
+    "field action"
+    "status status";
+  align-items: end;
+}
+.load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form > label {
+  grid-area: field;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  display: flex;
+  flex-direction: column;
+}
+.load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form > button {
+  grid-area: action;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  width: 100%;
+}
+.load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form > p {
+  grid-area: status;
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
 }
 
 .certification-panel { padding: 16px; color: #244c5b; background: #f5f9fb; border: 1px solid #d2e0e4; border-radius: 10px; }
