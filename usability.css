@@ -149,7 +149,9 @@ body:not(:has(#imageMenu:not([hidden]))):is(.compact-view-controls-active) :is(#
   max-width: 100%;
   box-sizing: border-box;
   font-size: 16px;
+  height: 44px;
   min-height: 44px;
+  max-height: 44px;
 }
 :is(.equipment-extra-weight,.shelf-weight-entry) form > button,
 .load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form > button {
@@ -158,7 +160,12 @@ body:not(:has(#imageMenu:not([hidden]))):is(.compact-view-controls-active) :is(#
   grid-area: action;
   width: 100%;
   min-width: 0;
+  height: 44px;
   min-height: 44px;
+  max-height: 44px;
+  box-sizing: border-box;
+  line-height: 1.2;
+  white-space: normal;
   padding: 8px 10px;
 }
 :is(.equipment-extra-weight,.shelf-weight-entry) form > p {
@@ -177,12 +184,14 @@ body:not(:has(#imageMenu:not([hidden]))):is(.compact-view-controls-active) :is(#
   grid-row: 1 !important;
   display: flex;
   flex-direction: column;
+  align-self: end;
 }
 .load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form > button {
   grid-area: action;
   grid-column: 2 !important;
   grid-row: 1 !important;
   width: 100%;
+  align-self: end;
 }
 .load-landscape :is(.equipment-extra-weight,.shelf-weight-entry) form > p {
   grid-area: status;
